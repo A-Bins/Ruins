@@ -1,5 +1,7 @@
 package com.bins.ruins
 
+import com.bins.ruins.call.events.EvntInvClick
+import com.bins.ruins.call.events.EvntSwap
 import com.bins.ruins.run.view
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -22,11 +24,16 @@ class Ruins : JavaPlugin(), CommandExecutor {
     }
 
     override fun onEnable() {
+        server.pluginManager.also{
+            it.registerEvents(EvntInvClick(), this)
+            it.registerEvents(EvntSwap(), this)
+        }
         logger.warning("""
             루인스 플러그인 활성화!
             
             
                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                       *                                                     *
                        *               Ruins 플러그인 지침                   *
                        *                                                     *
                        *   이 플러그인은 A_bins(Bins#1004)가 만들었으며      *
@@ -36,6 +43,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
                        *                                                     *
                        *                                                     *
                        *   < Copyright 2021. Ruins. All rights reserved. >   *
+                       *                                                     *
                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
       
       
