@@ -16,7 +16,10 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.HashMap
 
-object util {
+object Util {
+    fun bb(str : Any){
+        Bukkit.broadcastMessage("$str")
+    }
     fun save(ruins: Ruins, hash: HashMap<*, *>, jsonname: String) {
         val data = JSONObject()
         hash.forEach { (key: Any, value: Any) -> data[key] = "" + value }

@@ -1,13 +1,9 @@
 package com.bins.ruins
 
 import com.bins.ruins.call.events.EvntInvClick
+import com.bins.ruins.call.events.EvntNpcRightClick
 import com.bins.ruins.call.events.EvntSwap
-import com.bins.ruins.run.view
-import org.bukkit.Bukkit
-import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.IOException
@@ -27,6 +23,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
         server.pluginManager.also{
             it.registerEvents(EvntInvClick(), this)
             it.registerEvents(EvntSwap(), this)
+            it.registerEvents(EvntNpcRightClick(), this)
         }
         logger.warning("""
             루인스 플러그인 활성화!
