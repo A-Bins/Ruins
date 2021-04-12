@@ -19,6 +19,7 @@ class EvntNpcRightClick : Listener {
             "점술사" -> view.inFortune()
             "사냥꾼" -> view.inHunter()
             "헬기 조종사" -> view.inPilot()
+            "밴딧캠프 상인" -> view.inBandit()
 
         }
 
