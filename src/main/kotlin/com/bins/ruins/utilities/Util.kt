@@ -95,7 +95,7 @@ object Util {
     }
     fun saveItemStack(ruins: Ruins, hash: HashMap<*, ItemStack>, jsonname: String) {
         val data = JSONObject()
-        hash.forEach { (key: Any, value: ItemStack?) -> data[key] = deserializeItemStack("$value") }
+        hash.forEach { (key: Any, value: ItemStack?) -> data[key] = serializeItemStack(value) }
         try {
             val UniOutput = BufferedWriter(
                 OutputStreamWriter(
