@@ -1,8 +1,11 @@
 package com.bins.ruins
 
-import com.bins.ruins.call.events.EvntInvClick
-import com.bins.ruins.call.events.EvntNpcRightClick
-import com.bins.ruins.call.events.EvntSwap
+import com.bins.ruins.call.commands.test
+import com.bins.ruins.call.events.*
+import com.bins.ruins.run.vars.Container
+import com.bins.ruins.utilities.Util.loadItemStack
+import com.bins.ruins.utilities.Util.saveItemStack
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -18,12 +21,31 @@ class Ruins : JavaPlugin(), CommandExecutor {
             }
         }
     }
+    companion object{
+        lateinit var instance : Ruins
+
+    }
 
     override fun onEnable() {
+        dataFolder.mkdirs()
+        loadItemStack(this, Container, "Container")
+
+
+        Bukkit.getScheduler().runTaskTimer(this, Runnable {
+
+            saveItemStack(this, Container, "Container")
+        }, 10, 5)
+        instance = this
         server.pluginManager.also{
             it.registerEvents(EvntInvClick(), this)
             it.registerEvents(EvntSwap(), this)
             it.registerEvents(EvntNpcRightClick(), this)
+            it.registerEvents(EvntBlockBreak(), this)
+            it.registerEvents(EvntStoneFile(), this)
+            it.registerEvents(EvntInvClose(), this)
+        }
+        getCommand("t")?.apply{
+            setExecutor(test())
         }
         logger.warning("""
             루인스 플러그인 활성화!

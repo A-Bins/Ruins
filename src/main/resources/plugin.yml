@@ -4,3 +4,5 @@ main: com.bins.ruins.Ruins
 api-version: 1.16
 depend: [ ProtocolLib, Citizens ]
 authors: [ A_bins, DDang_ ]
+commands:
+  t:

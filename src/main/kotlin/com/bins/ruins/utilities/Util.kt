@@ -93,6 +93,41 @@ object Util {
             e.printStackTrace()
         }
     }
+    fun saveItemStack(ruins: Ruins, hash: HashMap<*, ItemStack>, jsonname: String) {
+        val data = JSONObject()
+        hash.forEach { (key: Any, value: ItemStack?) -> data[key] = deserializeItemStack("$value") }
+        try {
+            val UniOutput = BufferedWriter(
+                OutputStreamWriter(
+                    FileOutputStream(File(ruins.dataFolder, "$jsonname.json").path),
+                    "EUC-KR"
+                )
+            )
+            UniOutput.write("$data")
+            UniOutput.flush()
+            UniOutput.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+    fun loadItemStack(ruins: Ruins, hash: HashMap<UUID, ItemStack>, jsonname: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
+        File(ruins.dataFolder, "$jsonname.json").mkdir()
+        val parser = JSONParser()
+        try {
+            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
+                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
+                val jsonObject: JSONObject = obj as JSONObject
+                jsonObject.forEach { key: Any, value: Any ->
+                    hash[UUID.fromString(key.toString() + "")] = deserializeItemStack("$value")!!
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
     fun loadloc(ruins: Ruins, hash: HashMap<UUID, Location>, jsonname: String) {
         ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
         File(ruins.dataFolder, "$jsonname.json").mkdir()
