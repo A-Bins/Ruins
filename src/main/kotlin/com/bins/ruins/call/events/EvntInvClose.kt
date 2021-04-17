@@ -14,9 +14,7 @@ class EvntInvClose: Listener {
         val p = e.player
         when(e.view.title){
             "컨테이너" -> {
-                bb(e.view.title)
                 vars.Container[p.uniqueId] = if(e.inventory.getItem(4) != null && e.inventory.getItem(4)?.type != Material.AIR) e.inventory.getItem(4)!! else ItemStack(Material.AIR)
-                bb("${e.inventory.getItem(4)}")
             }
         }
 
