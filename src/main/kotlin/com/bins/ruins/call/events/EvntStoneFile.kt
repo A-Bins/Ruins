@@ -22,13 +22,6 @@ class EvntStoneFile: Listener{
             }
         }
     }
-/*
-function nearbyBlocks(b: Block, radius: Integer): Block:
-    loop blocks between location({_b}'s location's x-coord + {_radius}, {_b}'s location's y-coord,({_b}'s location's z-coord + {_radius})) and location({_b}'s location's x-coord - {_radius}, {_b}'s location's y-coord,({_b}'s location's z-coord - {_radius})):
-        if loop-value is not air:
-            add loop-value to {_list}
-    return {_list}
-*/
     private fun getNearbyBlocks(b: Block, radius: Int): List<Block> {
         val blocks: MutableList<Block> = ArrayList()
         for (x in b.location.blockX - radius..b.location.blockX + radius) {
