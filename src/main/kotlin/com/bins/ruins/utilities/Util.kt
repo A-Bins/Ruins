@@ -1,8 +1,18 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
+import com.comphenix.protocol.events.PacketContainer
+import com.comphenix.protocol.wrappers.WrappedDataWatcher
 import org.bukkit.Bukkit
+import org.bukkit.Color
 import org.bukkit.Location
+import org.bukkit.Particle
+import org.bukkit.entity.Entity
+import org.bukkit.entity.Item
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.io.BukkitObjectInputStream
 import org.bukkit.util.io.BukkitObjectOutputStream
@@ -12,11 +22,24 @@ import org.json.simple.parser.JSONParser
 import org.json.simple.parser.ParseException
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
-import java.lang.Exception
+import java.lang.reflect.InvocationTargetException
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.experimental.and
+import kotlin.experimental.or
 
 object Util {
+
+    fun getTargetedItemEntity(p: Player) : Item?{
+        for(i in 0..35) {
+            val loc : Location= p.eyeLocation.add(p.location.direction.multiply(i.toDouble()/10))
+            val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.1, 0.1, 0.1)
+            for (e in list) {
+                return e
+            }
+        }
+        return null
+    }
+
     fun bb(str : Any){
         Bukkit.broadcastMessage("$str")
     }

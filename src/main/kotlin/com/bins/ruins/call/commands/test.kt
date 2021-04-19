@@ -1,5 +1,6 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.utilities.Util
 import com.bins.ruins.utilities.Util.bb
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
@@ -50,8 +51,7 @@ class test : CommandExecutor{
     }
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            bb("${serializeItemStack(ItemStack(Material.AIR))}")
-            bb("${deserializeItemStack(serializeItemStack(ItemStack(Material.AIR))!!)}")
+            Util.getTargetedItemEntity(p)
         }
         return false
     }

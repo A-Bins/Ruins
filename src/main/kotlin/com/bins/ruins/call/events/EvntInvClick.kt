@@ -13,7 +13,10 @@ import org.bukkit.event.inventory.InventoryClickEvent
 class EvntInvClick : Listener {
     @EventHandler
     fun event(e: InventoryClickEvent){
-
+        if(View.cancels.contains(e.view.title)) {
+            if(e.currentItem?.type == Material.GRAY_STAINED_GLASS_PANE)
+                e.isCancelled = true
+        }
         if(View.views.contains(e.view.title)) {
             val p = e.whoClicked as Player
             val run = View(p)
@@ -28,5 +31,6 @@ class EvntInvClick : Listener {
             }
             e.isCancelled = true
         }
+
     }
 }

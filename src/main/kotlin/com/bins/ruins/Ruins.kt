@@ -2,7 +2,11 @@ package com.bins.ruins
 
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
+import com.bins.ruins.run.View
 import com.bins.ruins.run.vars.Container
+import com.bins.ruins.run.vars.glowValue
+import com.bins.ruins.utilities.Glows
+import com.bins.ruins.utilities.Util.getTargetedItemEntity
 import com.bins.ruins.utilities.Util.loadItemStack
 import com.bins.ruins.utilities.Util.saveItemStack
 import org.bukkit.Bukkit
@@ -27,6 +31,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
     }
 
     override fun onEnable() {
+        View.cancels.add("Barrel")
         dataFolder.mkdirs()
         loadItemStack(this, Container, "Container")
 
@@ -43,6 +48,9 @@ class Ruins : JavaPlugin(), CommandExecutor {
             it.registerEvents(EvntBlockBreak(), this)
             it.registerEvents(EvntStoneFile(), this)
             it.registerEvents(EvntInvClose(), this)
+            it.registerEvents(EvntInteract(), this)
+            it.registerEvents(EvntInvOpen(), this)
+            it.registerEvents(EvntPickUp(), this)
         }
         getCommand("t")?.apply{
             setExecutor(test())
@@ -68,6 +76,18 @@ class Ruins : JavaPlugin(), CommandExecutor {
       
       
         """.trimIndent())
+        Bukkit.getScheduler().runTaskTimer(this, Runnable {
+            for(p in server.onlinePlayers){
+                val e = getTargetedItemEntity(p)
+                if(e != null){
+                    Glows.setGlow(p, e, true)
+                    glowValue[p.uniqueId] = e
+                }else if(glowValue[p.uniqueId] != null){
+                    Glows.setGlow(p, glowValue[p.uniqueId], false)
+                    glowValue[p.uniqueId] = null
+                }
+            }
+        }, 1, 1)
     }
 
     override fun onDisable() {
