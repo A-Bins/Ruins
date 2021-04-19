@@ -32,7 +32,7 @@ object Util {
     fun getTargetedItemEntity(p: Player) : Item?{
         for(i in 0..35) {
             val loc : Location= p.eyeLocation.add(p.location.direction.multiply(i.toDouble()/10))
-            val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.1, 0.1, 0.1)
+            val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
             for (e in list) {
                 return e
             }

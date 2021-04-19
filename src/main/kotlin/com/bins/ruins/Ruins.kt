@@ -80,6 +80,10 @@ class Ruins : JavaPlugin(), CommandExecutor {
             for(p in server.onlinePlayers){
                 val e = getTargetedItemEntity(p)
                 if(e != null){
+                    if(glowValue[p.uniqueId] != null){
+                        Glows.setGlow(p, glowValue[p.uniqueId], false)
+                        glowValue[p.uniqueId] = null
+                    }
                     Glows.setGlow(p, e, true)
                     glowValue[p.uniqueId] = e
                 }else if(glowValue[p.uniqueId] != null){
