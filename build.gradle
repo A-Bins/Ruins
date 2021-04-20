@@ -37,8 +37,7 @@ repositories {
         url = 'https://papermc.io/repo/repository/maven-public/'
     }
     maven {
-        name = 'everything'
-        url = 'http://repo.citizensnpcs.co/'
+        url = 'https://repo.citizensnpcs.co/'
     }
     maven {
         name = 'sonatype'

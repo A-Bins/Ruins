@@ -3,6 +3,7 @@ package com.bins.ruins.call.events
 import com.bins.ruins.Ruins
 import com.bins.ruins.run.View
 import com.bins.ruins.run.vars
+import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -16,6 +17,8 @@ class EvntInteract : Listener{
     fun event(e: PlayerInteractEvent){
         val b = e.clickedBlock
         val p = e.player
+        if(vars.isClick[p.uniqueId] == true)
+            return
         vars.isClick[p.uniqueId] = true
         Bukkit.getScheduler().runTaskLater(Ruins.instance, Runnable{
             vars.isClick[p.uniqueId] = false
