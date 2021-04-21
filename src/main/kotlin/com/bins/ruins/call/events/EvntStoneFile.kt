@@ -2,7 +2,6 @@ package com.bins.ruins.call.events
 
 import com.bins.ruins.custom.StoneFileBreakEvent
 import com.bins.ruins.utilities.Util.bb
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -23,6 +22,7 @@ class EvntStoneFile: Listener{
         }
     }
     private fun getNearbyBlocks(b: Block, radius: Int): List<Block> {
+
         val blocks: MutableList<Block> = ArrayList()
         for (x in b.location.blockX - radius..b.location.blockX + radius) {
             for (y in b.location.blockY - radius..b.location.blockY + radius) {
