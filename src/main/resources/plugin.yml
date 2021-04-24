@@ -1,5 +1,5 @@
 name: Ruins
-version: @version@
+version: underfined
 main: com.bins.ruins.Ruins
 api-version: 1.16
 depend: [ ProtocolLib, Citizens ]

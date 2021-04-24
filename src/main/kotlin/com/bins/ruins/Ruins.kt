@@ -1,5 +1,6 @@
 package com.bins.ruins
 
+import com.bins.ruins.bot.MsgListener
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
 import com.bins.ruins.run.View
@@ -9,13 +10,19 @@ import com.bins.ruins.utilities.Glows
 import com.bins.ruins.utilities.Util.getTargetedItemEntity
 import com.bins.ruins.utilities.Util.loadItemStack
 import com.bins.ruins.utilities.Util.saveItemStack
+import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.utils.Compression
+import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
+import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.IOException
 
-class Ruins : JavaPlugin(), CommandExecutor {
+
+class Ruins : JavaPlugin(), CommandExecutor, Listener {
     fun makeFile(f: File) {
         if (!f.exists() || !f.isFile) {
             try {
@@ -27,10 +34,19 @@ class Ruins : JavaPlugin(), CommandExecutor {
     }
     companion object{
         lateinit var instance : Ruins
-
     }
 
     override fun onEnable() {
+
+        val builder = JDABuilder.createDefault(env.BOT_TOKEN)
+
+        builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
+        builder.setBulkDeleteSplittingEnabled(false)
+        builder.setCompression(Compression.NONE)
+        builder.setActivity(Activity.watching("TV"))
+
+        builder.build()
+        builder.addEventListeners(MsgListener())
         View.cancels.add("Barrel")
         dataFolder.mkdirs()
         loadItemStack(this, Container, "Container")
@@ -95,6 +111,5 @@ class Ruins : JavaPlugin(), CommandExecutor {
     }
 
     override fun onDisable() {
-        // Plugin shutdown logic
     }
 }

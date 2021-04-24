@@ -1,9 +1,7 @@
 package com.bins.ruins.call.events
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.run.View
 import com.bins.ruins.run.vars
-import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -31,6 +29,7 @@ class EvntInteract : Listener{
                 vars.glowValue[p.uniqueId]!!.remove()
                 vars.glowValue[p.uniqueId] = null
                 p.playSound(p.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F)
+                e.isCancelled = true
             }
             if (b != null) {
                 if ((p.location.distance(b.location) >= 2) and (b.type == Material.BARREL)) {
