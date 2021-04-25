@@ -1,6 +1,6 @@
 package com.bins.ruins.call.events
 
-import com.bins.ruins.run.vars
+import com.bins.ruins.run.Vars
 import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -24,7 +24,7 @@ class EvntInvClose: Listener {
                 }
             }
             "컨테이너" -> {
-                vars.Container[p.uniqueId] = if(e.inventory.getItem(4) != null && e.inventory.getItem(4)?.type != Material.AIR) e.inventory.getItem(4)!! else ItemStack(Material.AIR)
+                Vars.Container[p.uniqueId] = if(e.inventory.getItem(4) != null && e.inventory.getItem(4)?.type != Material.AIR) e.inventory.getItem(4)!! else ItemStack(Material.AIR)
             }
         }
 

@@ -90,6 +90,8 @@ compileKotlin {
         jvmTarget = "15"
     }
 }
+compileJava{
+}
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "15"

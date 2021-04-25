@@ -1,7 +1,7 @@
 package com.bins.ruins.call.events
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.run.vars
+import com.bins.ruins.run.Vars
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -15,19 +15,19 @@ class EvntInteract : Listener{
     fun event(e: PlayerInteractEvent){
         val b = e.clickedBlock
         val p = e.player
-        if(vars.isClick[p.uniqueId] == true)
+        if(Vars.isClick[p.uniqueId] == true)
             return
-        vars.isClick[p.uniqueId] = true
+        Vars.isClick[p.uniqueId] = true
         Bukkit.getScheduler().runTaskLater(Ruins.instance, Runnable{
-            vars.isClick[p.uniqueId] = false
+            Vars.isClick[p.uniqueId] = false
         }, 2)
 
         if((e.action == Action.RIGHT_CLICK_AIR) or (e.action == Action.RIGHT_CLICK_BLOCK)) {
-            if (vars.glowValue[p.uniqueId] != null) {
+            if (Vars.glowValue[p.uniqueId] != null) {
 
-                p.inventory.addItem(vars.glowValue[p.uniqueId]!!.itemStack)
-                vars.glowValue[p.uniqueId]!!.remove()
-                vars.glowValue[p.uniqueId] = null
+                p.inventory.addItem(Vars.glowValue[p.uniqueId]!!.itemStack)
+                Vars.glowValue[p.uniqueId]!!.remove()
+                Vars.glowValue[p.uniqueId] = null
                 p.playSound(p.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F)
                 e.isCancelled = true
             }

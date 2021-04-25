@@ -1,46 +1,32 @@
 package com.bins.ruins
 
-import com.bins.ruins.bot.MsgListener
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
+import com.bins.ruins.run.Vars.Container
+import com.bins.ruins.run.Vars.glowValue
 import com.bins.ruins.run.View
-import com.bins.ruins.run.vars.Container
-import com.bins.ruins.run.vars.glowValue
 import com.bins.ruins.utilities.Glows
 import com.bins.ruins.utilities.Util.getTargetedItemEntity
 import com.bins.ruins.utilities.Util.loadItemStack
 import com.bins.ruins.utilities.Util.saveItemStack
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.entities.Activity
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
-import java.io.IOException
 
 
 class Ruins : JavaPlugin(){
     fun makeFile(f: File) {
-        if (!f.exists() || !f.isFile) {
-            try {
-                f.createNewFile()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        if (!f.exists() || !f.isFile)
+            f.createNewFile()
     }
     companion object{
         lateinit var instance : Ruins
-        lateinit var discord : JDA
+//        lateinit var discord : JDA
     }
 
     override fun onEnable() {
 
-        val builder = JDABuilder.createDefault(env.BOT_TOKEN)
-        builder.setActivity(Activity.playing("Ruins"))
-        builder.addEventListeners(MsgListener())
-        discord = builder.build()
-
+//        discord = startBot()
 
 
 
@@ -55,18 +41,18 @@ class Ruins : JavaPlugin(){
         Bukkit.getScheduler().runTaskTimer(this, Runnable {
 
             saveItemStack(this, Container, "Container")
-        }, 10, 5)
+        }, 10*60, 5)
         instance = this
-        server.pluginManager.also{
-            it.registerEvents(EvntInvClick(), this)
-            it.registerEvents(EvntSwap(), this)
-            it.registerEvents(EvntNpcRightClick(), this)
-            it.registerEvents(EvntBlockBreak(), this)
-            it.registerEvents(EvntStoneFile(), this)
-            it.registerEvents(EvntInvClose(), this)
-            it.registerEvents(EvntInteract(), this)
-            it.registerEvents(EvntInvOpen(), this)
-            it.registerEvents(EvntPickUp(), this)
+        server.pluginManager.apply{
+            registerEvents(EvntInvClick(), this@Ruins)
+            registerEvents(EvntSwap(), this@Ruins)
+            registerEvents(EvntNpcRightClick(), this@Ruins)
+            registerEvents(EvntBlockBreak(), this@Ruins)
+            registerEvents(EvntStoneFile(), this@Ruins)
+            registerEvents(EvntInvClose(), this@Ruins)
+            registerEvents(EvntInteract(), this@Ruins)
+            registerEvents(EvntInvOpen(), this@Ruins)
+            registerEvents(EvntPickUp(), this@Ruins)
         }
         getCommand("t")?.apply{
             setExecutor(test())
@@ -112,5 +98,6 @@ class Ruins : JavaPlugin(){
     }
 
     override fun onDisable() {
+//        discord.shutdown()
     }
 }
