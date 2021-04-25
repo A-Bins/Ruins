@@ -1,7 +1,7 @@
 package com.bins.ruins.call.events
 
+import com.bins.ruins.Ruins
 import com.bins.ruins.custom.StoneFileBreakEvent
-import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -9,6 +9,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
 class EvntBlockBreak: Listener {
     companion object {
@@ -39,6 +40,12 @@ class EvntBlockBreak: Listener {
     }
     }
 
+    @EventHandler
+    fun eve2nt(e: PlayerCommandPreprocessEvent){
+        if(e.message == "/r"){
+            Ruins.discord.shutdown()
+        }
+    }
     @EventHandler
     fun event(e: BlockBreakEvent){
         val b = e.block

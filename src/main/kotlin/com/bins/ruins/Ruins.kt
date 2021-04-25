@@ -10,19 +10,16 @@ import com.bins.ruins.utilities.Glows
 import com.bins.ruins.utilities.Util.getTargetedItemEntity
 import com.bins.ruins.utilities.Util.loadItemStack
 import com.bins.ruins.utilities.Util.saveItemStack
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
-import net.dv8tion.jda.api.utils.Compression
-import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.bukkit.Bukkit
-import org.bukkit.command.CommandExecutor
-import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.IOException
 
 
-class Ruins : JavaPlugin(), CommandExecutor, Listener {
+class Ruins : JavaPlugin(){
     fun makeFile(f: File) {
         if (!f.exists() || !f.isFile) {
             try {
@@ -34,19 +31,22 @@ class Ruins : JavaPlugin(), CommandExecutor, Listener {
     }
     companion object{
         lateinit var instance : Ruins
+        lateinit var discord : JDA
     }
 
     override fun onEnable() {
 
         val builder = JDABuilder.createDefault(env.BOT_TOKEN)
-
-        builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
-        builder.setBulkDeleteSplittingEnabled(false)
-        builder.setCompression(Compression.NONE)
-        builder.setActivity(Activity.watching("TV"))
-
-        builder.build()
+        builder.setActivity(Activity.playing("Ruins"))
         builder.addEventListeners(MsgListener())
+        discord = builder.build()
+
+
+
+
+
+
+
         View.cancels.add("Barrel")
         dataFolder.mkdirs()
         loadItemStack(this, Container, "Container")
@@ -99,6 +99,7 @@ class Ruins : JavaPlugin(), CommandExecutor, Listener {
                     if(glowValue[p.uniqueId] != null){
                         Glows.setGlow(p, glowValue[p.uniqueId], false)
                         glowValue[p.uniqueId] = null
+                        return@Runnable
                     }
                     Glows.setGlow(p, e, true)
                     glowValue[p.uniqueId] = e

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack
 class EvntInvClose: Listener {
     @EventHandler
     fun event(e: InventoryCloseEvent){
+        e.getPlayer()
         val p = e.player
         when(e.view.title){
             "Barrel" -> {
