@@ -78,6 +78,7 @@ class Ruins : JavaPlugin(){
       
       
         """.trimIndent())
+
         Bukkit.getScheduler().runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 val e = getTargetedItemEntity(p)
@@ -85,7 +86,6 @@ class Ruins : JavaPlugin(){
                     if(glowValue[p.uniqueId] != null){
                         Glows.setGlow(p, glowValue[p.uniqueId], false)
                         glowValue[p.uniqueId] = null
-                        return@Runnable
                     }
                     Glows.setGlow(p, e, true)
                     glowValue[p.uniqueId] = e

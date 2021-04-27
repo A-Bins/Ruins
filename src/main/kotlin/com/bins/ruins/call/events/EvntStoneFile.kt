@@ -1,7 +1,7 @@
 package com.bins.ruins.call.events
 
 import com.bins.ruins.custom.StoneFileBreakEvent
-import com.bins.ruins.utilities.Util.bb
+import com.bins.ruins.structure.Farmings
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -10,15 +10,21 @@ import org.bukkit.event.Listener
 class EvntStoneFile: Listener{
     @EventHandler
     fun event(e : StoneFileBreakEvent){
-        bb("hi!")
         val b = e.block
-        for(block in getNearbyBlocks(b, 3)){
-            if((block.type == Material.COBBLESTONE) and (EvntBlockBreak.isDetectAir(b))) {
-                block.type = Material.MOSSY_COBBLESTONE
-
-                return
+        var use = false
+        when(b.type == Material.MOSSY_COBBLESTONE) {
+            true -> {
+                for (block in getNearbyBlocks(b, 3)) {
+                    if(use)
+                        continue
+                    if ((block.type == Material.COBBLESTONE) and (EvntBlockBreak.isDetectAir(b))) {
+                        block.type = Material.MOSSY_COBBLESTONE
+                        use = true
+                    }
+                }
             }
         }
+        Farmings.STONE.farming(e.player, b)
     }
     private fun getNearbyBlocks(b: Block, radius: Int): List<Block> {
 

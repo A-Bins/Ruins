@@ -1,15 +1,8 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.structure.Farmings
 import com.bins.ruins.utilities.Util
 import com.bins.ruins.utilities.Util.bb
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.wrappers.EnumWrappers
-import com.comphenix.protocol.wrappers.PlayerInfoData
-import com.comphenix.protocol.wrappers.WrappedChatComponent
-import com.comphenix.protocol.wrappers.WrappedGameProfile
-import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -21,8 +14,6 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.lang.Exception
-import java.lang.reflect.InvocationTargetException
 
 
 class test : CommandExecutor{
@@ -51,7 +42,7 @@ class test : CommandExecutor{
     }
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            Util.getTargetedItemEntity(p)
+            bb(Util.isGivable(p, Farmings.STONE.bundleItemStack))
         }
         return false
     }

@@ -41,8 +41,9 @@ class EvntBlockBreak: Listener {
     @EventHandler
     fun event(e: BlockBreakEvent){
         val b = e.block
-        if(b.type !== Material.MOSSY_COBBLESTONE)
+        if(!((b.type == Material.MOSSY_COBBLESTONE)or(b.type == Material.COBBLESTONE)))
             return
+
         if(!isDetectAir(b))
             return
 

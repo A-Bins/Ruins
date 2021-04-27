@@ -1,4 +1,4 @@
-package com.bins.ruins.types
+package com.bins.ruins.structure
 
 
 enum class RiskType {

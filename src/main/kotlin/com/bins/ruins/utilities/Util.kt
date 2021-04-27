@@ -1,16 +1,8 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.ProtocolManager
-import com.comphenix.protocol.events.PacketContainer
-import com.comphenix.protocol.wrappers.WrappedDataWatcher
 import org.bukkit.Bukkit
-import org.bukkit.Color
 import org.bukkit.Location
-import org.bukkit.Particle
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -22,14 +14,43 @@ import org.json.simple.parser.JSONParser
 import org.json.simple.parser.ParseException
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
-import java.lang.reflect.InvocationTargetException
 import java.util.*
-import kotlin.experimental.and
-import kotlin.experimental.or
 
 object Util {
+    fun isGivable(p: Player, itemStack: ItemStack): Boolean{
+        val inv = p.inventory
+        when(inv.firstEmpty() == -1){
+            true  -> {
+                val list: ArrayList<Int> = ArrayList()
+                for (i in inv.contents) {
+                    if (i == null)
+                        continue
+                    val item = i.clone()
+                    item.amount = itemStack.amount
+                    if ((item == itemStack) and (i.amount != 64)) {
+                        list.add(i.amount)
+                    }
+                }
 
-    fun getTargetedItemEntity(p: Player) : Item?{
+
+                var bool = false
+                var over = itemStack.amount
+                for (i in list) {
+                    if (over != (itemStack.amount))
+                        continue
+                    if ((i + itemStack.amount) <= 64)
+                        bool = true
+                    else {
+                        over = (i + itemStack.amount) - 64
+                    }
+                }
+                return bool
+            }
+            false -> return true
+        }
+
+    }
+    fun getTargetedItemEntity(p: Player) : Item? {
         for(i in 0..35) {
             val loc : Location= p.eyeLocation.add(p.location.direction.multiply(i.toDouble()/10))
             val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)

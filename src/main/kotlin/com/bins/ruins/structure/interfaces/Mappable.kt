@@ -1,6 +1,6 @@
 package com.bins.ruins.structure.interfaces
 
-import com.bins.ruins.types.RiskType
+import com.bins.ruins.structure.RiskType
 
 interface Mappable {
     val index : Int
