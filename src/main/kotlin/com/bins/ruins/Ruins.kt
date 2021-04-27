@@ -47,7 +47,7 @@ class Ruins : JavaPlugin(){
             registerEvents(EvntInvClick(), this@Ruins)
             registerEvents(EvntSwap(), this@Ruins)
             registerEvents(EvntNpcRightClick(), this@Ruins)
-            registerEvents(EvntBlockBreak(), this@Ruins)
+            registerEvents(EvntBlock(), this@Ruins)
             registerEvents(EvntStoneFile(), this@Ruins)
             registerEvents(EvntInvClose(), this@Ruins)
             registerEvents(EvntInteract(), this@Ruins)

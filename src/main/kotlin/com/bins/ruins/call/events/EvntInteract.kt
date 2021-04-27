@@ -2,6 +2,7 @@ package com.bins.ruins.call.events
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.run.Vars
+import com.bins.ruins.utilities.Util.isGivable
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -24,12 +25,28 @@ class EvntInteract : Listener{
 
         if((e.action == Action.RIGHT_CLICK_AIR) or (e.action == Action.RIGHT_CLICK_BLOCK)) {
             if (Vars.glowValue[p.uniqueId] != null) {
-
-                p.inventory.addItem(Vars.glowValue[p.uniqueId]!!.itemStack)
-                Vars.glowValue[p.uniqueId]!!.remove()
-                Vars.glowValue[p.uniqueId] = null
-                p.playSound(p.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F)
                 e.isCancelled = true
+                val givable = isGivable(p, Vars.glowValue[p.uniqueId]!!.itemStack)
+                when(givable == 0){
+                    true -> {
+                        p.inventory.addItem(Vars.glowValue[p.uniqueId]!!.itemStack)
+                        Vars.glowValue[p.uniqueId]!!.remove()
+                        Vars.glowValue[p.uniqueId] = null
+                        p.playSound(p.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F)
+                    }
+                    false -> {
+                        val item = Vars.glowValue[p.uniqueId]!!.itemStack.clone()
+                        val amount = item.amount
+                        item.amount = givable
+                        p.world.dropItemNaturally(Vars.glowValue[p.uniqueId]!!.location, item)
+                        item.amount = amount-givable
+                        p.inventory.addItem(item)
+                        Vars.glowValue[p.uniqueId]!!.remove()
+                        Vars.glowValue[p.uniqueId] = null
+                        p.playSound(p.location, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
+                    }
+                }
+
             }
             if (b != null) {
                 if ((p.location.distance(b.location) >= 2) and (b.type == Material.BARREL)) {

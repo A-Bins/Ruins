@@ -17,7 +17,8 @@ import java.io.*
 import java.util.*
 
 object Util {
-    fun isGivable(p: Player, itemStack: ItemStack): Boolean{
+    fun isGivable(p: Player, a: ItemStack): Int{
+        val itemStack = a.clone()
         val inv = p.inventory
         when(inv.firstEmpty() == -1){
             true  -> {
@@ -44,9 +45,13 @@ object Util {
                         over = (i + itemStack.amount) - 64
                     }
                 }
-                return bool
+                return if(bool){
+                    0
+                }else{
+                    over
+                }
             }
-            false -> return true
+            false -> return 0
         }
 
     }

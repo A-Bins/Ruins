@@ -17,7 +17,7 @@ class EvntStoneFile: Listener{
                 for (block in getNearbyBlocks(b, 3)) {
                     if(use)
                         continue
-                    if ((block.type == Material.COBBLESTONE) and (EvntBlockBreak.isDetectAir(b))) {
+                    if ((block.type == Material.COBBLESTONE) and (EvntBlock.isDetectAir(b))) {
                         block.type = Material.MOSSY_COBBLESTONE
                         use = true
                     }

@@ -8,8 +8,9 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 
-class EvntBlockBreak: Listener {
+class EvntBlock: Listener {
     companion object {
         fun isDetectAir(block: Block): Boolean {
         val loc = block.location
@@ -38,6 +39,12 @@ class EvntBlockBreak: Listener {
     }
     }
 
+    @EventHandler
+    fun event2(e: BlockPlaceEvent){
+        if(e.player.isOp)
+            return
+        e.isCancelled = true
+    }
     @EventHandler
     fun event(e: BlockBreakEvent){
         val b = e.block
