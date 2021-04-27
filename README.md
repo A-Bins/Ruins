@@ -1,7 +1,8 @@
 # **이 플러그인은 Ruins의 코어 플러그인입니다.**
 개발자 : A_bins 기획: DDang_
 
-# **#코드에 대한 질문은 언제나 환영입니다!**
-Discord : Bins#1004
 
-ex)이 코드 이렇게 바꾸면 더 간결할거 같은데요?
+### TODO
+- [x] Ruins Total System.
+- [x] Ruins Farming System.
+- [x] Ruins getItem for Right Clcik
