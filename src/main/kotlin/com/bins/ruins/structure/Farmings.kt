@@ -1,6 +1,7 @@
 package com.bins.ruins.structure
 
 import com.bins.ruins.structure.interfaces.Farmable
+import com.bins.ruins.structure.types.ItemType
 import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -95,10 +96,8 @@ enum class Farmings: Farmable {
             get() = ItemType.RESOURCE
 
         override val bundleAmount: Int
-            get() {
-                val range = 2..5
-                return range.random()
-            }
+            get() = (2..5).random()
+
 
         override val bundleItemStack: ItemStack
             get() = super.bundleItemStack
@@ -128,10 +127,7 @@ enum class Farmings: Farmable {
             get() = ItemType.RESOURCE
 
         override val bundleAmount: Int
-            get() {
-                val range = 2..5
-                return range.random()
-            }
+            get() = (2..5).random()
 
         override val bundleItemStack: ItemStack
             get() = super.bundleItemStack

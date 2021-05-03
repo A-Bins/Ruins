@@ -1,6 +1,6 @@
 package com.bins.ruins.structure.interfaces
 
-import com.bins.ruins.structure.ItemType
+import com.bins.ruins.structure.types.ItemType
 import org.bukkit.inventory.ItemStack
 
 interface Farmable {

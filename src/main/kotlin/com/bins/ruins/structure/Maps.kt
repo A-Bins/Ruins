@@ -1,6 +1,7 @@
 package com.bins.ruins.structure
 
 import com.bins.ruins.structure.interfaces.Mappable
+import com.bins.ruins.structure.types.RiskType
 
 enum class Maps : Mappable {
     TEST{

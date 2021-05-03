@@ -25,9 +25,6 @@ class View(private val p: Player){
     fun inContainer() : InventoryView{
         return p.openInventory(asContainer)!!
     }
-    fun inRecycling() : InventoryView{
-        return p.openInventory(asRecycler)!!
-    }
     fun inVending() : InventoryView{
         return p.openInventory(asVend)!!
     }
@@ -74,7 +71,6 @@ class View(private val p: Player){
         Inv.setItem(7, ib)
         Inv.setItem(8, ib)
     }
-    val asRecycler = create(9, "재활용")
     val asMenu = create(27, "메뉴").also{ Inv ->
         Inv.setItem(4, ItemStack(Material.PLAYER_HEAD).apply {
                 val meta = itemMeta as SkullMeta

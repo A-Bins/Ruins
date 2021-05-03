@@ -1,4 +1,4 @@
-package com.bins.ruins.structure
+package com.bins.ruins.structure.types
 
 import net.md_5.bungee.api.ChatColor
 
