@@ -6,6 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.ItemStack
 class EvntInvOpen: Listener {
+    @Suppress("DEPRECATION")
     private val info = ItemStack(Material.GRAY_STAINED_GLASS_PANE).apply {
         val meta = itemMeta
         meta.setDisplayName("§6재활용 기계 사용 방법")
@@ -20,6 +21,7 @@ class EvntInvOpen: Listener {
         )
         itemMeta = meta
     }
+    @Suppress("DEPRECATION")
     @EventHandler
     fun event(e: InventoryOpenEvent){
         val p = e.player

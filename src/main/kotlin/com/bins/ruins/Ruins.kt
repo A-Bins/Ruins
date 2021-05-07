@@ -1,14 +1,25 @@
 package com.bins.ruins
 
+import com.bins.ruins.call.commandTabs.LoreTab
+import com.bins.ruins.call.commandTabs.NameTab
+import com.bins.ruins.call.commands.Lore
+import com.bins.ruins.call.commands.Name
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
 import com.bins.ruins.run.Vars.Container
+import com.bins.ruins.run.Vars.Totals
 import com.bins.ruins.run.Vars.glowValue
+import com.bins.ruins.run.Vars.reload
 import com.bins.ruins.run.View
 import com.bins.ruins.utilities.Glows
+import com.bins.ruins.utilities.Util.bb
 import com.bins.ruins.utilities.Util.getTargetedItemEntity
 import com.bins.ruins.utilities.Util.loadItemStack
+import com.bins.ruins.utilities.Util.loadStrInt
+import com.bins.ruins.utilities.Util.loadTotals
+import com.bins.ruins.utilities.Util.save
 import com.bins.ruins.utilities.Util.saveItemStack
+import com.bins.ruins.utilities.Util.saveTotals
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -35,12 +46,22 @@ class Ruins : JavaPlugin(){
 
         View.cancels.add("Barrel")
         dataFolder.mkdirs()
+
+        loadStrInt(this, reload, "reload")
         loadItemStack(this, Container, "Container")
+        loadTotals(this, Totals, "Totals")
+
+        reload.putIfAbsent("server", 1)
+        reload["server"] = reload["server"]!!+1
+        save(this, reload, "reload")
 
 
+
+        Bukkit.getScheduler().runTask(this, Runnable {
+            bb("두근 두근 리로드 횟수는! ${reload["server"]}") })
         Bukkit.getScheduler().runTaskTimer(this, Runnable {
-
             saveItemStack(this, Container, "Container")
+            saveTotals(this, Totals, "Totals")
         }, 10*60, 5)
         instance = this
         server.pluginManager.apply{
@@ -53,9 +74,18 @@ class Ruins : JavaPlugin(){
             registerEvents(EvntInteract(), this@Ruins)
             registerEvents(EvntInvOpen(), this@Ruins)
             registerEvents(EvntPickUp(), this@Ruins)
+            registerEvents(EvntJoin(), this@Ruins)
         }
         getCommand("t")?.apply{
             setExecutor(test())
+        }
+        getCommand("name")?.apply{
+            setExecutor(Name())
+            tabCompleter = NameTab()
+        }
+        getCommand("lore")?.apply{
+            setExecutor(Lore())
+            tabCompleter = LoreTab()
         }
         logger.warning("""
             루인스 플러그인 활성화!

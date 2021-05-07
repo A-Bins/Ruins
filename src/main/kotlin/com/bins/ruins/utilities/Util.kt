@@ -1,6 +1,7 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.structure.Total
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Item
@@ -15,6 +16,7 @@ import org.json.simple.parser.ParseException
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
 import java.util.*
+import kotlin.collections.HashMap
 
 object Util {
     fun isGivable(p: Player, a: ItemStack): Int{
@@ -65,7 +67,6 @@ object Util {
         }
         return null
     }
-
     fun bb(str : Any){
         Bukkit.broadcastMessage("$str")
     }
@@ -177,7 +178,7 @@ object Util {
             e.printStackTrace()
         }
     }
-    fun loadloc(ruins: Ruins, hash: HashMap<UUID, Location>, jsonname: String) {
+    fun loadLoc(ruins: Ruins, hash: HashMap<UUID, Location>, jsonname: String) {
         ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
         File(ruins.dataFolder, "$jsonname.json").mkdir()
         val parser = JSONParser()
@@ -250,6 +251,23 @@ object Util {
         hash.forEach { value: Any -> array.add("" + value) }
         writeJson(ruins, jsonname, array.toJSONString())
     }
+    fun saveTotals(ruins: Ruins, hash: HashMap<UUID, Total>, jsonname: String) {
+        val obj = JSONObject()
+        hash.forEach { (key: UUID, value: Total) -> obj[key] = "${value.k}, ${value.d}" }
+        writeJson(ruins, jsonname, obj.toJSONString())
+    }
+    fun loadTotals(ruins: Ruins, hash: HashMap<UUID, Total>, jsonname: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
+        File(ruins.dataFolder, "$jsonname.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[UUID.fromString("$key")] = Total.create((value.toString().split(", ")[0].toInt()), (value.toString().split(", ")[1].toInt()))
+            }
+        }
+    }
     fun loadArrayLocationString(ruins: Ruins, hash: ArrayList<String>, jsonname: String) {
         ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
         File(ruins.dataFolder, "$jsonname.json").mkdir()
@@ -300,5 +318,6 @@ object Util {
             e.printStackTrace()
         }
     }
+
 
 }

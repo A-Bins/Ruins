@@ -11,6 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 
 class EvntInvClick : Listener {
+    @Suppress("DEPRECATION")
     @EventHandler
     fun event(e: InventoryClickEvent){
         if(View.cancels.contains(e.view.title)) {

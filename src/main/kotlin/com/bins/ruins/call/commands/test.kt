@@ -1,6 +1,7 @@
 package com.bins.ruins.call.commands
 
 import com.bins.ruins.structure.Farmings
+import com.bins.ruins.structure.Total
 import com.bins.ruins.utilities.Util
 import com.bins.ruins.utilities.Util.bb
 import org.bukkit.command.Command
@@ -42,7 +43,29 @@ class test : CommandExecutor{
     }
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            bb(Util.isGivable(p, Farmings.STONE.bundleItemStack))
+            val t2 = Total.create(80, 61)
+            bb(t2.toRegular)
+            bb(t2.toPerRegular)
+            bb(t2.ratio)
+            bb(t2.sum)
+
+
+            bb("\n\n\n")
+
+            val t3 = Total.create(21, 101)
+            bb(t3.toRegular)
+            bb(t3.toPerRegular)
+            bb(t3.ratio)
+            bb(t3.sum)
+
+
+            bb("\n\n\n")
+
+            val t4 = Total.create(150, 50)
+            bb(t4.toRegular)
+            bb(t4.toPerRegular)
+            bb(t4.ratio)
+            bb(t4.sum)
         }
         return false
     }

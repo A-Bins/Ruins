@@ -1,8 +1,12 @@
 name: Ruins
-version: underfined
+version: @version@
 main: com.bins.ruins.Ruins
 api-version: 1.16
 depend: [ ProtocolLib, Citizens ]
 authors: [ A_bins, DDang_ ]
 commands:
   t:
+  name:
+    aliases: [n, na, nam, 이름]
+  lore:
+    aliases: [l, lo, lor, 로어]

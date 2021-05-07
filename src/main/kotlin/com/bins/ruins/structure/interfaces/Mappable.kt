@@ -4,6 +4,6 @@ import com.bins.ruins.structure.types.RiskType
 
 interface Mappable {
     val index : Int
-    val worldName : String
+    val mapName : String
     val risk : RiskType
 }

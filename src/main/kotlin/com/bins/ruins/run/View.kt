@@ -7,7 +7,6 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-
 class View(private val p: Player){
     companion object{
         val cancels: ArrayList<String> = ArrayList()
