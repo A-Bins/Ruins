@@ -1,5 +1,6 @@
 package com.bins.ruins.run
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -7,6 +8,7 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+@Suppress("DEPRECATION")
 class View(private val p: Player){
     companion object{
         val cancels: ArrayList<String> = ArrayList()
@@ -14,7 +16,7 @@ class View(private val p: Player){
         private fun create(lines: Int, title: String): Inventory{
             if(!views.contains(title))
                 views.add(title)
-            return Bukkit.createInventory(null, lines, title)
+            return Bukkit.createInventory(null, lines, Component.text(title))
         }
     }
     private val uuid = p.uniqueId

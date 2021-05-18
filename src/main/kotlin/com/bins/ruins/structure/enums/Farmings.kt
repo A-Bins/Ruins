@@ -1,14 +1,14 @@
-package com.bins.ruins.structure
+package com.bins.ruins.structure.enums
 
 import com.bins.ruins.structure.interfaces.Farmable
-import com.bins.ruins.structure.types.ItemType
+import com.bins.ruins.structure.enums.types.ItemType
 import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-
+@Suppress("DEPRECATION")
 enum class Farmings: Farmable {
 
     STONE{
@@ -32,7 +32,6 @@ enum class Farmings: Farmable {
                     var bool = false
                     val items = if(isCritical) bundleItemStack else itemStack
                     var over = items.amount
-                    bb("1. $over")
                     for(i in list){
                         if((over != items.amount))
                             continue
@@ -40,7 +39,6 @@ enum class Farmings: Farmable {
                             bool = true
                         else{
                             over = (i+items.amount)-64
-                            bb("2. $over")
                         }
                     }
                     when(bool){
@@ -74,7 +72,7 @@ enum class Farmings: Farmable {
                 }
             }
         }
-        override fun signature(): String = "하위"
+        override val signature: String = "하위"
 
         override val itemStack: ItemStack
             get() = ItemStack(Material.COBBLESTONE).apply {
@@ -106,7 +104,7 @@ enum class Farmings: Farmable {
         override fun farming(p: Player, b: Block) {
 
         }
-        override fun signature(): String = "하위"
+        override val signature: String = "하위"
 
         override val itemStack: ItemStack
             get() = ItemStack(Material.OAK_PLANKS).apply {
@@ -131,7 +129,5 @@ enum class Farmings: Farmable {
 
         override val bundleItemStack: ItemStack
             get() = super.bundleItemStack
-    };
-    abstract fun signature(): String
-    abstract fun farming(p: Player, b: Block)
+    }
 }

@@ -2,7 +2,8 @@ package com.bins.ruins.call.events
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.run.Vars
-import com.bins.ruins.utilities.Util.isGivable
+import com.bins.ruins.utilities.Util.bb
+import com.bins.ruins.utilities.Util.isGiven
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -10,6 +11,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.metadata.MetadataValue
 
 class EvntInteract : Listener{
     @EventHandler
@@ -25,23 +28,35 @@ class EvntInteract : Listener{
 
         if((e.action == Action.RIGHT_CLICK_AIR) or (e.action == Action.RIGHT_CLICK_BLOCK)) {
             if (Vars.glowValue[p.uniqueId] != null) {
+                val value = Vars.glowValue[p.uniqueId]!!
+                if(!value.isOnGround)
+                    return
+                if(value.hasMetadata("given"))
+                    if (value.getMetadata("given")[0].asBoolean())
+                        return
                 e.isCancelled = true
-                val givable = isGivable(p, Vars.glowValue[p.uniqueId]!!.itemStack)
-                when(givable == 0){
+                val given = isGiven(p, value.itemStack)
+                when(given == -1){
                     true -> {
-                        p.inventory.addItem(Vars.glowValue[p.uniqueId]!!.itemStack)
-                        Vars.glowValue[p.uniqueId]!!.remove()
+                        value.setMetadata("given", FixedMetadataValue(Ruins.instance, true))
+                        value.remove()
+                        p.inventory.addItem(value.itemStack)
                         Vars.glowValue[p.uniqueId] = null
                         p.playSound(p.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F)
                     }
                     false -> {
-                        val item = Vars.glowValue[p.uniqueId]!!.itemStack.clone()
-                        val amount = item.amount
-                        item.amount = givable
-                        p.world.dropItemNaturally(Vars.glowValue[p.uniqueId]!!.location, item)
-                        item.amount = amount-givable
-                        p.inventory.addItem(item)
-                        Vars.glowValue[p.uniqueId]!!.remove()
+                        value.setMetadata("given", FixedMetadataValue(Ruins.instance, true))
+                        value.remove()
+                        val gave = Vars.glowValue[p.uniqueId]!!.itemStack.clone().apply {
+                            amount -= given
+                        }
+                        val drop = Vars.glowValue[p.uniqueId]!!.itemStack.clone().apply {
+                            amount -= gave.amount
+                        }
+                        bb("gave ${gave.amount}          drop ${drop.amount}")
+                        p.inventory.addItem(gave)
+                        p.world.dropItemNaturally(value.location, drop)
+
                         Vars.glowValue[p.uniqueId] = null
                         p.playSound(p.location, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
                     }

@@ -1,6 +1,6 @@
 package com.bins.ruins.run
 
-import com.bins.ruins.structure.Total
+import com.bins.ruins.structure.classes.Total
 import org.bukkit.entity.Item
 import org.bukkit.inventory.ItemStack
 import java.util.*

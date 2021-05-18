@@ -8,8 +8,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.ItemStack
 
+@Suppress("DEPRECATION")
 class EvntInvClose: Listener {
-    @Suppress("DEPRECATION")
     @EventHandler
     fun event(e: InventoryCloseEvent){
         e.getPlayer()

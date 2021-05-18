@@ -8,6 +8,7 @@ import org.bukkit.util.StringUtil
 import java.lang.Exception
 import java.util.ArrayList
 
+@Suppress("DEPRECATION")
 class NameTab : TabCompleter {
     override fun onTabComplete(
         sender: CommandSender,

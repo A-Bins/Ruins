@@ -1,9 +1,11 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.structure.Total
+import com.bins.ruins.structure.classes.Total
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -17,46 +19,8 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
 import java.util.*
 import kotlin.collections.HashMap
-
+@Suppress("DEPRECATION")
 object Util {
-    fun isGivable(p: Player, a: ItemStack): Int{
-        val itemStack = a.clone()
-        val inv = p.inventory
-        when(inv.firstEmpty() == -1){
-            true  -> {
-                val list: ArrayList<Int> = ArrayList()
-                for (i in inv.contents) {
-                    if (i == null)
-                        continue
-                    val item = i.clone()
-                    item.amount = itemStack.amount
-                    if ((item == itemStack) and (i.amount != 64)) {
-                        list.add(i.amount)
-                    }
-                }
-
-
-                var bool = false
-                var over = itemStack.amount
-                for (i in list) {
-                    if (over != (itemStack.amount))
-                        continue
-                    if ((i + itemStack.amount) <= 64)
-                        bool = true
-                    else {
-                        over = (i + itemStack.amount) - 64
-                    }
-                }
-                return if(bool){
-                    0
-                }else{
-                    over
-                }
-            }
-            false -> return 0
-        }
-
-    }
     fun getTargetedItemEntity(p: Player) : Item? {
         for(i in 0..35) {
             val loc : Location= p.eyeLocation.add(p.location.direction.multiply(i.toDouble()/10))
@@ -68,256 +32,224 @@ object Util {
         return null
     }
     fun bb(str : Any){
-        Bukkit.broadcastMessage("$str")
+        Bukkit.getServer().sendMessage(Component.text("$str"))
     }
-    fun save(ruins: Ruins, hash: HashMap<*, *>, jsonname: String) {
+    fun deserializeItemStack(item: String): ItemStack {
+        val inputStream = ByteArrayInputStream(Base64Coder.decodeLines(item))
+        val dataInput = BukkitObjectInputStream(inputStream)
+        dataInput.close()
+        return dataInput.readObject() as ItemStack
+    }
+    fun serializeItemStack(item: ItemStack): String {
+        val outputStream = ByteArrayOutputStream()
+        val dataOutput = BukkitObjectOutputStream(outputStream)
+        dataOutput.writeObject(item)
+        dataOutput.close()
+        return Base64Coder.encodeLines(outputStream.toByteArray())
+    }
+
+    private fun writeJson(ruins: Ruins, name: String, write: String) {
+        val uniOutput = BufferedWriter(
+            OutputStreamWriter(
+                FileOutputStream(File(ruins.dataFolder, "$name.json").path),
+                "EUC-KR"
+            )
+        )
+        uniOutput.write(write)
+        uniOutput.flush()
+        uniOutput.close()
+    }
+
+    /**
+     * @return item can be given if return value is -1, then return amount that can't be given if return value >= 1 also return -2 if currentItemStack's type is AIR
+     */
+    fun isGiven(p: Player, currentItemStack: ItemStack): Int{
+        if(currentItemStack.type == Material.AIR)
+            return -2
+        for(i in p.inventory.storageContents){
+        }
+        when(p.inventory.firstEmpty() == -1){
+            true  -> {
+                val list: ArrayList<Int> = ArrayList()
+                for (i in p.inventory.contents) {
+                    if (i == null)
+                        continue
+                    val item = i.clone()
+                    item.amount = currentItemStack.amount
+                    if ((item == currentItemStack) and (i.amount != 64))
+                        list.add(i.amount)
+                }
+
+
+                var bool = false
+                var over = currentItemStack.clone().amount
+
+                for (i in list) {
+                    if (over != (currentItemStack.amount))
+                        continue
+                    if ((i + currentItemStack.amount) <= 64)
+                        bool = true
+                    else
+                        over = (i + currentItemStack.amount) - 64
+                }
+                return if(bool) -1 else over
+            }
+            false -> return -1
+        }
+
+    }
+    fun save(ruins: Ruins, hash: HashMap<*, *>, name: String) {
         val data = JSONObject()
         hash.forEach { (key: Any, value: Any) -> data[key] = "" + value }
-        try {
-            val UniOutput = BufferedWriter(
-                OutputStreamWriter(
-                    FileOutputStream(File(ruins.dataFolder, "$jsonname.json").path),
-                    "EUC-KR"
-                )
+        val uniOutput = BufferedWriter(
+            OutputStreamWriter(
+                FileOutputStream(File(ruins.dataFolder, "$name.json").path),
+                "EUC-KR"
             )
-            UniOutput.write("$data")
-            UniOutput.flush()
-            UniOutput.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        )
+        uniOutput.write("$data")
+        uniOutput.flush()
+        uniOutput.close()
     }
-    fun serializeItemStack(item: ItemStack): String? {
-        val outputStream = ByteArrayOutputStream()
-        try {
-            val dataOutput = BukkitObjectOutputStream(outputStream)
-            dataOutput.writeObject(item)
-            dataOutput.close()
-            return Base64Coder.encodeLines(outputStream.toByteArray())
-        } catch (exception: IOException) {
-            exception.printStackTrace()
-        }
-        return null
-    }
-    fun deserializeItemStack(item: String): ItemStack? {
-        val inputStream = ByteArrayInputStream(Base64Coder.decodeLines(item))
-        try {
-            val dataInput = BukkitObjectInputStream(inputStream)
-            dataInput.close()
-            return dataInput.readObject() as ItemStack
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-        }
-        return null
-    }
-    private fun writeJson(ruins: Ruins, jsonname: String, write: String) {
-        try {
-            val UniOutput = BufferedWriter(
-                OutputStreamWriter(
-                    FileOutputStream(File(ruins.dataFolder, "$jsonname.json").path),
-                    "EUC-KR"
-                )
-            )
-            UniOutput.write(write)
-            UniOutput.flush()
-            UniOutput.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-    fun loadInt(ruins: Ruins, hash: HashMap<UUID, Int>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach { key: Any, value: Any ->
-                    hash[UUID.fromString(key.toString() + "")] = (value.toString() + "").toInt()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    fun saveItemStack(ruins: Ruins, hash: HashMap<*, ItemStack>, jsonname: String) {
-        val data = JSONObject()
-        hash.forEach { (key: Any, value: ItemStack?) -> data[key] = serializeItemStack(value) }
-        try {
-            val UniOutput = BufferedWriter(
-                OutputStreamWriter(
-                    FileOutputStream(File(ruins.dataFolder, "$jsonname.json").path),
-                    "EUC-KR"
-                )
-            )
-            UniOutput.write("$data")
-            UniOutput.flush()
-            UniOutput.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-    fun loadItemStack(ruins: Ruins, hash: HashMap<UUID, ItemStack>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach { key: Any, value: Any ->
-                    hash[UUID.fromString(key.toString() + "")] = deserializeItemStack("$value")!!
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    fun loadLoc(ruins: Ruins, hash: HashMap<UUID, Location>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach { key: Any, value: Any ->
-                    hash[UUID.fromString(key.toString() + "")] = Location(
-                        Bukkit.getWorld(
-                            value.toString().split("name=").toTypedArray()[1].split("}").toTypedArray()[0]
-                        ),
-                        value.toString().split("x=").toTypedArray()[1].split(",")
-                            .toTypedArray()[0].toDouble(),
-                        value.toString().split("y=").toTypedArray()[1].split(",")
-                            .toTypedArray()[0].toDouble(),
-                        value.toString().split("z=").toTypedArray()[1].split(",")
-                            .toTypedArray()[0].toDouble()
-                    )
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    fun loadDouble(ruins: Ruins, hash: HashMap<UUID, Double>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach{ key: Any, value: Any ->
-                    hash[UUID.fromString(key.toString() + "")] = (value.toString() + "").toDouble()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    fun loadString(ruins: Ruins, hash: HashMap<UUID, String>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach { key: Any, value: Any ->
-                    try {
-                        hash[UUID.fromString(key.toString() + "")] = "$value"
-                    } catch (e: UnsupportedEncodingException) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    fun saveArray(ruins: Ruins, hash: ArrayList<*>, jsonname: String) {
-        val array = JSONArray()
-        hash.forEach { value: Any -> array.add("" + value) }
-        writeJson(ruins, jsonname, array.toJSONString())
-    }
-    fun saveTotals(ruins: Ruins, hash: HashMap<UUID, Total>, jsonname: String) {
+    fun saveTotals(ruins: Ruins, hash: HashMap<UUID, Total>, name: String) {
         val obj = JSONObject()
         hash.forEach { (key: UUID, value: Total) -> obj[key] = "${value.k}, ${value.d}" }
-        writeJson(ruins, jsonname, obj.toJSONString())
+        writeJson(ruins, name, obj.toJSONString())
     }
-    fun loadTotals(ruins: Ruins, hash: HashMap<UUID, Total>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
+    fun loadTotals(ruins: Ruins, hash: HashMap<UUID, Total>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
         val parser = JSONParser()
-        if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
             val jsonObject: JSONObject = obj as JSONObject
             jsonObject.forEach { key: Any, value: Any ->
                 hash[UUID.fromString("$key")] = Total.create((value.toString().split(", ")[0].toInt()), (value.toString().split(", ")[1].toInt()))
             }
         }
     }
-    fun loadArrayLocationString(ruins: Ruins, hash: ArrayList<String>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
+    fun saveItemStack(ruins: Ruins, hash: HashMap<*, ItemStack>, name: String) {
+        val data = JSONObject()
+        hash.forEach { (key: Any, value: ItemStack?) -> data[key] = serializeItemStack(value) }
+        val uniOutput = BufferedWriter(
+            OutputStreamWriter(
+                FileOutputStream(File(ruins.dataFolder, "$name.json").path),
+                "EUC-KR"
+            )
+        )
+        uniOutput.write("$data")
+        uniOutput.flush()
+        uniOutput.close()
+    }
+    fun loadItemStack(ruins: Ruins, hash: HashMap<UUID, ItemStack>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
         val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val array: JSONArray = obj as JSONArray
-                array.forEach { value: Any -> hash.add(value.toString()) }
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[UUID.fromString(key.toString() + "")] = deserializeItemStack("$value")
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
         }
     }
-    fun loadUUID(ruins: Ruins, hash: ArrayList<UUID>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
+    fun loadStrInt(ruins: Ruins, hash: HashMap<String, Int>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
         val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val array: JSONArray = obj as JSONArray
-                array.forEach { value: Any -> hash.add(UUID.fromString("" + value)) }
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[key.toString() + ""] = (value.toString() + "").toInt()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
         }
     }
-    fun loadStrInt(ruins: Ruins, hash: HashMap<String, Int>, jsonname: String) {
-        ruins.makeFile(File(ruins.dataFolder, "$jsonname.json"))
-        File(ruins.dataFolder, "$jsonname.json").mkdir()
-        val parser = JSONParser()
-        try {
-            if (FileReader(File(ruins.dataFolder, "$jsonname.json")).ready()) {
-                val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$jsonname.json")))
-                val jsonObject: JSONObject = obj as JSONObject
-                jsonObject.forEach { key: Any, value: Any ->
-                    hash[key.toString() + ""] = (value.toString() + "").toInt()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
+    /*
 
 
+    fun loadInt(ruins: Ruins, hash: HashMap<UUID, Int>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[UUID.fromString(key.toString() + "")] = (value.toString() + "").toInt()
+            }
+        }
+    }
+    fun loadLoc(ruins: Ruins, hash: HashMap<UUID, Location>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[UUID.fromString(key.toString() + "")] = Location(
+                    Bukkit.getWorld(
+                        value.toString().split("name=").toTypedArray()[1].split("}").toTypedArray()[0]
+                    ),
+                    value.toString().split("x=").toTypedArray()[1].split(",")
+                        .toTypedArray()[0].toDouble(),
+                    value.toString().split("y=").toTypedArray()[1].split(",")
+                        .toTypedArray()[0].toDouble(),
+                    value.toString().split("z=").toTypedArray()[1].split(",")
+                        .toTypedArray()[0].toDouble()
+                )
+            }
+        }
+    }
+    fun loadDouble(ruins: Ruins, hash: HashMap<UUID, Double>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach{ key: Any, value: Any ->
+                hash[UUID.fromString(key.toString() + "")] = (value.toString() + "").toDouble()
+            }
+        }
+    }
+    fun loadString(ruins: Ruins, hash: HashMap<UUID, String>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val jsonObject: JSONObject = obj as JSONObject
+            jsonObject.forEach { key: Any, value: Any ->
+                hash[UUID.fromString(key.toString() + "")] = "$value"
+            }
+        }
+    }
+    fun saveArray(ruins: Ruins, hash: ArrayList<*>, name: String) {
+        val array = JSONArray()
+        hash.forEach { value: Any -> array.add("" + value) }
+        writeJson(ruins, name, array.toJSONString())
+    }
+    fun loadArrayLocationString(ruins: Ruins, hash: ArrayList<String>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val array: JSONArray = obj as JSONArray
+            array.forEach { value: Any -> hash.add(value.toString()) }
+        }
+    }
+    fun loadUUID(ruins: Ruins, hash: ArrayList<UUID>, name: String) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
+        if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+            val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+            val array: JSONArray = obj as JSONArray
+            array.forEach { value: Any -> hash.add(UUID.fromString("" + value)) }
+        }
+    }
+    */
 }

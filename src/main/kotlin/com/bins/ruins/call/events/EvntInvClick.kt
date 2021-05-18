@@ -8,10 +8,13 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.server.ServerListPingEvent
 
+@Suppress("DEPRECATION")
 class EvntInvClick : Listener {
-    @Suppress("DEPRECATION")
+
     @EventHandler
     fun event(e: InventoryClickEvent){
         if(View.cancels.contains(e.view.title)) {

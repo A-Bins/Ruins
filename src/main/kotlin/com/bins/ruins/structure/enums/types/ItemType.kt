@@ -1,4 +1,4 @@
-package com.bins.ruins.structure.types
+package com.bins.ruins.structure.enums.types
 
 import net.md_5.bungee.api.ChatColor
 

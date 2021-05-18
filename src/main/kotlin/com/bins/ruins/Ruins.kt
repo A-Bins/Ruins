@@ -21,8 +21,11 @@ import com.bins.ruins.utilities.Util.save
 import com.bins.ruins.utilities.Util.saveItemStack
 import com.bins.ruins.utilities.Util.saveTotals
 import org.bukkit.Bukkit
+import org.bukkit.generator.ChunkGenerator
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 
 class Ruins : JavaPlugin(){
@@ -32,17 +35,30 @@ class Ruins : JavaPlugin(){
     }
     companion object{
         lateinit var instance : Ruins
-//        lateinit var discord : JDA
     }
 
     override fun onEnable() {
 
-//        discord = startBot()
 
 
 
 
+        server.scheduler.runTaskTimer(this, Runnable {
+            for(p in server.onlinePlayers){
+                if(p.isOp)
+                    return@Runnable
+                if(Math.round((p.exp-0.01F)*100)/100.0 > 0.00)
+                    p.exp -= 0.01F
+                else {
+                    if(p.exp != 0.0F)
+                        p.exp = 0.0F
+                    if(p.level != 0)
+                        p.level = 0
+                    p.health -= 1
+                }
 
+            }
+        }, 0, 20 * 6)
 
         View.cancels.add("Barrel")
         dataFolder.mkdirs()
@@ -57,9 +73,9 @@ class Ruins : JavaPlugin(){
 
 
 
-        Bukkit.getScheduler().runTask(this, Runnable {
+        server.scheduler.runTask(this, Runnable {
             bb("두근 두근 리로드 횟수는! ${reload["server"]}") })
-        Bukkit.getScheduler().runTaskTimer(this, Runnable {
+        server.scheduler.runTaskTimerAsynchronously(this, Runnable {
             saveItemStack(this, Container, "Container")
             saveTotals(this, Totals, "Totals")
         }, 10*60, 5)
@@ -109,7 +125,7 @@ class Ruins : JavaPlugin(){
       
         """.trimIndent())
 
-        Bukkit.getScheduler().runTaskTimer(this, Runnable {
+        server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 val e = getTargetedItemEntity(p)
                 if(e != null){

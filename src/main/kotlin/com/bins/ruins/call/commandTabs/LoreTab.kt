@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import java.lang.Exception
 import java.util.ArrayList
-
+@Suppress("DEPRECATION")
 class LoreTab : TabCompleter {
     override fun onTabComplete(
         sender: CommandSender,

@@ -1,4 +1,4 @@
-package com.bins.ruins.structure
+package com.bins.ruins.structure.classes
 
 import com.bins.ruins.structure.interfaces.Totalable
 
@@ -12,12 +12,12 @@ class Total private constructor(override var k: Int, override var d: Int) : Tota
 
     override val ratio: Double
         get() = super.ratio
-    override val toPer: Array<Double>
-        get() = super.toPer
-    override val toPerRegular: String
-        get() = super.toPerRegular
+    override val percentage: Array<Double>
+        get() = super.percentage
+    override val perRegular: String
+        get() = super.perRegular
     override val sum: Double
         get() = super.sum
-    override val toRegular: String
-        get() = super.toRegular
+    override val regular: String
+        get() = super.regular
 }

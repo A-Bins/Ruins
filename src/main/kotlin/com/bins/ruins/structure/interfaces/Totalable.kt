@@ -10,11 +10,11 @@ interface Totalable {
         get() = round(k.toDouble() / d.toDouble()*1000)/1000
     val sum: Double
         get() = (k+d).toDouble()
-    val toPer: Array<Double>
+    val percentage: Array<Double>
         get() = arrayOf(round(((k.toDouble() / sum) * 100)*100)/100, round(((d.toDouble() / sum)* 100)*100)/100)
-    val toPerRegular: String
-        get() = "Kill: ${toPer[0]}%, Death: ${toPer[1]}%"
-    val toRegular: String
+    val perRegular: String
+        get() = "Kill: ${percentage[0]}%, Death: ${percentage[1]}%"
+    val regular: String
         get() = "Kill: $k, Death: $d"
 
     fun add(k: Int, d: Int){
