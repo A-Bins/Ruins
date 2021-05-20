@@ -22,11 +22,11 @@ import java.io.File
 
 
 class Ruins : JavaPlugin(){
+    fun makeFile(f: File) {
+        if (!f.exists() || !f.isFile)
+            f.createNewFile()
+    }
     companion object{
-        fun makeFile(f: File) {
-            if (!f.exists() || !f.isFile)
-                f.createNewFile()
-        }
         lateinit var instance : Ruins
     }
     override fun onEnable() {
