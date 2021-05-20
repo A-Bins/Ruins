@@ -66,7 +66,7 @@ class View(private val p: Player){
         Inv.setItem(1, ib)
         Inv.setItem(2, ib)
         Inv.setItem(3, ib)
-        Inv.setItem(4, Vars.Container[p.uniqueId])
+        Inv.setItem(4, Vars.container[p.uniqueId])
         Inv.setItem(5, ib)
         Inv.setItem(6, ib)
         Inv.setItem(7, ib)

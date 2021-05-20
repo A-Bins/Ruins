@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.server.ServerListPingEvent
 
 @Suppress("DEPRECATION")
@@ -17,6 +18,8 @@ class EvntInvClick : Listener {
 
     @EventHandler
     fun event(e: InventoryClickEvent){
+        if(e.slotType == InventoryType.SlotType.CRAFTING)
+            e.isCancelled = true
         if(View.cancels.contains(e.view.title)) {
             if(e.currentItem?.type == Material.GRAY_STAINED_GLASS_PANE)
                 e.isCancelled = true

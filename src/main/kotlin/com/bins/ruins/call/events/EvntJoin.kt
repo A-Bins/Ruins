@@ -10,6 +10,6 @@ class EvntJoin: Listener {
     @EventHandler
     fun event(e: PlayerJoinEvent) {
         e.player.level = 0
-        Vars.Totals.putIfAbsent(e.player.uniqueId, Total.create(0, 0))
+        Vars.totals.putIfAbsent(e.player.uniqueId, Total.create(0, 0))
     }
 }

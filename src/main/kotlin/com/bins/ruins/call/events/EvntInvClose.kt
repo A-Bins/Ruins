@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack
 class EvntInvClose: Listener {
     @EventHandler
     fun event(e: InventoryCloseEvent){
-        e.getPlayer()
         val p = e.player
         when(e.view.title){
             "Barrel" -> {
@@ -25,7 +24,7 @@ class EvntInvClose: Listener {
                 }
             }
             "컨테이너" -> {
-                Vars.Container[p.uniqueId] = if(e.inventory.getItem(4) != null && e.inventory.getItem(4)?.type != Material.AIR) e.inventory.getItem(4)!! else ItemStack(Material.AIR)
+                Vars.container[p.uniqueId] = if(e.inventory.getItem(4) != null && e.inventory.getItem(4)?.type != Material.AIR) e.inventory.getItem(4)!! else ItemStack(Material.AIR)
             }
         }
 

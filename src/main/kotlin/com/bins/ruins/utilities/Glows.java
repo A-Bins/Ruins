@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class Glows {
     public static void setGlow(Player p, Entity e, boolean glow) {
+
         HashMap<UUID, String> a = new HashMap<>();
         ProtocolManager pm = ProtocolLibrary.getProtocolManager();
         WrappedDataWatcher watcher = new WrappedDataWatcher();

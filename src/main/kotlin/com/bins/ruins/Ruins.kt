@@ -6,43 +6,30 @@ import com.bins.ruins.call.commands.Lore
 import com.bins.ruins.call.commands.Name
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
-import com.bins.ruins.run.Vars.Container
-import com.bins.ruins.run.Vars.Totals
+import com.bins.ruins.run.Vars.container
+import com.bins.ruins.run.Vars.totals
 import com.bins.ruins.run.Vars.glowValue
 import com.bins.ruins.run.Vars.reload
 import com.bins.ruins.run.View
+import com.bins.ruins.utilities.ScoreBoards
 import com.bins.ruins.utilities.Glows
 import com.bins.ruins.utilities.Util.bb
-import com.bins.ruins.utilities.Util.getTargetedItemEntity
-import com.bins.ruins.utilities.Util.loadItemStack
-import com.bins.ruins.utilities.Util.loadStrInt
-import com.bins.ruins.utilities.Util.loadTotals
+import com.bins.ruins.utilities.Util.load
 import com.bins.ruins.utilities.Util.save
-import com.bins.ruins.utilities.Util.saveItemStack
-import com.bins.ruins.utilities.Util.saveTotals
-import org.bukkit.Bukkit
-import org.bukkit.generator.ChunkGenerator
+import com.bins.ruins.utilities.Util.targetedItemEntity
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 
 class Ruins : JavaPlugin(){
-    fun makeFile(f: File) {
-        if (!f.exists() || !f.isFile)
-            f.createNewFile()
-    }
     companion object{
+        fun makeFile(f: File) {
+            if (!f.exists() || !f.isFile)
+                f.createNewFile()
+        }
         lateinit var instance : Ruins
     }
-
     override fun onEnable() {
-
-
-
-
-
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 if(p.isOp)
@@ -63,9 +50,9 @@ class Ruins : JavaPlugin(){
         View.cancels.add("Barrel")
         dataFolder.mkdirs()
 
-        loadStrInt(this, reload, "reload")
-        loadItemStack(this, Container, "Container")
-        loadTotals(this, Totals, "Totals")
+        load(this, reload, "reload")
+        load(this, container, "container")
+        load(this, totals, "Totals")
 
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
@@ -76,8 +63,8 @@ class Ruins : JavaPlugin(){
         server.scheduler.runTask(this, Runnable {
             bb("두근 두근 리로드 횟수는! ${reload["server"]}") })
         server.scheduler.runTaskTimerAsynchronously(this, Runnable {
-            saveItemStack(this, Container, "Container")
-            saveTotals(this, Totals, "Totals")
+            save(this, container, "container")
+            save(this, totals, "Totals")
         }, 10*60, 5)
         instance = this
         server.pluginManager.apply{
@@ -91,6 +78,7 @@ class Ruins : JavaPlugin(){
             registerEvents(EvntInvOpen(), this@Ruins)
             registerEvents(EvntPickUp(), this@Ruins)
             registerEvents(EvntJoin(), this@Ruins)
+            registerEvents(EvntDeath(), this@Ruins)
         }
         getCommand("t")?.apply{
             setExecutor(test())
@@ -124,10 +112,10 @@ class Ruins : JavaPlugin(){
       
       
         """.trimIndent())
-
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
-                val e = getTargetedItemEntity(p)
+                ScoreBoards.showScoreboard(p)
+                val e = p.targetedItemEntity
                 if(e != null){
                     if(glowValue[p.uniqueId] != null){
                         Glows.setGlow(p, glowValue[p.uniqueId], false)
@@ -141,9 +129,5 @@ class Ruins : JavaPlugin(){
                 }
             }
         }, 1, 1)
-    }
-
-    override fun onDisable() {
-//        discord.shutdown()
     }
 }
