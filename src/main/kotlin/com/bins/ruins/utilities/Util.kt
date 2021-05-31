@@ -3,8 +3,8 @@ package com.bins.ruins.utilities
 import com.bins.ruins.Ruins
 import com.bins.ruins.structure.classes.Strash
 import com.bins.ruins.structure.classes.Total
+import com.bins.ruins.utilities.Inlines.tryCast
 import net.kyori.adventure.text.Component
-import org.apache.commons.lang.ObjectUtils
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -13,21 +13,14 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.io.BukkitObjectInputStream
 import org.bukkit.util.io.BukkitObjectOutputStream
-import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
-import org.json.simple.parser.ParseException
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
 import java.util.*
 import kotlin.collections.HashMap
 @Suppress("DEPRECATION")
 object Util {
-    inline fun <reified T> Any.tryCast(block: T.() -> Unit) {
-        if (this is T) {
-            block()
-        }
-    }
     val Player.targetedItemEntity: Item?
         get() {
             for(i in 0..35) {
@@ -68,12 +61,10 @@ object Util {
     }
     /**
      * @return item can be given if return value is -1, then return amount that can't be given if return value >= 1 also return -2 if currentItemStack's type is AIR
-     */
+     **/
     fun isGiven(p: Player, currentItemStack: ItemStack): Int{
         if(currentItemStack.type == Material.AIR)
             return -2
-        for(i in p.inventory.storageContents){
-        }
         when(p.inventory.firstEmpty() == -1){
             true  -> {
                 val list: ArrayList<Int> = ArrayList()
@@ -109,7 +100,20 @@ object Util {
         when{
 
             hash.values.stream().anyMatch {a -> a is Strash } -> {
-                hash.tryCast<HashMap<UUID, Strash>> {  }
+                hash.tryCast<HashMap<UUID, Strash>> {
+                    val data = JSONObject()
+                    this.values.forEach { s -> data[s.uuid] = "unlockProgress: ${s.unlockProgress}; drawers: ${s.drawers};  " }
+                    val uniOutput = BufferedWriter(
+                        OutputStreamWriter(
+                            FileOutputStream(File(ruins.dataFolder, "$name.json").path),
+                            "EUC-KR"
+                        )
+                    )
+                    uniOutput.write("$data")
+                    uniOutput.flush()
+                    uniOutput.close()
+
+                }
             }
             hash.values.stream().anyMatch { a -> a is ItemStack } -> {
                 hash.tryCast<HashMap<UUID, ItemStack>> {

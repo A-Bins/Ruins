@@ -17,6 +17,7 @@ import com.bins.ruins.utilities.Util.bb
 import com.bins.ruins.utilities.Util.load
 import com.bins.ruins.utilities.Util.save
 import com.bins.ruins.utilities.Util.targetedItemEntity
+import com.bins.ruins.utilities.Util.tryCast
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -91,27 +92,7 @@ class Ruins : JavaPlugin(){
             setExecutor(Lore())
             tabCompleter = LoreTab()
         }
-        logger.warning("""
-            루인스 플러그인 활성화!
-            
-            
-                       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                       *                                                     *
-                       *               Ruins 플러그인 지침                   *
-                       *                                                     *
-                       *   이 플러그인은 A_bins(Bins#1004)가 만들었으며      *
-                       *  Ruins 서버의 주 코어부분의 플러그인임을 알립니다.  *
-                       *                                                     *
-                       *          기획 : DDang_    제작 : A_bins             *
-                       *                                                     *
-                       *                                                     *
-                       *   < Copyright 2021. Ruins. All rights reserved. >   *
-                       *                                                     *
-                       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-      
-      
-      
-        """.trimIndent())
+        logger.warning(env.ENABLE_INFO.trimIndent())
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 ScoreBoards.showScoreboard(p)

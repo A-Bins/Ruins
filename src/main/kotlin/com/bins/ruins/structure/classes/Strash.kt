@@ -7,6 +7,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class Strash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
+
     companion object{
         fun create(uuid: UUID, vararg drawers: Drawer): Strash = Strash(uuid, *drawers)
     }
