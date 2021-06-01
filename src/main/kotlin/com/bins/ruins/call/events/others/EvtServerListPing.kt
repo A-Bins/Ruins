@@ -1,4 +1,4 @@
-package com.bins.ruins.call.events
+package com.bins.ruins.call.events.others
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

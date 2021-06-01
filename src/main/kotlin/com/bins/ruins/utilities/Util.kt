@@ -1,24 +1,19 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.structure.classes.Strash
+import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.enums.types.ReceiverType
 import com.bins.ruins.structure.enums.types.ReceiverType.*
 import com.bins.ruins.utilities.Receiver.deserializeItemStack
 import com.bins.ruins.utilities.Receiver.serializeItemStack
 import com.bins.ruins.utilities.Receiver.tryCast
-import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.util.io.BukkitObjectInputStream
-import org.bukkit.util.io.BukkitObjectOutputStream
+import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
 import java.io.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -74,35 +69,36 @@ object Util {
     fun save(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
 
         when (receiver) {
-            STRASH -> {
-                hash.tryCast<HashMap<UUID, Strash>> {
-                    val data = JSONObject()
-                    this.values.forEach { s -> data[s.uuid] = "unlockProgress: ${s.progress}; drawers: ${s.drawers};" }
-                    val uniOutput = BufferedWriter(
-                        OutputStreamWriter(
-                            FileOutputStream(File(ruins.dataFolder, "$name.json").path),
-                            "EUC-KR"
-                        )
-                    )
-                    uniOutput.write("$data")
-                    uniOutput.flush()
-                    uniOutput.close()
+            STASH -> {
+                hash.tryCast<HashMap<UUID, Stash>> {
+                    val main = JSONObject()
 
+                    this.values.forEach { s ->
+                        val everything = JSONArray()
+                        val other = JSONObject()
+                        other["progress"] = s.progress
+                        s.drawers.forEach { v ->
+                            val itemstacks = JSONArray()
+                            val drawerObj = JSONObject()
+                            v.items.forEach { f ->
+                                itemstacks.add(f.serializeItemStack())
+                            }
+                            drawerObj["itemstacks"] = itemstacks
+                            drawerObj["unlocked"] = v.unlocked
+                            drawerObj["unlockState"] = v.unlockState
+                            everything.add(drawerObj)
+                        }
+                        everything.add(other)
+                        main[s.uuid] = everything
+                    }
+                    writeJson(ruins, name, main.toJSONString())
                 }
             }
             ITEMSTACK -> {
                 hash.tryCast<HashMap<UUID, ItemStack>> {
                     val data = JSONObject()
                     this.forEach { (key: Any, value: ItemStack) -> data[key] = value.serializeItemStack() }
-                    val uniOutput = BufferedWriter(
-                        OutputStreamWriter(
-                            FileOutputStream(File(ruins.dataFolder, "$name.json").path),
-                            "EUC-KR"
-                        )
-                    )
-                    uniOutput.write("$data")
-                    uniOutput.flush()
-                    uniOutput.close()
+                    writeJson(ruins, name, data.toJSONString())
                 }
             }
             TOTAL -> {
@@ -115,26 +111,27 @@ object Util {
             else -> {
                 val data = JSONObject()
                 hash.forEach { (key: Any, value: Any) -> data[key] = "" + value }
-                val uniOutput = BufferedWriter(
-                    OutputStreamWriter(
-                        FileOutputStream(File(ruins.dataFolder, "$name.json").path),
-                        "EUC-KR"
-                    )
-                )
-                uniOutput.write("$data")
-                uniOutput.flush()
-                uniOutput.close()
+                writeJson(ruins, name, data.toJSONString())
+
             }
         }
     }
     fun load(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
+        ruins.makeFile(File(ruins.dataFolder, "$name.json"))
+        File(ruins.dataFolder, "$name.json").mkdir()
+        val parser = JSONParser()
         when (receiver) {
+            STASH -> {
+                hash.tryCast<HashMap<UUID, Stash>> {
+                    if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+                        val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+                        val jsonObject: JSONObject = obj as JSONObject
+                    }
+                }
+            }
             ITEMSTACK -> {
 
                 hash.tryCast<HashMap<UUID, ItemStack>> {
-                    ruins.makeFile(File(ruins.dataFolder, "$name.json"))
-                    File(ruins.dataFolder, "$name.json").mkdir()
-                    val parser = JSONParser()
                     if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                         val jsonObject: JSONObject = obj as JSONObject
@@ -146,9 +143,6 @@ object Util {
             }
             INT -> {
                 hash.tryCast<HashMap<String, Int>> {
-                    ruins.makeFile(File(ruins.dataFolder, "$name.json"))
-                    File(ruins.dataFolder, "$name.json").mkdir()
-                    val parser = JSONParser()
                     if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                         val jsonObject: JSONObject = obj as JSONObject
@@ -159,10 +153,6 @@ object Util {
                 }
             }
             TOTAL -> {
-
-                ruins.makeFile(File(ruins.dataFolder, "$name.json"))
-                File(ruins.dataFolder, "$name.json").mkdir()
-                val parser = JSONParser()
                 if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                     val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                     val jsonObject: JSONObject = obj as JSONObject

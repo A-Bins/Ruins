@@ -1,4 +1,4 @@
-package com.bins.ruins.call.events
+package com.bins.ruins.call.events.actions
 
 import com.bins.ruins.custom.StoneFileBreakEvent
 import org.bukkit.Bukkit
@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.player.PlayerChatEvent
 
 class EvtBlock: Listener {
     companion object {

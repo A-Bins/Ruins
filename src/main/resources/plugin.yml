@@ -6,7 +6,7 @@ depend: [ ProtocolLib, Citizens ]
 authors: [ A_bins, DDang_ ]
 commands:
   t:
-  strash:
+  stash:
   name:
     aliases: [n, na, nam, 이름]
   lore:
