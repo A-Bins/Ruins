@@ -20,15 +20,20 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
             get() = stashes[this.uniqueId]
         fun Player.drawerSave(){
             fun Int.hasDrawer(): Boolean{
-                if(this > 13) return false
+                if(this > 14) return false
                 if(this@drawerSave.stash == null) this@drawerSave.kickPlayer("u don't have strash variables plz Rejoin")
                 return this@drawerSave.stash!!.drawers[this].unlocked
             }
             if(!openInventory.title.contains("([0-9])번 보관함".toRegex())) return
             val i = (openInventory.title.replace("번 보관함", "")).toInt()
             if(!(i-1).hasDrawer()) return
+            Bukkit.broadcastMessage("${i-1}")
             for((k, v) in openInventory.topInventory.contents.withIndex()){
-                if(k / 8 < stash!!.drawers[i-1].unlockState) stash!!.drawers[i-1].items[k] = v
+                if(k / 8 < stash!!.drawers[i-1].unlockState) {
+
+                    Bukkit.broadcastMessage("$k, $v, ${openInventory.title}")
+                    stash!!.drawers[i-1].items[k] = v
+                }
             }
 
 
@@ -36,45 +41,36 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
         }
         fun Player.inDrawers(i: Int){
             fun Int.hasDrawer(): Boolean{
-                if(this > 13) return false
+                if(this > 14) return false
                 if(this@inDrawers.stash == null) this@inDrawers.kickPlayer("u don't have strash variables plz Rejoin")
                 return this@inDrawers.stash!!.drawers[this].unlocked
             }
             if(this.openInventory.title != "물품 보관함") return
-            if(!i.hasDrawer()) return
+            if(!(i-1).hasDrawer()) return
             openInventory(
                 Bukkit.createInventory(null, 9*6, "${i}번 보관함").apply {
                     val removes = arrayOf(4, 13, 22, 31, 40, 49)
                     val it = stash!!.drawers[i-1]
-                    it.items.forEach { (k, v) ->
-                        Bukkit.broadcastMessage("$k, $v")
-                        setItem(k, v)
-                    }
-                    removes.toList().withIndex().toList().stream()
-                        .filter { (index, _) -> index+1 > it.unlockState }
-                        .forEach { (k, v) ->
+                    removes.toList().withIndex().toList().stream().filter { (index, _) -> index+1 > it.unlockState }.forEach { (k, v) ->
                             setItem(v, ItemStack(Material.ANVIL).apply {
                                 val meta = itemMeta
                                 meta.setDisplayName("§7${k+1}번 줄이 잠금되어 있어요!")
                                 itemMeta = meta
                             })
-                            arrayOf(
-                                v-4,
-                                v-3,
-                                v-2,
-                                v-1,
-                                v+1,
-                                v+2,
-                                v+3,
-                                v+4
-                            ).forEach { w ->
+                            arrayOf(v-4, v-3, v-2, v-1, v+1, v+2, v+3, v+4).forEach { w ->
                                 setItem(w, ItemStack(Material.IRON_BARS).apply {
                                     val meta = itemMeta
                                     meta.setDisplayName("§7§o이 줄은 잠금 되어 있습니다..")
                                     itemMeta = meta
                                 })
                             }
-                        }
+                    }
+
+                    Bukkit.broadcastMessage("${i-1}")
+                    for( (k, v) in it.items) {
+                        Bukkit.broadcastMessage("$k, $v, ${openInventory.title}")
+                        setItem(k, v)
+                    }
                 }
             )
         }
@@ -104,10 +100,9 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
         }
         fun default(uuid: UUID){
             if(stashes.containsKey(uuid)) return
-            val items: HashMap<Int, ItemStack?> = HashMap()
             val drawers: ArrayList<Drawer> = arrayListOf()
             for(i in 0..13){
-                drawers.add(Drawer(items, unlockState = 1, unlocked = true))
+                drawers.add(Drawer(HashMap(), unlockState = 1, unlocked = true))
             }
 
 
@@ -129,7 +124,7 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
             }
         }
         if(progress > 14){
-            throw IllegalArgumentException("UnlockProgress is over 15 got $progress, and player's uuid $uuid")
+            throw IllegalArgumentException("progress is over 15 got $progress, and player's uuid $uuid")
         }
     }
 

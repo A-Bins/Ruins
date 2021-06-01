@@ -1,5 +1,7 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.structure.classes.Stash.Companion.stash
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -18,6 +20,7 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
+            p.stash!!.drawers.withIndex().forEach { s -> Bukkit.broadcastMessage("${s.index} ${s.value.items.hashCode()} ${s.hashCode()}") }
         }
         return false
     }
