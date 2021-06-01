@@ -2,14 +2,13 @@ package com.bins.ruins.structure.classes
 
 import com.bins.ruins.env
 import com.bins.ruins.run.vars.stashes
-import com.bins.ruins.structure.classes.Stash.Companion.inStash
-import com.bins.ruins.structure.classes.Stash.Companion.stash
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @Suppress("DEPRECATION")
 class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
@@ -19,6 +18,22 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
 
         val Player.stash: Stash?
             get() = stashes[this.uniqueId]
+        fun Player.drawerSave(){
+            fun Int.hasDrawer(): Boolean{
+                if(this > 13) return false
+                if(this@drawerSave.stash == null) this@drawerSave.kickPlayer("u don't have strash variables plz Rejoin")
+                return this@drawerSave.stash!!.drawers[this].unlocked
+            }
+            if(!openInventory.title.contains("([0-9])번 보관함".toRegex())) return
+            val i = (openInventory.title.replace("번 보관함", "")).toInt()
+            if(!(i-1).hasDrawer()) return
+            for((k, v) in openInventory.topInventory.contents.withIndex()){
+                if(k / 8 < stash!!.drawers[i-1].unlockState) stash!!.drawers[i-1].items[k] = v
+            }
+
+
+
+        }
         fun Player.inDrawers(i: Int){
             fun Int.hasDrawer(): Boolean{
                 if(this > 13) return false
@@ -30,33 +45,36 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
             openInventory(
                 Bukkit.createInventory(null, 9*6, "${i}번 보관함").apply {
                     val removes = arrayOf(4, 13, 22, 31, 40, 49)
-                     stash!!.drawers.toList().stream().forEach {
-                         removes.toList().withIndex().toList().stream()
-                             .filter { (index, _) -> index+1 > it.unlockState }
-                             .forEach {
-                                 setItem(it.value, ItemStack(Material.ANVIL).apply {
-                                     val meta = itemMeta
-                                     meta.setDisplayName("§7${it.index+1}번 줄이 잠금되어 있어요!")
-                                     itemMeta = meta
-                                 })
-                                 arrayOf(
-                                     it.value-4,
-                                     it.value-3,
-                                     it.value-2,
-                                     it.value-1,
-                                     it.value+1,
-                                     it.value+2,
-                                     it.value+3,
-                                     it.value+4
-                                 ).forEach { w ->
-                                    setItem(w, ItemStack(Material.IRON_BARS).apply {
-                                        val meta = itemMeta
-                                        meta.setDisplayName("§7§o이 줄은 잠금 되어 있습니다..")
-                                         itemMeta = meta
-                                    })
-                                }
+                    val it = stash!!.drawers[i-1]
+                    it.items.forEach { (k, v) ->
+                        Bukkit.broadcastMessage("$k, $v")
+                        setItem(k, v)
+                    }
+                    removes.toList().withIndex().toList().stream()
+                        .filter { (index, _) -> index+1 > it.unlockState }
+                        .forEach { (k, v) ->
+                            setItem(v, ItemStack(Material.ANVIL).apply {
+                                val meta = itemMeta
+                                meta.setDisplayName("§7${k+1}번 줄이 잠금되어 있어요!")
+                                itemMeta = meta
+                            })
+                            arrayOf(
+                                v-4,
+                                v-3,
+                                v-2,
+                                v-1,
+                                v+1,
+                                v+2,
+                                v+3,
+                                v+4
+                            ).forEach { w ->
+                                setItem(w, ItemStack(Material.IRON_BARS).apply {
+                                    val meta = itemMeta
+                                    meta.setDisplayName("§7§o이 줄은 잠금 되어 있습니다..")
+                                    itemMeta = meta
+                                })
                             }
-                     }
+                        }
                 }
             )
         }
@@ -74,7 +92,7 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
                     for ((i, index) in env.STASH_VALUE.withIndex()) {
                         setItem(index, ItemStack(if (i.hasDrawer()) Material.CHEST else Material.IRON_BARS).apply {
                             val meta = itemMeta
-                            meta.setDisplayName("$i")
+                            meta.setDisplayName("${i+1}")
                             itemMeta = meta
                         })
                     }
@@ -86,10 +104,10 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
         }
         fun default(uuid: UUID){
             if(stashes.containsKey(uuid)) return
-            val itemstacks: Array<ItemStack> = arrayOf()
+            val items: HashMap<Int, ItemStack?> = HashMap()
             val drawers: ArrayList<Drawer> = arrayListOf()
             for(i in 0..13){
-                drawers.add(Drawer(*itemstacks, unlockState = 1, unlocked = true))
+                drawers.add(Drawer(items, unlockState = 1, unlocked = true))
             }
 
 

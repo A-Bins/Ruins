@@ -79,12 +79,12 @@ object Util {
                     this.values.forEach { s ->
                         val everything = JSONArray()
                         s.drawers.forEach { v ->
-                            val itemstacks = JSONArray()
+                            val items = JSONObject()
                             val drawerObj = JSONObject()
-                            v.items.forEach { f ->
-                                itemstacks.add(f.serializeItemStack())
+                            v.items.forEach { (k, v) ->
+                                items[k] = v?.serializeItemStack()
                             }
-                            drawerObj["itemstacks"] = itemstacks
+                            drawerObj["items"] = items
                             drawerObj["unlocked"] = v.unlocked
                             drawerObj["unlockState"] = v.unlockState
                             everything.add(drawerObj)
@@ -125,8 +125,8 @@ object Util {
                 hash.tryCast<HashMap<UUID, Stash>> {
                     if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
-                        var unlockState : Int = -1
-                        var unlocked  = false
+                        var unlockState: Int
+                        var unlocked: Boolean
                         val drawers: ArrayList<Drawer> = arrayListOf()
                         obj.tryCast<JSONObject>{
                             forEach {
@@ -135,12 +135,12 @@ object Util {
                                         v!!.tryCast<JSONObject> {
                                             unlockState = "${this["unlockState"]}".toInt()
                                             unlocked = "${this["unlocked"]}".toBoolean()
-                                            this["itemstacks"]!!.tryCast<JSONArray>{
-                                                val itemstacks: ArrayList<ItemStack> = arrayListOf()
-                                                this.forEach { v2 ->
-                                                    itemstacks.add(v2 as ItemStack)
+                                            this["items"]!!.tryCast<JSONObject>{
+                                                val items: HashMap<Int, ItemStack?> = HashMap()
+                                                this.forEach { (v2, v3) ->
+                                                    items["$v2".toInt()] = if("$v3" == "null") null else "$v3".deserializeItemStack()
                                                 }
-                                                drawers.add(Drawer(*itemstacks.toTypedArray(), unlockState = unlockState, unlocked = unlocked))
+                                                drawers.add(Drawer(items, unlockState = unlockState, unlocked = unlocked))
                                             }
                                         }
                                     }
