@@ -1,6 +1,7 @@
 package com.bins.ruins.utilities
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.structure.classes.Drawer
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.enums.types.ReceiverType
@@ -8,6 +9,7 @@ import com.bins.ruins.structure.enums.types.ReceiverType.*
 import com.bins.ruins.utilities.Receiver.deserializeItemStack
 import com.bins.ruins.utilities.Receiver.serializeItemStack
 import com.bins.ruins.utilities.Receiver.tryCast
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -16,6 +18,7 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 @Suppress("DEPRECATION")
 object Util {
@@ -75,8 +78,6 @@ object Util {
 
                     this.values.forEach { s ->
                         val everything = JSONArray()
-                        val other = JSONObject()
-                        other["progress"] = s.progress
                         s.drawers.forEach { v ->
                             val itemstacks = JSONArray()
                             val drawerObj = JSONObject()
@@ -88,7 +89,6 @@ object Util {
                             drawerObj["unlockState"] = v.unlockState
                             everything.add(drawerObj)
                         }
-                        everything.add(other)
                         main[s.uuid] = everything
                     }
                     writeJson(ruins, name, main.toJSONString())
@@ -125,7 +125,29 @@ object Util {
                 hash.tryCast<HashMap<UUID, Stash>> {
                     if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
-                        val jsonObject: JSONObject = obj as JSONObject
+                        var unlockState : Int = -1
+                        var unlocked  = false
+                        val drawers: ArrayList<Drawer> = arrayListOf()
+                        obj.tryCast<JSONObject>{
+                            forEach {
+                                it.value!!.tryCast<JSONArray> {
+                                    forEach { v ->
+                                        v!!.tryCast<JSONObject> {
+                                            unlockState = "${this["unlockState"]}".toInt()
+                                            unlocked = "${this["unlocked"]}".toBoolean()
+                                            this["itemstacks"]!!.tryCast<JSONArray>{
+                                                val itemstacks: ArrayList<ItemStack> = arrayListOf()
+                                                this.forEach { v2 ->
+                                                    itemstacks.add(v2 as ItemStack)
+                                                }
+                                                drawers.add(Drawer(*itemstacks.toTypedArray(), unlockState = unlockState, unlocked = unlocked))
+                                            }
+                                        }
+                                    }
+                                }
+                                Stash.create(UUID.fromString("${it.key}"), *drawers.toTypedArray())
+                            }
+                        }
                     }
                 }
             }
