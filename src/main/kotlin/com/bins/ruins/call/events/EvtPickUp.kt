@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 
-class EvntPickUp:Listener {
+class EvtPickUp:Listener {
     @EventHandler
     fun event(e: PlayerAttemptPickupItemEvent){
         e.isCancelled = true

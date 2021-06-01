@@ -4,20 +4,21 @@ import com.bins.ruins.call.commandTabs.LoreTab
 import com.bins.ruins.call.commandTabs.NameTab
 import com.bins.ruins.call.commands.Lore
 import com.bins.ruins.call.commands.Name
+import com.bins.ruins.call.commands.OpenStrash
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.*
-import com.bins.ruins.run.Vars.container
-import com.bins.ruins.run.Vars.totals
-import com.bins.ruins.run.Vars.glowValue
-import com.bins.ruins.run.Vars.reload
+import com.bins.ruins.run.vars.container
+import com.bins.ruins.run.vars.totals
+import com.bins.ruins.run.vars.glowValue
+import com.bins.ruins.run.vars.reload
 import com.bins.ruins.run.View
+import com.bins.ruins.structure.enums.types.ReceiverType.*
 import com.bins.ruins.utilities.ScoreBoards
 import com.bins.ruins.utilities.Glows
-import com.bins.ruins.utilities.Util.bb
+import com.bins.ruins.utilities.Receiver.bb
+import com.bins.ruins.utilities.Receiver.targetedItemEntity
 import com.bins.ruins.utilities.Util.load
 import com.bins.ruins.utilities.Util.save
-import com.bins.ruins.utilities.Util.targetedItemEntity
-import com.bins.ruins.utilities.Util.tryCast
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -47,42 +48,47 @@ class Ruins : JavaPlugin(){
 
             }
         }, 0, 20 * 6)
-
         View.cancels.add("Barrel")
+        View.views.add("물품 보관함")
         dataFolder.mkdirs()
 
-        load(this, reload, "reload")
-        load(this, container, "container")
-        load(this, totals, "Totals")
+        load(this, reload, "reload", INT)
+        load(this, container, "container", ITEMSTACK)
+        load(this, totals, "Totals", TOTAL)
 
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
-        save(this, reload, "reload")
+        save(this, reload, "reload", INT)
 
 
 
         server.scheduler.runTask(this, Runnable {
-            bb("두근 두근 리로드 횟수는! ${reload["server"]}") })
+            "두근 두근 리로드 횟수는! ${reload["server"]}".bb()
+        })
         server.scheduler.runTaskTimerAsynchronously(this, Runnable {
-            save(this, container, "container")
-            save(this, totals, "Totals")
+            save(this, container, "container", ITEMSTACK)
+            save(this, totals, "Totals", TOTAL)
         }, 10*60, 5)
         instance = this
         server.pluginManager.apply{
-            registerEvents(EvntInvClick(), this@Ruins)
-            registerEvents(EvntSwap(), this@Ruins)
-            registerEvents(EvntNpcRightClick(), this@Ruins)
-            registerEvents(EvntBlock(), this@Ruins)
+            registerEvents(EvtInvClick(), this@Ruins)
+            registerEvents(EvtSwap(), this@Ruins)
+            registerEvents(EvtNpcRightClick(), this@Ruins)
+            registerEvents(EvtBlock(), this@Ruins)
             registerEvents(EvntStoneFile(), this@Ruins)
-            registerEvents(EvntInvClose(), this@Ruins)
-            registerEvents(EvntInteract(), this@Ruins)
-            registerEvents(EvntInvOpen(), this@Ruins)
-            registerEvents(EvntPickUp(), this@Ruins)
-            registerEvents(EvntJoin(), this@Ruins)
-            registerEvents(EvntDeath(), this@Ruins)
+            registerEvents(EvtInvClose(), this@Ruins)
+            registerEvents(EvtInteract(), this@Ruins)
+            registerEvents(EvtInvOpen(), this@Ruins)
+            registerEvents(EvtPickUp(), this@Ruins)
+            registerEvents(EvtLogins(), this@Ruins)
+            registerEvents(EvtServerListPing(), this@Ruins)
+            registerEvents(EvtDeath(), this@Ruins)
         }
         getCommand("t")?.apply{
             setExecutor(test())
+        }
+        getCommand("strash")?.apply{
+            setExecutor(OpenStrash())
         }
         getCommand("name")?.apply{
             setExecutor(Name())

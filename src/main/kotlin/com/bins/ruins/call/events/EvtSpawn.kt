@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.metadata.FixedMetadataValue
 import org.spigotmc.event.player.PlayerSpawnLocationEvent
 
-class EvntSpawn: Listener {
+class EvtSpawn: Listener {
     @EventHandler
     fun event(e: PlayerRespawnEvent){
 

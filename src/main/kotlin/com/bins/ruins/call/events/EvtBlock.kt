@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.player.PlayerChatEvent
 
-class EvntBlock: Listener {
+class EvtBlock: Listener {
     companion object {
         fun isDetectAir(block: Block): Boolean {
         val loc = block.location

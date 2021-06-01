@@ -5,8 +5,3 @@
 <img alt="Kotlin" src="https://img.shields.io/badge/kotlin-%230095D5.svg?&style=for-the-badge&logo=kotlin&logoColor=white"/>
 
 
-### TODO
-- [x] Ruins Total System.
-- [x] Ruins Farming System.
-- [x] Ruins getItem for Right Clcik
-

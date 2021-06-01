@@ -5,7 +5,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-class EvntNpcRightClick : Listener {
+class EvtNpcRightClick : Listener {
     @EventHandler
     fun event(e: NPCRightClickEvent){
         val name = e.npc.name

@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 
-class EvntSwap : Listener{
+class EvtSwap : Listener{
     @EventHandler
     fun event(e: PlayerSwapHandItemsEvent){
         e.isCancelled = true

@@ -3,8 +3,11 @@ package com.bins.ruins.utilities
 import com.bins.ruins.Ruins
 import com.bins.ruins.structure.classes.Strash
 import com.bins.ruins.structure.classes.Total
-import com.bins.ruins.utilities.Inlines.tryCast
-import net.kyori.adventure.text.Component
+import com.bins.ruins.structure.enums.types.ReceiverType
+import com.bins.ruins.structure.enums.types.ReceiverType.*
+import com.bins.ruins.utilities.Receiver.deserializeItemStack
+import com.bins.ruins.utilities.Receiver.serializeItemStack
+import com.bins.ruins.utilities.Receiver.tryCast
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -21,33 +24,6 @@ import java.util.*
 import kotlin.collections.HashMap
 @Suppress("DEPRECATION")
 object Util {
-    val Player.targetedItemEntity: Item?
-        get() {
-            for(i in 0..35) {
-                val loc : Location= this.eyeLocation.add(this.location.direction.multiply(i.toDouble()/10))
-                val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
-                for (e in list) {
-                    return e
-                }
-            }
-            return null
-        }
-    fun bb(str : Any){
-        Bukkit.getServer().sendMessage(Component.text("$str"))
-    }
-    fun deserializeItemStack(item: String): ItemStack {
-        val inputStream = ByteArrayInputStream(Base64Coder.decodeLines(item))
-        val dataInput = BukkitObjectInputStream(inputStream)
-        dataInput.close()
-        return dataInput.readObject() as ItemStack
-    }
-    fun serializeItemStack(item: ItemStack): String {
-        val outputStream = ByteArrayOutputStream()
-        val dataOutput = BukkitObjectOutputStream(outputStream)
-        dataOutput.writeObject(item)
-        dataOutput.close()
-        return Base64Coder.encodeLines(outputStream.toByteArray())
-    }
     private fun writeJson(ruins: Ruins, name: String, write: String) {
         val uniOutput = BufferedWriter(
             OutputStreamWriter(
@@ -95,14 +71,13 @@ object Util {
         }
 
     }
-    fun save(ruins: Ruins, hash: HashMap<*, *>, name: String) {
+    fun save(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
 
-        when{
-
-            hash.values.stream().anyMatch {a -> a is Strash } -> {
+        when (receiver) {
+            STRASH -> {
                 hash.tryCast<HashMap<UUID, Strash>> {
                     val data = JSONObject()
-                    this.values.forEach { s -> data[s.uuid] = "unlockProgress: ${s.unlockProgress}; drawers: ${s.drawers};  " }
+                    this.values.forEach { s -> data[s.uuid] = "unlockProgress: ${s.progress}; drawers: ${s.drawers};" }
                     val uniOutput = BufferedWriter(
                         OutputStreamWriter(
                             FileOutputStream(File(ruins.dataFolder, "$name.json").path),
@@ -115,10 +90,10 @@ object Util {
 
                 }
             }
-            hash.values.stream().anyMatch { a -> a is ItemStack } -> {
+            ITEMSTACK -> {
                 hash.tryCast<HashMap<UUID, ItemStack>> {
                     val data = JSONObject()
-                    this.forEach { (key: Any, value: ItemStack) -> data[key] = serializeItemStack(value) }
+                    this.forEach { (key: Any, value: ItemStack) -> data[key] = value.serializeItemStack() }
                     val uniOutput = BufferedWriter(
                         OutputStreamWriter(
                             FileOutputStream(File(ruins.dataFolder, "$name.json").path),
@@ -130,7 +105,7 @@ object Util {
                     uniOutput.close()
                 }
             }
-            hash.values.stream().anyMatch { a -> a is Total } -> {
+            TOTAL -> {
                 hash.tryCast<HashMap<*, Total>> {
                     val obj = JSONObject()
                     this.forEach { (key: Any, value: Total) -> obj[key] = "${value.k}, ${value.d}" }
@@ -152,9 +127,9 @@ object Util {
             }
         }
     }
-    fun load(ruins: Ruins, hash: HashMap<*, *>, name: String) {
-        when{
-            hash.values.stream().anyMatch { a -> a is ItemStack } -> {
+    fun load(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
+        when (receiver) {
+            ITEMSTACK -> {
 
                 hash.tryCast<HashMap<UUID, ItemStack>> {
                     ruins.makeFile(File(ruins.dataFolder, "$name.json"))
@@ -164,12 +139,12 @@ object Util {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                         val jsonObject: JSONObject = obj as JSONObject
                         jsonObject.forEach { key: Any, value: Any ->
-                            this[UUID.fromString(key.toString() + "")] = deserializeItemStack("$value")
+                            this[UUID.fromString(key.toString() + "")] = "$value".deserializeItemStack()
                         }
                     }
                 }
             }
-            hash.values.stream().anyMatch { a -> a is Int } -> {
+            INT -> {
                 hash.tryCast<HashMap<String, Int>> {
                     ruins.makeFile(File(ruins.dataFolder, "$name.json"))
                     File(ruins.dataFolder, "$name.json").mkdir()
@@ -183,7 +158,7 @@ object Util {
                     }
                 }
             }
-            hash.values.stream().anyMatch { a -> a is Total } -> {
+            TOTAL -> {
 
                 ruins.makeFile(File(ruins.dataFolder, "$name.json"))
                 File(ruins.dataFolder, "$name.json").mkdir()
@@ -191,7 +166,7 @@ object Util {
                 if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
                     val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                     val jsonObject: JSONObject = obj as JSONObject
-                     hash.tryCast<HashMap<UUID, Total>>{
+                    hash.tryCast<HashMap<UUID, Total>>{
                         jsonObject.forEach { key: Any, value: Any ->
                             this[UUID.fromString("$key")] = Total.create(
                                 (value.toString().split(", ")[0].toInt()),

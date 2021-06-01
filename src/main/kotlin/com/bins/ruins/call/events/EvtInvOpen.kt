@@ -1,13 +1,12 @@
 package com.bins.ruins.call.events
 
-import com.bins.ruins.utilities.Util.bb
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.ItemStack
 @Suppress("DEPRECATION")
-class EvntInvOpen: Listener {
+class EvtInvOpen: Listener {
     private val info = ItemStack(Material.GRAY_STAINED_GLASS_PANE).apply {
         val meta = itemMeta
         meta.setDisplayName("§6재활용 기계 사용 방법")

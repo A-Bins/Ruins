@@ -1,7 +1,6 @@
 package com.bins.ruins.call.events
 
 import com.bins.ruins.run.View
-import com.bins.ruins.utilities.Util.bb
 import com.comphenix.protocol.PacketType
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Material
@@ -14,7 +13,7 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.server.ServerListPingEvent
 
 @Suppress("DEPRECATION")
-class EvntInvClick : Listener {
+class EvtInvClick : Listener {
 
     @EventHandler
     fun event(e: InventoryClickEvent){

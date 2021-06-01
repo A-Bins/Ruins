@@ -23,7 +23,6 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            p.openInventory.topInventory.setItem(1, ItemStack(Material.STONE))
         }
         return false
     }

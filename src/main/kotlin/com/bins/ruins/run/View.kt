@@ -1,6 +1,5 @@
 package com.bins.ruins.run
 
-import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -16,7 +15,7 @@ class View(private val p: Player){
         private fun create(lines: Int, title: String): Inventory{
             if(!views.contains(title))
                 views.add(title)
-            return Bukkit.createInventory(null, lines, Component.text(title))
+            return Bukkit.createInventory(null, lines, title)
         }
     }
     private val uuid = p.uniqueId
@@ -66,7 +65,7 @@ class View(private val p: Player){
         Inv.setItem(1, ib)
         Inv.setItem(2, ib)
         Inv.setItem(3, ib)
-        Inv.setItem(4, Vars.container[p.uniqueId])
+        Inv.setItem(4, vars.container[p.uniqueId])
         Inv.setItem(5, ib)
         Inv.setItem(6, ib)
         Inv.setItem(7, ib)

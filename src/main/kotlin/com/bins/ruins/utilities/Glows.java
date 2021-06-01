@@ -5,12 +5,8 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import io.papermc.paper.event.player.AbstractChatEvent;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
