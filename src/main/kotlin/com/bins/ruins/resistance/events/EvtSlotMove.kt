@@ -1,6 +1,7 @@
 package com.bins.ruins.resistance.events
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.resistance.structure.classes.Guns
 import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
@@ -35,6 +36,7 @@ class EvtSlotMove: Listener {
     @EventHandler
     fun event(e: PlayerItemHeldEvent){
         val p = e.player
+        if(Guns.values().toList().stream().anyMatch { p.inventory.getItem(e.newSlot)?.itemMeta?.displayName == it.displayName })
         Ruins.instance.server.onlinePlayers.forEach {
             if(it.name == p.name) return@forEach
             ProtocolLibrary.getProtocolManager().sendServerPacket(it, entityEquipment(p.entityId ,
