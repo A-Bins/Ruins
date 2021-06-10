@@ -1,6 +1,6 @@
 package com.bins.ruins.call.events.actions
 
-import com.bins.ruins.run.vars
+import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
 import org.bukkit.event.EventHandler

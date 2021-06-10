@@ -45,7 +45,8 @@ repositories {
 dependencies {
     shadow "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'world.bentobox:bentobox:1.16.1-SNAPSHOT'
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.6.0"
     compileOnly group: "com.sk89q.worldguard", name: "worldguard-bukkit", version: "7.0.4"

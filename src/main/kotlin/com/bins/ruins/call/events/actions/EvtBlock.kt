@@ -1,6 +1,6 @@
 package com.bins.ruins.call.events.actions
 
-import com.bins.ruins.custom.StoneFileBreakEvent
+import com.bins.ruins.call.events.custom.StoneFileBreakEvent
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material

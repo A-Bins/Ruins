@@ -1,6 +1,6 @@
 package com.bins.ruins.call.events.actions
 
-import com.bins.ruins.run.View
+import com.bins.ruins.structure.classes.View
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerSwapHandItemsEvent

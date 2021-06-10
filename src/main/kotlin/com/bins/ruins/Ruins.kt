@@ -1,7 +1,7 @@
 package com.bins.ruins
 
-import com.bins.ruins.call.commandTabs.LoreTab
-import com.bins.ruins.call.commandTabs.NameTab
+import com.bins.ruins.call.commands.tab.LoreTab
+import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.commands.Lore
 import com.bins.ruins.call.commands.Name
 import com.bins.ruins.call.commands.OpenStash
@@ -11,20 +11,23 @@ import com.bins.ruins.call.events.inventories.EvtInvClick
 import com.bins.ruins.call.events.inventories.EvtInvClose
 import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
-import com.bins.ruins.run.vars.container
-import com.bins.ruins.run.vars.totals
-import com.bins.ruins.run.vars.glowValue
-import com.bins.ruins.run.vars.reload
-import com.bins.ruins.run.View
-import com.bins.ruins.run.vars.stashes
+import com.bins.ruins.call.events.others.EvtTab
+import com.bins.ruins.structure.objects.vars.container
+import com.bins.ruins.structure.objects.vars.totals
+import com.bins.ruins.structure.objects.vars.glowValue
+import com.bins.ruins.structure.objects.vars.reload
+import com.bins.ruins.structure.classes.View
+import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.enums.types.ReceiverType.*
-import com.bins.ruins.utilities.ScoreBoards
-import com.bins.ruins.utilities.Glows
-import com.bins.ruins.utilities.Receiver.bb
-import com.bins.ruins.utilities.Receiver.targetedItemEntity
-import com.bins.ruins.utilities.Util.load
-import com.bins.ruins.utilities.Util.save
+import com.bins.ruins.structure.objects.env
+import com.bins.ruins.structure.objects.utilities.ScoreBoards
+import com.bins.ruins.structure.objects.utilities.Glows
+import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.targetedItemEntity
+import com.bins.ruins.structure.objects.utilities.Util.load
+import com.bins.ruins.structure.objects.utilities.Util.save
 import org.bukkit.ChatColor
+import org.bukkit.inventory.meta.CrossbowMeta
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -79,18 +82,10 @@ class Ruins : JavaPlugin(){
         }, 5, 20*10)
         instance = this
         server.pluginManager.apply{
-            registerEvents(EvtInvClick(), this@Ruins)
-            registerEvents(EvtSwap(), this@Ruins)
-            registerEvents(EvtNpcRightClick(), this@Ruins)
-            registerEvents(EvtBlock(), this@Ruins)
-            registerEvents(EvntStoneFile(), this@Ruins)
-            registerEvents(EvtInvClose(), this@Ruins)
-            registerEvents(EvtInteract(), this@Ruins)
-            registerEvents(EvtInvOpen(), this@Ruins)
-            registerEvents(EvtPickUp(), this@Ruins)
-            registerEvents(EvtLogins(), this@Ruins)
-            registerEvents(EvtServerListPing(), this@Ruins)
-            registerEvents(EvtDeath(), this@Ruins)
+            arrayOf(
+                EvtInvClick(), EvtSwap(), EvtNpcRightClick(), EvtBlock(), EvntStoneFile(), EvtInvClose(), EvtInteract(),
+                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
+            ).forEach { registerEvents(it, this@Ruins) }
         }
         getCommand("t")?.apply{
             setExecutor(test())

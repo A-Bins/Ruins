@@ -1,4 +1,4 @@
-package com.bins.ruins.call.commandTabs
+package com.bins.ruins.call.commands.tab
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

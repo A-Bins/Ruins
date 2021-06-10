@@ -1,4 +1,4 @@
-package com.bins.ruins.run
+package com.bins.ruins.structure.objects
 
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total

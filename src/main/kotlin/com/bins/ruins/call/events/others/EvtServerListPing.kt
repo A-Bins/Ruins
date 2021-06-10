@@ -7,6 +7,6 @@ import org.bukkit.event.server.ServerListPingEvent
 class EvtServerListPing: Listener{
     @EventHandler
     fun event(e: ServerListPingEvent){
-        e.motd = ""
+        e.motd = "                       Ruins Season 2."
     }
 }

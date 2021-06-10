@@ -1,4 +1,4 @@
-package com.bins.ruins.custom
+package com.bins.ruins.call.events.custom
 
 import org.bukkit.block.Block
 import org.bukkit.entity.Player

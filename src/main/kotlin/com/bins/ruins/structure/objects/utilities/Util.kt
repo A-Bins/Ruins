@@ -1,15 +1,13 @@
-package com.bins.ruins.utilities
+package com.bins.ruins.structure.objects.utilities
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.structure.classes.Drawer
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.enums.types.ReceiverType
 import com.bins.ruins.structure.enums.types.ReceiverType.*
-import com.bins.ruins.utilities.Receiver.deserializeItemStack
-import com.bins.ruins.utilities.Receiver.serializeItemStack
-import com.bins.ruins.utilities.Receiver.tryCast
-import org.bukkit.Bukkit
+import com.bins.ruins.structure.objects.utilities.Receiver.deserializeItemStack
+import com.bins.ruins.structure.objects.utilities.Receiver.serializeItemStack
+import com.bins.ruins.structure.objects.utilities.Receiver.tryCast
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -127,9 +125,9 @@ object Util {
                         val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                         var unlockState: Int
                         var unlocked: Boolean
-                        val drawers: ArrayList<Drawer> = arrayListOf()
                         obj.tryCast<JSONObject>{
                             forEach {
+                                val drawers: ArrayList<Stash.Drawer> = arrayListOf()
                                 it.value!!.tryCast<JSONArray> {
                                     forEach { v ->
                                         v!!.tryCast<JSONObject> {
@@ -140,7 +138,13 @@ object Util {
                                                 this.forEach { (v2, v3) ->
                                                     items["$v2".toInt()] = if("$v3" == "null") null else "$v3".deserializeItemStack()
                                                 }
-                                                drawers.add(Drawer(items, unlockState = unlockState, unlocked = unlocked))
+                                                drawers.add(
+                                                    Stash.Drawer(
+                                                        items,
+                                                        unlockState = unlockState,
+                                                        unlocked = unlocked
+                                                    )
+                                                )
                                             }
                                         }
                                     }

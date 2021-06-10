@@ -1,11 +1,12 @@
-package com.bins.ruins.utilities
+package com.bins.ruins.structure.objects.utilities
 
 import com.destroystokyo.paper.inventory.meta.ArmorStandMeta
 import org.bukkit.inventory.meta.*
 
-class MetaReceiver {
+object MetaReceiver {
     fun ItemMeta.toSkullMeta() = this as SkullMeta
     fun ItemMeta.toBookMeta() = this as BookMeta
+    fun ItemMeta.toCrossBowMeta() = this as CrossbowMeta
     fun ItemMeta.toCompassMeta() = this as CrossbowMeta
     fun ItemMeta.toFireworkMeta() = this as FireworkMeta
     fun ItemMeta.toFireworkEffectMeta() = this as FireworkEffectMeta

@@ -1,7 +1,7 @@
 package com.bins.ruins.structure.classes
 
-import com.bins.ruins.env
-import com.bins.ruins.run.vars.stashes
+import com.bins.ruins.structure.objects.env
+import com.bins.ruins.structure.objects.vars.stashes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -12,10 +12,18 @@ import kotlin.collections.HashMap
 
 @Suppress("DEPRECATION")
 class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
+    class Drawer(val items: HashMap<Int, ItemStack?>, val unlockState: Int, val unlocked: Boolean) {
+        init {
+            if (unlockState < 1)
+                throw IllegalArgumentException("unlockState need over 1, got $unlockState")
+            if (unlockState > 13)
+                throw IllegalArgumentException("unlockState don't over 13, got $unlockState")
+            if(items.size / 8 > unlockState)
+                throw IllegalArgumentException("items's size are over unlockState's value $unlockState")
 
+        }
+    }
     companion object{
-
-
         val Player.stash: Stash?
             get() = stashes[this.uniqueId]
         fun Player.drawerSave(){
@@ -27,11 +35,8 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
             if(!openInventory.title.contains("([0-9])번 보관함".toRegex())) return
             val i = (openInventory.title.replace("번 보관함", "")).toInt()
             if(!(i-1).hasDrawer()) return
-            Bukkit.broadcastMessage("${i-1}")
-            for((k, v) in openInventory.topInventory.contents.withIndex()){
+            openInventory.topInventory.contents.withIndex().forEach { (k, v) ->
                 if(k / 8 < stash!!.drawers[i-1].unlockState) {
-
-                    Bukkit.broadcastMessage("$k, $v, ${openInventory.title}")
                     stash!!.drawers[i-1].items[k] = v
                 }
             }
@@ -66,9 +71,7 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
                             }
                     }
 
-                    Bukkit.broadcastMessage("${i-1}")
-                    for( (k, v) in it.items) {
-                        Bukkit.broadcastMessage("$k, $v, ${openInventory.title}")
+                    it.items.forEach { (k, v) ->
                         setItem(k, v)
                     }
                 }
@@ -85,7 +88,7 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
             }
             openInventory(
                 Bukkit.createInventory(null, 4 * 9, "물품 보관함").apply {
-                    for ((i, index) in env.STASH_VALUE.withIndex()) {
+                    env.STASH_VALUE.withIndex().forEach { (i, index) ->
                         setItem(index, ItemStack(if (i.hasDrawer()) Material.CHEST else Material.IRON_BARS).apply {
                             val meta = itemMeta
                             meta.setDisplayName("${i+1}")
@@ -113,18 +116,17 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
 
         }
     }
-    val progress = drawers.size
     init {
-        for((i, dr) in drawers.withIndex()) {
+        drawers.withIndex().forEach { (i, dr) ->
             if (dr.items.size > 54){
                 throw IllegalArgumentException(
                     "Drawer in array of size of Itemstack got over 55 ${dr.items.size}, from index of $i and from player's uuid $uuid"
                 )
-                break
             }
         }
-        if(progress > 14){
-            throw IllegalArgumentException("progress is over 15 got $progress, and player's uuid $uuid")
+
+        if(drawers.size > 14){
+            throw IllegalArgumentException("progress is over 15 got ${drawers.size}, and player's uuid $uuid")
         }
     }
 

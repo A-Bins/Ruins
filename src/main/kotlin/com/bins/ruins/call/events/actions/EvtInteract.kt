@@ -1,9 +1,9 @@
 package com.bins.ruins.call.events.actions
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.run.vars
-import com.bins.ruins.utilities.Receiver.bb
-import com.bins.ruins.utilities.Util.isGiven
+import com.bins.ruins.structure.objects.vars
+import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Util.isGiven
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -35,7 +35,7 @@ class EvtInteract : Listener{
                         return
                 e.isCancelled = true
                 val given = isGiven(p, value.itemStack)
-                when(given == -1){
+                when(given == -1) {
                     true -> {
                         value.setMetadata("given", FixedMetadataValue(Ruins.instance, true))
                         value.remove()
@@ -63,9 +63,12 @@ class EvtInteract : Listener{
 
             }
             if (b != null) {
-                if ((p.location.distance(b.location) >= 2) and (b.type == Material.BARREL)) {
-                    p.sendMessage("§3§l  Ruins §8≫ §7가까이서 열어야 할 것 같다")
-                    e.isCancelled = true
+                when {
+                    (p.location.distance(b.location) >= 2) and (b.type == Material.BARREL) -> {
+                        p.sendMessage("§3§l  Ruins §8≫ §7가까이서 열어야 할 것 같다")
+                        e.isCancelled = true
+                    }
+
                 }
             }
         }

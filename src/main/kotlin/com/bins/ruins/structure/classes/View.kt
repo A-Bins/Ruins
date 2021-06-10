@@ -1,5 +1,6 @@
-package com.bins.ruins.run
+package com.bins.ruins.structure.classes
 
+import com.bins.ruins.structure.objects.vars
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -19,40 +20,40 @@ class View(private val p: Player){
         }
     }
     private val uuid = p.uniqueId
-    fun inMenu() : InventoryView{
+    fun inMenu() : InventoryView {
         return p.openInventory(asMenu)!!
     }
-    fun inContainer() : InventoryView{
+    fun inContainer() : InventoryView {
         return p.openInventory(asContainer)!!
     }
-    fun inVending() : InventoryView{
+    fun inVending() : InventoryView {
         return p.openInventory(asVend)!!
     }
-    fun inCraft() : InventoryView{
+    fun inCraft() : InventoryView {
         return p.openInventory(asCraft)!!
     }
-    fun inEngineer() : InventoryView{
+    fun inEngineer() : InventoryView {
         return p.openInventory(asEngineer)!!
     }
-    fun inUnknown() : InventoryView{
+    fun inUnknown() : InventoryView {
         return p.openInventory(asUnknown)!!
     }
-    fun inNurse() : InventoryView{
+    fun inNurse() : InventoryView {
         return p.openInventory(asNurse)!!
     }
-    fun inSoldier() : InventoryView{
+    fun inSoldier() : InventoryView {
         return p.openInventory(asSoldier)!!
     }
-    fun inFortune() : InventoryView{
+    fun inFortune() : InventoryView {
         return p.openInventory(asFortune)!!
     }
-    fun inHunter() : InventoryView{
+    fun inHunter() : InventoryView {
         return p.openInventory(asHunter)!!
     }
-    fun inPilot() : InventoryView{
+    fun inPilot() : InventoryView {
         return p.openInventory(asPilot)!!
     }
-    fun inBandit() : InventoryView{
+    fun inBandit() : InventoryView {
         return p.openInventory(asBandit)!!
     }
     val asContainer = create(9, "컨테이너").also { Inv ->

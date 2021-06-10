@@ -1,12 +1,10 @@
-package com.bins.ruins.utilities
+package com.bins.ruins.structure.objects.utilities
 
-import com.destroystokyo.paper.inventory.meta.ArmorStandMeta
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.*
 import org.bukkit.util.io.BukkitObjectInputStream
 import org.bukkit.util.io.BukkitObjectOutputStream
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder

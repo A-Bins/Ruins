@@ -1,11 +1,8 @@
-package com.bins.ruins.utilities
+package com.bins.ruins.structure.objects.utilities
 
 import com.bins.ruins.Ruins
-import org.bukkit.Bukkit.getServer
 import org.bukkit.entity.Player
-import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
-import java.time.LocalDateTime
 
 
 @Suppress("DEPRECATION")
