@@ -12,6 +12,7 @@ import com.bins.ruins.call.events.inventories.EvtInvClose
 import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
+import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.objects.vars.container
 import com.bins.ruins.structure.objects.vars.totals
 import com.bins.ruins.structure.objects.vars.glowValue
@@ -83,6 +84,7 @@ class Ruins : JavaPlugin(){
         instance = this
         server.pluginManager.apply{
             arrayOf(
+                *Resistance.configs(),
                 EvtInvClick(), EvtSwap(), EvtNpcRightClick(), EvtBlock(), EvntStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }

@@ -46,32 +46,8 @@ Strash(p.uniqueId, d)
 //}
 @Suppress("DEPRECATION")
 class test : CommandExecutor{
-    fun entityEquipment(entityId: Int, slot: EquipmentSlot, item: ItemStack): PacketContainer {
-         fun EquipmentSlot.convertToItemSlot(): EnumWrappers.ItemSlot {
-            return when (this) {
-                EquipmentSlot.HAND -> EnumWrappers.ItemSlot.MAINHAND
-                EquipmentSlot.OFF_HAND -> EnumWrappers.ItemSlot.OFFHAND
-                EquipmentSlot.FEET -> EnumWrappers.ItemSlot.FEET
-                EquipmentSlot.LEGS -> EnumWrappers.ItemSlot.LEGS
-                EquipmentSlot.CHEST -> EnumWrappers.ItemSlot.CHEST
-                EquipmentSlot.HEAD -> EnumWrappers.ItemSlot.HEAD
-            }
-        }
-        return PacketContainer(PacketType.Play.Server.ENTITY_EQUIPMENT).apply {
-            integers.write(0, entityId)
-            slotStackPairLists.write(0, Collections.singletonList(Pair(slot.convertToItemSlot(), item)))
-        }
-    }
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            Ruins.instance.server.onlinePlayers.forEach {
-                if(it.name == p.name) return@forEach
-                ProtocolLibrary.getProtocolManager().sendServerPacket(it, entityEquipment(p.entityId ,EquipmentSlot.HAND, ItemStack(Material.CROSSBOW).apply {
-                    val meta = itemMeta.toCrossBowMeta()
-                    meta.addChargedProjectile(ItemStack(Material.ARROW))
-                    itemMeta = meta
-                }))
-            }
         }
         return false
     }
