@@ -61,7 +61,7 @@ class Ruins : JavaPlugin(){
         View.cancels.add("Barrel")
         View.views.add("물품 보관함")
         dataFolder.mkdirs()
-
+            //
         load(this, reload, "reload", INT)
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
