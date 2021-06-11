@@ -103,6 +103,7 @@ class Ruins : JavaPlugin(){
             setExecutor(Lore())
             tabCompleter = LoreTab()
         }
+        Resistance.scheduler()
         logger.warning(env.ENABLE_INFO.trimIndent())
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
