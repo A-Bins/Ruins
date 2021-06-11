@@ -81,7 +81,7 @@ class Ruins : JavaPlugin(){
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
         }, 5, 20*10)
-        instance = this
+        instance = this//
         server.pluginManager.apply{
             arrayOf(
                 *Resistance.configs(),
