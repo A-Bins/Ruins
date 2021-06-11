@@ -1,6 +1,7 @@
 package com.bins.ruins.call.commands
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.comphenix.protocol.PacketType
@@ -48,6 +49,7 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
+            Guns.HK416.give(p)
         }
         return false
     }
