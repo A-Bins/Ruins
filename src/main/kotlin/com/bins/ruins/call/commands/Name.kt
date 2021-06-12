@@ -10,10 +10,9 @@ import org.bukkit.entity.Player
 
 class Name : CommandExecutor {
     @Suppress("DEPRECATION")
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (args.isNotEmpty()) {
-            if (sender is Player) {
-                val p = sender
+            if (p is Player) {
                 if (!p.isOp) return false
                 if (p.inventory.itemInMainHand.type != Material.AIR) {
                     val item = p.inventory.itemInMainHand

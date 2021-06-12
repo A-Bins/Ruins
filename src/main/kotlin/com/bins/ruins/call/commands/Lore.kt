@@ -1,21 +1,24 @@
 package com.bins.ruins.call.commands
 
 import net.md_5.bungee.api.ChatColor
+import net.minecraft.server.v1_16_R3.*
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.ArrayList
 
 
 class Lore : CommandExecutor {
     @Suppress("DEPRECATION")
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         try {
             if (args.size > 1) {
-                if (sender is Player) {
-                    val p = sender
+                if (p is Player) {
                     if (!p.isOp) return false
                     if (p.inventory.itemInMainHand.type != Material.AIR) {
                         if (p.inventory.itemInMainHand.itemMeta != null) {
@@ -39,7 +42,7 @@ class Lore : CommandExecutor {
                 }
             }
         } catch (ex: Exception) {
-            sender.sendMessage("§c다시..입력하세욧!")
+            p.sendMessage("§c다시..입력하세욧!")
             ex.printStackTrace()
             return false
         }
