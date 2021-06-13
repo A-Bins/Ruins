@@ -1,10 +1,10 @@
 package com.bins.ruins
 
-import com.bins.ruins.call.commands.tab.LoreTab
-import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.commands.Lore
 import com.bins.ruins.call.commands.Name
 import com.bins.ruins.call.commands.OpenStash
+import com.bins.ruins.call.commands.tab.LoreTab
+import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.actions.*
 import com.bins.ruins.call.events.inventories.EvtInvClick
@@ -13,22 +13,32 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
-import com.bins.ruins.structure.objects.vars.container
-import com.bins.ruins.structure.objects.vars.totals
-import com.bins.ruins.structure.objects.vars.glowValue
-import com.bins.ruins.structure.objects.vars.reload
+import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.View
-import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.enums.types.ReceiverType.*
 import com.bins.ruins.structure.objects.env
-import com.bins.ruins.structure.objects.utilities.ScoreBoards
 import com.bins.ruins.structure.objects.utilities.Glows
+import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.bins.ruins.structure.objects.utilities.Receiver.targetedItemEntity
+import com.bins.ruins.structure.objects.utilities.ScoreBoards
 import com.bins.ruins.structure.objects.utilities.Util.load
 import com.bins.ruins.structure.objects.utilities.Util.save
+import com.bins.ruins.structure.objects.vars.container
+import com.bins.ruins.structure.objects.vars.glowValue
+import com.bins.ruins.structure.objects.vars.reload
+import com.bins.ruins.structure.objects.vars.stashes
+import com.bins.ruins.structure.objects.vars.totals
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.events.ListenerPriority
+import com.comphenix.protocol.events.PacketAdapter
+import com.comphenix.protocol.events.PacketEvent
+import com.comphenix.protocol.injector.netty.ProtocolInjector
 import org.bukkit.ChatColor
-import org.bukkit.inventory.meta.CrossbowMeta
+import org.bukkit.Material
+import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -42,6 +52,7 @@ class Ruins : JavaPlugin(){
         lateinit var instance : Ruins
     }
     override fun onEnable() {
+        instance = this//
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 if(p.isOp)
@@ -70,8 +81,19 @@ class Ruins : JavaPlugin(){
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
         save(this, reload, "reload", INT)
-
-
+//
+//
+//        ProtocolLibrary.getProtocolManager().addPacketListener(
+//            object : PacketAdapter(
+//                this, ListenerPriority.NORMAL,
+//                PacketType.Play.Server.SET_SLOT
+//            ) {
+//                override fun onPacketSending(event: PacketEvent) {
+//                    if(Guns.values().toList().stream().anyMatch { event.packet.itemModifier.values[0].itemMeta?.displayName == it.displayName }) {
+//                        event.packet.itemModifier.bb()
+//                    }
+//                }
+//            })
 
         server.scheduler.runTask(this, Runnable {
             "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb()
@@ -81,7 +103,6 @@ class Ruins : JavaPlugin(){
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
         }, 5, 20*10)
-        instance = this//
         server.pluginManager.apply{
             arrayOf(
                 *Resistance.configs(),
@@ -103,7 +124,6 @@ class Ruins : JavaPlugin(){
             setExecutor(Lore())
             tabCompleter = LoreTab()
         }
-        Resistance.scheduler()
         logger.warning(env.ENABLE_INFO.trimIndent())
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){

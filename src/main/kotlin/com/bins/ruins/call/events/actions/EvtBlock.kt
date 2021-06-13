@@ -48,8 +48,12 @@ class EvtBlock: Listener {
     @EventHandler
     fun event(e: BlockBreakEvent){
         val b = e.block
-        if(!((b.type == Material.MOSSY_COBBLESTONE)or(b.type == Material.COBBLESTONE)))
+        if(!((b.type == Material.MOSSY_COBBLESTONE)or(b.type == Material.COBBLESTONE))){
+            if(!e.player.isOp) {
+                e.isCancelled = true
+            }
             return
+        }
 
         if(!isDetectAir(b))
             return

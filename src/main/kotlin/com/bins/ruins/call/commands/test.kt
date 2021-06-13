@@ -10,7 +10,9 @@ import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.wrappers.EnumWrappers
 import com.comphenix.protocol.wrappers.Pair
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityEquipment
+import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -19,6 +21,9 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import java.util.*
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tan
 
 
 /*
@@ -49,7 +54,14 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            Guns.HK416.give(p)
+
+            for(i in 0..1000){
+                val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(3))
+                tan.x += cos(i.toDouble())
+                tan.y += sin(i.toDouble())
+                tan.world.spawnParticle(Particle.REDSTONE, tan, 1, Particle.DustOptions(Color.GREEN, 1F))
+            }
+//            Guns.HK416.give(p)
         }
         return false
     }
