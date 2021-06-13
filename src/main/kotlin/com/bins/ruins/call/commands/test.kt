@@ -55,10 +55,10 @@ class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
 
-            for(i in 21 downTo 0){
+            for(i in 0..20){
                 val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(5))
-                tan.x += sin(10 * (i.toDouble() / 20)) + tan(0.05)
-                tan.y += 4.5 * (i.toDouble() / 20)
+                tan.x += sin(7 *(i.toDouble() / 20))
+                    tan.y += cos(7 *(i.toDouble() / 20))
                 tan.world.spawnParticle(Particle.REDSTONE, tan, 10, Particle.DustOptions(Color.GREEN, 1F))
 
             }
