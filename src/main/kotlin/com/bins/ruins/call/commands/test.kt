@@ -55,11 +55,12 @@ class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
 
-            for(i in 0..1000){
-                val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(3))
-                tan.x += cos(i.toDouble())
-                tan.y += sin(i.toDouble())
-                tan.world.spawnParticle(Particle.REDSTONE, tan, 1, Particle.DustOptions(Color.GREEN, 1F))
+            for(i in 21 downTo 0){
+                val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(5))
+                tan.x += sin(10 * (i.toDouble() / 20)) + tan(0.05)
+                tan.y += 4.5 * (i.toDouble() / 20)
+                tan.world.spawnParticle(Particle.REDSTONE, tan, 10, Particle.DustOptions(Color.GREEN, 1F))
+
             }
 //            Guns.HK416.give(p)
         }
