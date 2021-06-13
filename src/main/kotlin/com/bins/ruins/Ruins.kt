@@ -75,7 +75,7 @@ class Ruins : JavaPlugin(){
 
         server.scheduler.runTask(this, Runnable {
             "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb()
-        })//
+        })
         server.scheduler.runTaskTimerAsynchronously(this, Runnable {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
