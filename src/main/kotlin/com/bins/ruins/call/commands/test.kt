@@ -58,9 +58,13 @@ class test : CommandExecutor{
             for(i in 0..20){
                 val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(5))
                 tan.x += sin(7 *(i.toDouble() / 20))
-                    tan.y += cos(7 *(i.toDouble() / 20))
+                tan.y += cos(7 *(i.toDouble() / 20))
                 tan.world.spawnParticle(Particle.REDSTONE, tan, 10, Particle.DustOptions(Color.GREEN, 1F))
 
+            }
+            if(args.isNotEmpty()){
+                Guns.HK416.give(p)
+                Guns.UMP5.give(p)
             }
 //            Guns.HK416.give(p)
         }
