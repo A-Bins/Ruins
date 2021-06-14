@@ -52,7 +52,7 @@ class Ruins : JavaPlugin(){
         lateinit var instance : Ruins
     }
     override fun onEnable() {
-        instance = this//
+        instance = this
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 if(p.isOp)
