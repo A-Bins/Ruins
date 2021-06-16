@@ -44,63 +44,39 @@ import java.io.File
 
 
 class Ruins : JavaPlugin(){
+    override fun onEnable() {
+        instance = this
+        /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
+        logger.warning(env.ENABLE_INFO.trimIndent())
+        dataFolder.mkdirs()
+
+        view()
+        saveAndLoad()
+        count()
+        configCmd()
+        configEvt()
+        moisture()
+        targetGlow()
+    }
     fun makeFile(f: File) {
         if (!f.exists() || !f.isFile)
             f.createNewFile()
     }
-    companion object{
-        lateinit var instance : Ruins
-    }
-    override fun onEnable() {
-        instance = this
-        server.scheduler.runTaskTimer(this, Runnable {
-            for(p in server.onlinePlayers){
-                if(p.isOp)
-                    return@Runnable
-                if(Math.round((p.exp-0.01F)*100)/100.0 > 0.00)
-                    p.exp -= 0.01F
-                else {
-                    if(p.exp != 0.0F)
-                        p.exp = 0.0F
-                    p.health -= 1
-                }
-
-            }
-        }, 0, 20 * 6)
-        View.cancels.add("Barrel")
-        View.views.add("물품 보관함")
-        dataFolder.mkdirs()
-            //
+    private fun saveAndLoad() {
         load(this, reload, "reload", INT)
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
         load(this, stashes, "Stashes", STASH)
-
-        reload.putIfAbsent("server", 1)
-        reload["server"] = reload["server"]!!+1
-        save(this, reload, "reload", INT)
-//
-//
-//        ProtocolLibrary.getProtocolManager().addPacketListener(
-//            object : PacketAdapter(
-//                this, ListenerPriority.NORMAL,
-//                PacketType.Play.Server.SET_SLOT
-//            ) {
-//                override fun onPacketSending(event: PacketEvent) {
-//                    if(Guns.values().toList().stream().anyMatch { event.packet.itemModifier.values[0].itemMeta?.displayName == it.displayName }) {
-//                        event.packet.itemModifier.bb()
-//                    }
-//                }
-//            })
-
-        server.scheduler.runTask(this, Runnable {
-            "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb()
-        })
         server.scheduler.runTaskTimerAsynchronously(this, Runnable {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
         }, 5, 20*10)
+        reload.putIfAbsent("server", 1)
+        reload["server"] = reload["server"]!!+1
+        save(this, reload, "reload", INT)
+    }
+    private fun configEvt() {
         server.pluginManager.apply{
             arrayOf(
                 *Resistance.configs(),
@@ -108,6 +84,8 @@ class Ruins : JavaPlugin(){
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
+    }
+    private fun configCmd() {
         getCommand("t")?.apply{
             setExecutor(test())
         }
@@ -122,7 +100,8 @@ class Ruins : JavaPlugin(){
             setExecutor(Lore())
             tabCompleter = LoreTab()
         }
-        logger.warning(env.ENABLE_INFO.trimIndent())
+    }
+    private fun targetGlow() {
         server.scheduler.runTaskTimer(this, Runnable {
             for(p in server.onlinePlayers){
                 ScoreBoards.showScoreboard(p)
@@ -140,5 +119,33 @@ class Ruins : JavaPlugin(){
                 }
             }
         }, 1, 1)
+    }
+    private fun moisture() {
+        server.scheduler.runTaskTimer(this, Runnable {
+            for(p in server.onlinePlayers){
+                if(p.isOp)
+                    return@Runnable
+                if(Math.round((p.exp-0.01F)*100)/100.0 > 0.00)
+                    p.exp -= 0.01F
+                else {
+                    if(p.exp != 0.0F)
+                        p.exp = 0.0F
+                    p.health -= 1
+                }
+
+            }
+        }, 0, 20 * 6)
+    }
+    private fun view() {
+        View.cancels.add("Barrel")
+        View.views.add("물품 보관함")
+    }
+    private fun count() {
+        server.scheduler.runTask(this, Runnable {
+            "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb()
+        })
+    }
+    companion object{
+        lateinit var instance : Ruins
     }
 }
