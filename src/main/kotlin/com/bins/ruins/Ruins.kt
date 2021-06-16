@@ -13,12 +13,10 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
-import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.View
-import com.bins.ruins.structure.enums.types.ReceiverType.*
+import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Glows
-import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.bins.ruins.structure.objects.utilities.Receiver.targetedItemEntity
 import com.bins.ruins.structure.objects.utilities.ScoreBoards
@@ -29,16 +27,7 @@ import com.bins.ruins.structure.objects.vars.glowValue
 import com.bins.ruins.structure.objects.vars.reload
 import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.events.ListenerPriority
-import com.comphenix.protocol.events.PacketAdapter
-import com.comphenix.protocol.events.PacketEvent
-import com.comphenix.protocol.injector.netty.ProtocolInjector
 import org.bukkit.ChatColor
-import org.bukkit.Material
-import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 

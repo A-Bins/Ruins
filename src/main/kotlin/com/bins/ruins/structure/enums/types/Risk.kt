@@ -1,7 +1,7 @@
 package com.bins.ruins.structure.enums.types
 
 
-enum class RiskType {
+enum class Risk {
     EASY,
     NORMAL,
     HARD,

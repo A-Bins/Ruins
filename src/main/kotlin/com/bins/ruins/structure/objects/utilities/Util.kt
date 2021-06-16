@@ -3,8 +3,8 @@ package com.bins.ruins.structure.objects.utilities
 import com.bins.ruins.Ruins
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
-import com.bins.ruins.structure.enums.types.ReceiverType
-import com.bins.ruins.structure.enums.types.ReceiverType.*
+import com.bins.ruins.structure.enums.types.Receiver
+import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.utilities.Receiver.deserializeItemStack
 import com.bins.ruins.structure.objects.utilities.Receiver.serializeItemStack
 import com.bins.ruins.structure.objects.utilities.Receiver.tryCast
@@ -67,7 +67,7 @@ object Util {
         }
 
     }
-    fun save(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
+    fun save(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: Receiver) {
 
         when (receiver) {
             STASH -> {
@@ -114,7 +114,7 @@ object Util {
             }
         }
     }
-    fun load(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: ReceiverType) {
+    fun load(ruins: Ruins, hash: HashMap<*, *>, name: String, receiver: Receiver) {
         ruins.makeFile(File(ruins.dataFolder, "$name.json"))
         File(ruins.dataFolder, "$name.json").mkdir()
         val parser = JSONParser()

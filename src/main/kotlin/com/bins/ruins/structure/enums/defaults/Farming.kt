@@ -1,7 +1,7 @@
 package com.bins.ruins.structure.enums.defaults
 
 import com.bins.ruins.structure.interfaces.defaults.Farmable
-import com.bins.ruins.structure.enums.types.ItemType
+import com.bins.ruins.structure.enums.types.ItemT
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -84,9 +84,9 @@ enum class Farming: Farmable {
                 itemMeta = meta
             }
         override val label: String
-            get() = type.regular
-        override val type: ItemType
-            get() = ItemType.RESOURCE
+            get() = t.regular
+        override val t: ItemT
+            get() = ItemT.RESOURCE
         override val bundleAmount: Int
             get() = (2..5).random()
         override val bundleItemStack: ItemStack
@@ -110,10 +110,10 @@ enum class Farming: Farmable {
             }
 
         override val label: String
-            get() = type.regular
+            get() = t.regular
 
-        override val type: ItemType
-            get() = ItemType.RESOURCE
+        override val t: ItemT
+            get() = ItemT.RESOURCE
 
         override val bundleAmount: Int
             get() = (2..5).random()
