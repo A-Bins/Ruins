@@ -1,4 +1,4 @@
-package com.bins.ruins.structure.interfaces
+package com.bins.ruins.structure.interfaces.defaults
 
 import org.bukkit.inventory.ItemStack
 

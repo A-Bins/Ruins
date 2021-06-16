@@ -62,8 +62,6 @@ class Ruins : JavaPlugin(){
                 else {
                     if(p.exp != 0.0F)
                         p.exp = 0.0F
-                    if(p.level != 0)
-                        p.level = 0
                     p.health -= 1
                 }
 

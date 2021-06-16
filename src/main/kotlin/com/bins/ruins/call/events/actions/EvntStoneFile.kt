@@ -1,7 +1,7 @@
 package com.bins.ruins.call.events.actions
 
 import com.bins.ruins.call.events.custom.StoneFileBreakEvent
-import com.bins.ruins.structure.enums.Farmings
+import com.bins.ruins.structure.enums.defaults.Farming
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -24,7 +24,7 @@ class EvntStoneFile: Listener{
                 }
             }
         }
-        Farmings.STONE.farming(e.player, b)
+        Farming.STONE.farming(e.player, b)
     }
     private fun getNearbyBlocks(b: Block, radius: Int): List<Block> {
 

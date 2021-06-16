@@ -1,10 +1,10 @@
-package com.bins.ruins.structure.enums
+package com.bins.ruins.structure.enums.defaults
 
-import com.bins.ruins.structure.interfaces.Printable
+import com.bins.ruins.structure.interfaces.defaults.Printable
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-enum class BluePrint: Printable {
+enum class Print: Printable {
     TEST{
 
         override fun decoding() {

@@ -1,6 +1,6 @@
-package com.bins.ruins.structure.enums
+package com.bins.ruins.structure.enums.defaults
 
-import com.bins.ruins.structure.interfaces.Farmable
+import com.bins.ruins.structure.interfaces.defaults.Farmable
 import com.bins.ruins.structure.enums.types.ItemType
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 @Suppress("DEPRECATION")
-enum class Farmings: Farmable {
+enum class Farming: Farmable {
 
     STONE{
         override fun farming(p: Player, b: Block) {
@@ -71,8 +71,6 @@ enum class Farmings: Farmable {
                 }
             }
         }
-        override val signature: String = "하위"
-
         override val itemStack: ItemStack
             get() = ItemStack(Material.COBBLESTONE).apply {
                 val meta = itemMeta
@@ -85,17 +83,12 @@ enum class Farmings: Farmable {
                 meta.addItemFlags(*ItemFlag.values())
                 itemMeta = meta
             }
-
         override val label: String
             get() = type.regular
-
         override val type: ItemType
             get() = ItemType.RESOURCE
-
         override val bundleAmount: Int
             get() = (2..5).random()
-
-
         override val bundleItemStack: ItemStack
             get() = super.bundleItemStack
     },
@@ -103,7 +96,6 @@ enum class Farmings: Farmable {
         override fun farming(p: Player, b: Block) {
 
         }
-        override val signature: String = "하위"
 
         override val itemStack: ItemStack
             get() = ItemStack(Material.OAK_PLANKS).apply {

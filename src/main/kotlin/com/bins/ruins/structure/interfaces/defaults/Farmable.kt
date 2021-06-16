@@ -1,4 +1,4 @@
-package com.bins.ruins.structure.interfaces
+package com.bins.ruins.structure.interfaces.defaults
 
 import com.bins.ruins.structure.enums.types.ItemType
 import org.bukkit.block.Block
@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack
 
 interface Farmable {
     fun farming(p: Player, b: Block)
-    val signature: String
     val type: ItemType
     val label: String
     val itemStack: ItemStack

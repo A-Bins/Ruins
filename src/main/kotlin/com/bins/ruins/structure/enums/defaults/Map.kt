@@ -1,9 +1,9 @@
-package com.bins.ruins.structure.enums
+package com.bins.ruins.structure.enums.defaults
 
-import com.bins.ruins.structure.interfaces.Mappable
+import com.bins.ruins.structure.interfaces.defaults.Mappable
 import com.bins.ruins.structure.enums.types.RiskType
 
-enum class Maps : Mappable {
+enum class Map : Mappable {
     TEST{
         override val index : Int
             get() = 1
