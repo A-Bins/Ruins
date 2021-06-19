@@ -9,6 +9,6 @@ class EvtSwap : Listener{
     @EventHandler
     fun event(e: PlayerSwapHandItemsEvent){
         e.isCancelled = true
-        View(e.player).inMenu()
+//        View(e.player).inMenu()
     }
 }

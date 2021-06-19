@@ -52,7 +52,6 @@ class EvtInteract : Listener{
                         val drop = vars.glowValue[p.uniqueId]!!.itemStack.clone().apply {
                             amount -= gave.amount
                         }
-                        "gave ${gave.amount}          drop ${drop.amount}".bb()
                         p.inventory.addItem(gave)
                         p.world.dropItemNaturally(value.location, drop)
 

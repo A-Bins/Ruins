@@ -44,7 +44,7 @@ class Ruins : JavaPlugin(){
         count()
         configCmd()
         configEvt()
-        moisture()
+//        moisture()
         targetGlow()
     }
     fun makeFile(f: File) {

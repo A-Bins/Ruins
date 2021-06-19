@@ -1,29 +1,16 @@
 package com.bins.ruins.call.commands
 
-import com.bins.ruins.Ruins
+import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.events.PacketContainer
-import com.comphenix.protocol.wrappers.EnumWrappers
-import com.comphenix.protocol.wrappers.Pair
-import net.minecraft.server.v1_16_R3.PacketPlayOutEntityEquipment
 import org.bukkit.Color
-import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Player
-import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.inventory.ItemStack
-import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.tan
 
 
 /*
@@ -54,7 +41,7 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-
+            "§f§m §f".bb()
             for(i in 0..20){
                 val tan = p.eyeLocation.add(p.eyeLocation.direction.multiply(5))
                 tan.x += sin(7 *(i.toDouble() / 20))
@@ -63,10 +50,12 @@ class test : CommandExecutor{
 
             }
             if(args.isNotEmpty()){
-                Guns.HK416.give(p)
-                Guns.UMP5.give(p)
+                Guns.WK416A5.give(p)
+                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
+                    amount = 64
+                })
             }
-//            Guns.HK416.give(p)
+//            Guns.WK416A5.give(p)
         }
         return false
     }
