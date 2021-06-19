@@ -18,7 +18,6 @@ import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-@Suppress("DEPRECATION")
 object Util {
     private fun writeJson(ruins: Ruins, name: String, write: String) {
         val uniOutput = BufferedWriter(
