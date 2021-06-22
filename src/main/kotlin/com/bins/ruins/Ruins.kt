@@ -14,6 +14,7 @@ import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.View
+import com.bins.ruins.structure.enums.items.medicals.Syringe
 import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Glows
@@ -29,12 +30,14 @@ import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
 
 
 class Ruins : JavaPlugin(){
     override fun onEnable() {
         instance = this
+        scheduler = server.scheduler
         /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
         dataFolder.mkdirs()
@@ -69,7 +72,7 @@ class Ruins : JavaPlugin(){
         server.pluginManager.apply{
             arrayOf(
                 *Resistance.configs(),
-                EvtInvClick(), EvtSwap(), EvtNpcRightClick(), EvtBlock(), EvntStoneFile(), EvtInvClose(), EvtInteract(),
+                EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvntStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
@@ -135,6 +138,9 @@ class Ruins : JavaPlugin(){
         })
     }
     companion object{
+        lateinit var scheduler: BukkitScheduler
+            private set
         lateinit var instance : Ruins
+            private set
     }
 }

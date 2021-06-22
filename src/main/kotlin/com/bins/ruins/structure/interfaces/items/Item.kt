@@ -6,7 +6,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 interface Item {
-    val name: String
+    val Dname: String
     val description: ArrayList<String>
     val item: ItemStack
     val tag: Tag

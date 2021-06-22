@@ -1,5 +1,6 @@
 package com.bins.ruins.structure.objects.utilities
 
+import com.bins.ruins.resistance.structure.enums.Guns
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Item

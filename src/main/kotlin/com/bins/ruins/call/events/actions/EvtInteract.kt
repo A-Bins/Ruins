@@ -1,6 +1,7 @@
 package com.bins.ruins.call.events.actions
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.structure.enums.items.medicals.Syringe.Companion.isSyringe
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.bins.ruins.structure.objects.utilities.Util.isGiven
@@ -21,7 +22,7 @@ class EvtInteract : Listener{
         if(vars.isClick[p.uniqueId] == true)
             return
         vars.isClick[p.uniqueId] = true
-        Bukkit.getScheduler().runTaskLater(Ruins.instance, Runnable{
+        Ruins.instance.server.scheduler.runTaskLater(Ruins.instance, Runnable{
             vars.isClick[p.uniqueId] = false
         }, 2)
 
@@ -70,6 +71,12 @@ class EvtInteract : Listener{
 
                 }
             }
+            if (e.hasItem()) {
+                if (e.item!!.isSyringe) {
+
+                }
+            }
+
         }
 
     }
