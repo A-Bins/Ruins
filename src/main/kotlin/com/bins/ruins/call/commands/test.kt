@@ -1,9 +1,11 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.enums.items.medicals.Syringe
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import kotlinx.coroutines.DelicateCoroutinesApi
 import org.bukkit.Color
 import org.bukkit.Particle
 import org.bukkit.command.Command
@@ -40,6 +42,7 @@ Strash(p.uniqueId, d)
 //}
 @Suppress("DEPRECATION")
 class test : CommandExecutor{
+    @DelicateCoroutinesApi
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
 //            for(i in 0..20){
@@ -50,8 +53,9 @@ class test : CommandExecutor{
 //
 //            }
             if(args.isNotEmpty()){
-                if(args[0] == "LEMON") {
-                    Syringe.catch("§f레몬 주사기").effect(p)
+                if(args[0] == "close") {
+                    val logout = Ruins.cherryBlossomLogoutAsync()
+                    logout.bb()
                 }
                 Guns.WK416A5.give(p)
                 p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {

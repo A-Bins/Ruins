@@ -1,11 +1,8 @@
 package com.bins.ruins
 
-import com.bins.ruins.call.commands.Lore
-import com.bins.ruins.call.commands.Name
-import com.bins.ruins.call.commands.OpenStash
+import com.bins.ruins.call.commands.*
 import com.bins.ruins.call.commands.tab.LoreTab
 import com.bins.ruins.call.commands.tab.NameTab
-import com.bins.ruins.call.commands.test
 import com.bins.ruins.call.events.actions.*
 import com.bins.ruins.call.events.inventories.EvtInvClick
 import com.bins.ruins.call.events.inventories.EvtInvClose
@@ -14,9 +11,9 @@ import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.View
-import com.bins.ruins.structure.enums.items.medicals.Syringe
 import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
+import com.bins.ruins.structure.objects.env.BOT_TOKEN
 import com.bins.ruins.structure.objects.utilities.Glows
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.bins.ruins.structure.objects.utilities.Receiver.targetedItemEntity
@@ -28,14 +25,56 @@ import com.bins.ruins.structure.objects.vars.glowValue
 import com.bins.ruins.structure.objects.vars.reload
 import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
+import dev.kord.common.Color
+import dev.kord.common.entity.PresenceStatus
+import dev.kord.core.Kord
+import dev.kord.core.behavior.channel.createEmbed
+import dev.kord.core.entity.Activity
+import dev.kord.core.event.message.MessageCreateEvent
+import dev.kord.core.on
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
 
 
 class Ruins : JavaPlugin(){
+    @DelicateCoroutinesApi
+    private fun cherryBlossomInitializedAsync() = GlobalScope.async {
+        cherryBlossom = Kord(BOT_TOKEN)
+        cherryBlossom.on<MessageCreateEvent> {
+            if (message.content != "!ping") return@on
+
+            val response = message.channel.createEmbed {
+                color = Color(7, 40, 69)
+                this.title = "Hello World!"
+            }
+
+        }
+        cherryBlossom.login {
+            playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
+            server.scheduler.runTaskTimer(this@Ruins, Runnable {
+                val presence = GlobalScope.async {
+                    cherryBlossom.editPresence {
+                        playing("${server.onlinePlayers.size}명이 Ruins를 플레이 중이에요!")
+                    }
+                }
+            }, 20, 20)
+        }
+    }
+    @DelicateCoroutinesApi
+    override fun onDisable() {
+        val log = cherryBlossomLogoutAsync()
+    }
+    @DelicateCoroutinesApi
     override fun onEnable() {
+        val cherry = cherryBlossomInitializedAsync()
+        logger.info(BOT_TOKEN)
         instance = this
         scheduler = server.scheduler
         /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
@@ -92,6 +131,9 @@ class Ruins : JavaPlugin(){
             setExecutor(Lore())
             tabCompleter = LoreTab()
         }
+        getCommand("spawn")?.apply{
+            setExecutor(Spawn())
+        }
     }
     private fun targetGlow() {
         server.scheduler.runTaskTimer(this, Runnable {
@@ -138,6 +180,12 @@ class Ruins : JavaPlugin(){
         })
     }
     companion object{
+        @DelicateCoroutinesApi
+        fun cherryBlossomLogoutAsync() = GlobalScope.async {
+            cherryBlossom.logout()
+        }
+        lateinit var cherryBlossom: Kord
+            private set
         lateinit var scheduler: BukkitScheduler
             private set
         lateinit var instance : Ruins
