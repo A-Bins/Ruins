@@ -53,6 +53,7 @@ class test : CommandExecutor{
 //
 //            }
             if(args.isNotEmpty()){
+                "A".bb()
                 if(args[0] == "close") {
                     val logout = Ruins.cherryBlossomLogoutAsync()
                     logout.bb()

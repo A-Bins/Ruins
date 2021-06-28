@@ -27,9 +27,12 @@ import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
 import dev.kord.common.Color
 import dev.kord.common.entity.PresenceStatus
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import dev.kord.core.behavior.channel.createEmbed
 import dev.kord.core.entity.Activity
+import dev.kord.core.event.gateway.DisconnectEvent
+import dev.kord.core.event.gateway.ReadyEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -41,27 +44,29 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
+import java.security.Security
 
 
 class Ruins : JavaPlugin(){
     @DelicateCoroutinesApi
     private fun cherryBlossomInitializedAsync() = GlobalScope.async {
         cherryBlossom = Kord(BOT_TOKEN)
-        cherryBlossom.on<MessageCreateEvent> {
-            if (message.content != "!ping") return@on
-
-            val response = message.channel.createEmbed {
-                color = Color(7, 40, 69)
-                this.title = "Hello World!"
+        cherryBlossom.on<ReadyEvent> {
+            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
+                content = "벚꽃봇 일어나따!"
             }
-
+        }
+        cherryBlossom.on<DisconnectEvent> {
+            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
+                content = "벚꽃봇 잔다.."
+            }
         }
         cherryBlossom.login {
             playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
             server.scheduler.runTaskTimer(this@Ruins, Runnable {
                 val presence = GlobalScope.async {
                     cherryBlossom.editPresence {
-                        playing("${server.onlinePlayers.size}명이 Ruins를 플레이 중이에요!")
+                        playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
                     }
                 }
             }, 20, 20)
@@ -73,6 +78,8 @@ class Ruins : JavaPlugin(){
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
+        System.setProperty("io.ktor.random.secure.random.provider", "DRBG")
+        Security.setProperty("securerandom.drbg.config", "HMAC_DRBG,SHA-512,256,pr_and_reseed")
         val cherry = cherryBlossomInitializedAsync()
         logger.info(BOT_TOKEN)
         instance = this

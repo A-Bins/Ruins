@@ -1,5 +1,5 @@
 name: Ruins
-version: @version
+version: underfined
 main: com.bins.ruins.Ruins
 api-version: 1.16
 depend: [ ProtocolLib, Citizens ]
@@ -10,6 +10,6 @@ commands:
   name:
     aliases: [n, na, nam, 이름]
   lore:
-    aliases: [l, lo, lor, 로어]
+    aliases: [로어]
   spawn:
-    aliases: [넴주, 스폰, spawn, sp, spa, spaw]
+    aliases: [넴주, 스폰, spawn, sp, spa, spaw, l, lo, lob, lobb, lobby, 로비]

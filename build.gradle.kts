@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 
 plugins {
     id("idea")
@@ -8,8 +6,6 @@ plugins {
 }
 
 group = "com.bins"
-version =
-
 repositories {
 //    mavenCentral()
     maven {
@@ -42,47 +38,54 @@ repositories {
 
 dependencies {
 
-//    shadow "org.jetbrains.kotlin:kotlin-stdlib"
-//    shadow "dev.kord:kord-core:0.7.1"
-//    shadow "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
+    shadow ("org.jetbrains.kotlin:kotlin-stdlib")
+    shadow ("dev.kord:kord-core:0.7.1")
+    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib")
     implementation ("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
-    implementation ("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
+    implementation ("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
     compileOnly ("dev.kord:kord-core:0.7.1")
 
-    compileOnly ("world.bentobox:bentobox:1.16.1-SNAPSHOT")
+//    compileOnly ("world.bentobox:bentobox:1.16.1-SNAPSHOT")
     compileOnly (group = "com.comphenix.protocol", name = "ProtocolLib", version = "4.6.0")
     compileOnly (group = "com.sk89q.worldguard", name = "worldguard-bukkit", version = "7.0.4")
     compileOnly (group = "net.citizensnpcs", name = "citizensapi", version = "2.0.20-SNAPSHOT")
 }
 
-tasks {
-    javadoc {
-        options.encoding = "UTF-8"
-    }
+val shade = configurations.create("shade")
+shade.extendsFrom(configurations.implementation.get())
 
+
+tasks {
     compileJava {
         options.encoding = "UTF-8"
     }
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
 
-    shadowJar {
-        archiveBaseName.set(project.name)
-        archiveVersion.set("")
-        archiveClassifier.set("")
-    }
 
     processResources {
         filesMatching("*.yml") {
             expand(project.properties)
         }
+    }
+
+    create<Jar>("sourceJar") {
+        archiveClassifier.set("source")
+        from(sourceSets["main"].allSource)
+    }
+
+    val shadow by configurations.shadow
+    shadowJar {
+        destinationDirectory.set(file("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.16.5 Project RUINS 2/plugins"))
+        archiveBaseName.set(project.name)
+        archiveClassifier.set("")
+        archiveVersion.set("")
+        configurations = listOf(shadow)
     }
 
 }
