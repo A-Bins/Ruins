@@ -55,9 +55,6 @@ dependencies {
     compileOnly (group = "net.citizensnpcs", name = "citizensapi", version = "2.0.20-SNAPSHOT")
 }
 
-val shade = configurations.create("shade")
-shade.extendsFrom(configurations.implementation.get())
-
 
 tasks {
     compileJava {

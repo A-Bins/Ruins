@@ -49,6 +49,10 @@ import java.security.Security
 
 class Ruins : JavaPlugin(){
     @DelicateCoroutinesApi
+    fun cherryBlossomLogoutAsync() = GlobalScope.async {
+        cherryBlossom.logout()
+    }
+    @DelicateCoroutinesApi
     private fun cherryBlossomInitializedAsync() = GlobalScope.async {
         cherryBlossom = Kord(BOT_TOKEN)
         cherryBlossom.on<ReadyEvent> {
@@ -56,30 +60,32 @@ class Ruins : JavaPlugin(){
                 content = "벚꽃봇 일어나따!"
             }
         }
-        cherryBlossom.on<DisconnectEvent> {
+        cherryBlossom.on<DisconnectEvent.DiscordCloseEvent> {
             kord.rest.channel.createMessage(Snowflake("835114682871578624")){
                 content = "벚꽃봇 잔다.."
             }
         }
         cherryBlossom.login {
             playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
-            server.scheduler.runTaskTimer(this@Ruins, Runnable {
-                val presence = GlobalScope.async {
-                    cherryBlossom.editPresence {
-                        playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
+            Thread {
+                while(true) {
+                    val presence = GlobalScope.async {
+                        cherryBlossom.editPresence {
+                            playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
+                        }
                     }
+                    Thread.sleep(1000)
                 }
-            }, 20, 20)
+            }.start()
         }
     }
     @DelicateCoroutinesApi
     override fun onDisable() {
+        "ㅁㄴㅇㅁabdsㄴㅇ".bb()
         val log = cherryBlossomLogoutAsync()
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
-        System.setProperty("io.ktor.random.secure.random.provider", "DRBG")
-        Security.setProperty("securerandom.drbg.config", "HMAC_DRBG,SHA-512,256,pr_and_reseed")
         val cherry = cherryBlossomInitializedAsync()
         logger.info(BOT_TOKEN)
         instance = this
@@ -187,10 +193,6 @@ class Ruins : JavaPlugin(){
         })
     }
     companion object{
-        @DelicateCoroutinesApi
-        fun cherryBlossomLogoutAsync() = GlobalScope.async {
-            cherryBlossom.logout()
-        }
         lateinit var cherryBlossom: Kord
             private set
         lateinit var scheduler: BukkitScheduler

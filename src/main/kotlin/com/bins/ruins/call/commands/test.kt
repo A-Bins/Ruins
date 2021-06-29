@@ -3,17 +3,13 @@ package com.bins.ruins.call.commands
 import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.enums.items.medicals.Syringe
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import kotlinx.coroutines.DelicateCoroutinesApi
-import org.bukkit.Color
-import org.bukkit.Particle
+import kotlinx.coroutines.Runnable
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import kotlin.math.cos
-import kotlin.math.sin
 
 
 /*
@@ -53,9 +49,8 @@ class test : CommandExecutor{
 //
 //            }
             if(args.isNotEmpty()){
-                "A".bb()
                 if(args[0] == "close") {
-                    val logout = Ruins.cherryBlossomLogoutAsync()
+                    val logout = Ruins.instance.cherryBlossomLogoutAsync()
                     logout.bb()
                 }
                 Guns.WK416A5.give(p)
