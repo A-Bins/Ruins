@@ -1,11 +1,12 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.CherryBlossom
 import com.bins.ruins.Ruins
+import com.bins.ruins.call.events.actions.EvtStoneFile
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Runnable
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -50,8 +51,11 @@ class test : CommandExecutor{
 //            }
             if(args.isNotEmpty()){
                 if(args[0] == "close") {
-                    val logout = Ruins.instance.cherryBlossomLogoutAsync()
-                    logout.bb()
+//                    val logout = CherryBlossom.cherryBlossomLogoutAsync()
+//                    logout.key.bb()
+                }
+                else if(args[0] == "a") {
+                    val a: ArrayList<Int> = arrayListOf(1,5,3,2,76,10).also { it.sorted().bb() }
                 }
                 Guns.WK416A5.give(p)
                 p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {

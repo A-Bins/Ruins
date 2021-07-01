@@ -2,7 +2,7 @@
 plugins {
     id("idea")
     kotlin("jvm") version "1.5.10"
-    id("com.github.johnrengelman.shadow") version "2.0.4"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "com.bins"
@@ -75,7 +75,6 @@ tasks {
         archiveClassifier.set("source")
         from(sourceSets["main"].allSource)
     }
-
     val shadow by configurations.shadow
     shadowJar {
         destinationDirectory.set(file("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.16.5 Project RUINS 2/plugins"))

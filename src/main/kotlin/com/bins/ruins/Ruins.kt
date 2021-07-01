@@ -25,68 +25,26 @@ import com.bins.ruins.structure.objects.vars.glowValue
 import com.bins.ruins.structure.objects.vars.reload
 import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
-import dev.kord.common.Color
-import dev.kord.common.entity.PresenceStatus
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
-import dev.kord.core.behavior.channel.createEmbed
-import dev.kord.core.entity.Activity
 import dev.kord.core.event.gateway.DisconnectEvent
 import dev.kord.core.event.gateway.ReadyEvent
-import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
-import java.security.Security
 
 
-class Ruins : JavaPlugin(){
-    @DelicateCoroutinesApi
-    fun cherryBlossomLogoutAsync() = GlobalScope.async {
-        cherryBlossom.logout()
-    }
-    @DelicateCoroutinesApi
-    private fun cherryBlossomInitializedAsync() = GlobalScope.async {
-        cherryBlossom = Kord(BOT_TOKEN)
-        cherryBlossom.on<ReadyEvent> {
-            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
-                content = "벚꽃봇 일어나따!"
-            }
-        }
-        cherryBlossom.on<DisconnectEvent.DiscordCloseEvent> {
-            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
-                content = "벚꽃봇 잔다.."
-            }
-        }
-        cherryBlossom.login {
-            playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
-            Thread {
-                while(true) {
-                    val presence = GlobalScope.async {
-                        cherryBlossom.editPresence {
-                            playing("${server.onlinePlayers.size}명이 Ruins를 플레이")
-                        }
-                    }
-                    Thread.sleep(1000)
-                }
-            }.start()
-        }
-    }
-    @DelicateCoroutinesApi
+class Ruins : JavaPlugin() {
     override fun onDisable() {
-        "ㅁㄴㅇㅁabdsㄴㅇ".bb()
-        val log = cherryBlossomLogoutAsync()
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
-        val cherry = cherryBlossomInitializedAsync()
+        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
         logger.info(BOT_TOKEN)
         instance = this
         scheduler = server.scheduler
@@ -124,7 +82,7 @@ class Ruins : JavaPlugin(){
         server.pluginManager.apply{
             arrayOf(
                 *Resistance.configs(),
-                EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvntStoneFile(), EvtInvClose(), EvtInteract(),
+                EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
@@ -194,7 +152,6 @@ class Ruins : JavaPlugin(){
     }
     companion object{
         lateinit var cherryBlossom: Kord
-            private set
         lateinit var scheduler: BukkitScheduler
             private set
         lateinit var instance : Ruins

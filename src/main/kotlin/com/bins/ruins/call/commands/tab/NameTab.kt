@@ -10,12 +10,7 @@ import java.util.ArrayList
 
 @Suppress("DEPRECATION")
 class NameTab : TabCompleter {
-    override fun onTabComplete(
-        sender: CommandSender,
-        command: Command,
-        label: String,
-        args: Array<String>
-    ): List<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): List<String>? {
         val completions: MutableList<String> = ArrayList()
         val commands: MutableList<String> = ArrayList()
         if (sender !is Player) return null
