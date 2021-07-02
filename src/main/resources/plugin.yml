@@ -2,7 +2,7 @@ name: Ruins
 version: underfined
 main: com.bins.ruins.Ruins
 api-version: 1.16
-depend: [ ProtocolLib, Citizens ]
+depend: [ ProtocolLib, Citizens, WorldGuard ]
 authors: [ A_bins, DDang_ ]
 commands:
   t:

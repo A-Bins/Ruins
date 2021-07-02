@@ -40,19 +40,21 @@ import java.io.File
 
 class Ruins : JavaPlugin() {
     override fun onDisable() {
+        hide.disable()
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
 
         players = server.onlinePlayers
-        hide = Hideout()
         instance = this
         scheduler = server.scheduler
+        hide = Hideout()
 
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
         dataFolder.mkdirs()
+        println(hide)
         hide.enable()
         view()
         saveAndLoad()
@@ -159,7 +161,7 @@ class Ruins : JavaPlugin() {
                 (0..35).forEach { i ->
                     val loc : Location = eyeLocation.add(location.direction.multiply(i.toDouble()/10))
                     val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
-                    return list.first()
+                    return list.firstOrNull()
                 }
                 return null
             }
