@@ -54,7 +54,6 @@ class Ruins : JavaPlugin() {
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
         dataFolder.mkdirs()
-        println(hide)
         hide.enable()
         view()
         saveAndLoad()
