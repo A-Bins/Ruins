@@ -1,5 +1,6 @@
 package com.bins.ruins.call.events.actions
 
+import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
@@ -8,6 +9,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.persistence.PersistentDataType
 
 class EvtLogins: Listener {
     @EventHandler
@@ -15,6 +17,7 @@ class EvtLogins: Listener {
         e.player.healthScale = 40.0
         e.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = 100.0
         Stash.default(e.player.uniqueId)
+        e.player.persistentDataContainer[Hideout.craftUnlock, PersistentDataType.STRING] = "false"
         vars.totals.putIfAbsent(e.player.uniqueId, Total.create(0, 0))
     }
     @EventHandler

@@ -5,6 +5,7 @@ import com.bins.ruins.structure.objects.vars.stashes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.collections.ArrayList
@@ -24,6 +25,12 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
         }
     }
     companion object{
+        fun InventoryClickEvent.stashCondition() = view.title.contains("보관함")
+        fun InventoryClickEvent.stash(){
+            val p = whoClicked as Player
+            if(currentItem?.type == Material.ANVIL || currentItem?.type == Material.IRON_BARS)
+                isCancelled = true
+        }
         val Player.stash: Stash?
             get() = stashes[this.uniqueId]
         fun Player.drawerSave(){

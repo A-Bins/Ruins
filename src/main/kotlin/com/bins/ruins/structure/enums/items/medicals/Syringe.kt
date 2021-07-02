@@ -50,11 +50,10 @@ enum class Syringe: Medical {
                 p.sendActionBar("§7사용까지 §f0.00s")
             }, 1)
         }
-        else
-            Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
-                p.sendActionBar("§7사용까지 §f${wait}s")
-                used("$wait".toBigDecimal() - 0.05.toBigDecimal(), p, want)
-            }, 1)
+        else Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
+            p.sendActionBar("§7사용까지 §f${wait}s")
+            used("$wait".toBigDecimal() - 0.05.toBigDecimal(), p, want)
+        }, 1)
 
 
 
@@ -68,9 +67,7 @@ enum class Syringe: Medical {
             }
         }
         val ItemStack.isSyringe: Boolean
-            get() = values().toList().stream().anyMatch {
-                itemMeta?.displayName == it.item.itemMeta.displayName
-            }
+            get() = values().toList().stream().anyMatch { itemMeta?.displayName == it.item.itemMeta.displayName }
     }
 
 }

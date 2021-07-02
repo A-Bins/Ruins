@@ -62,7 +62,12 @@ class EvtInteract : Listener{
                 }
 
             }
-            if (b != null) {
+            else if (e.hasItem()) {
+                if (e.item!!.isSyringe) {
+
+                }
+            }
+            else if (b != null) {
                 when {
                     (p.location.distance(b.location) >= 2) and (b.type == Material.BARREL) -> {
                         p.sendMessage("§3§l  Ruins §8≫ §7가까이서 열어야 할 것 같다")
@@ -71,12 +76,10 @@ class EvtInteract : Listener{
 
                 }
             }
-            if (e.hasItem()) {
-                if (e.item!!.isSyringe) {
-
-                }
-            }
-
+        }
+        if(!p.isOp){
+            e.isCancelled = true
+            return
         }
 
     }

@@ -17,8 +17,6 @@ import java.util.UUID;
 
 public class Glows {
     public static void setGlow(Player p, Entity e, boolean glow) {
-
-        final HashMap<UUID, String> a = new HashMap<>();
         final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
         final WrappedDataWatcher watcher = new WrappedDataWatcher();
         final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);

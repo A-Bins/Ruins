@@ -48,8 +48,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
     implementation ("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
     compileOnly ("dev.kord:kord-core:0.7.1")
-
-//    compileOnly ("world.bentobox:bentobox:1.16.1-SNAPSHOT")
     compileOnly (group = "com.comphenix.protocol", name = "ProtocolLib", version = "4.6.0")
     compileOnly (group = "com.sk89q.worldguard", name = "worldguard-bukkit", version = "7.0.4")
     compileOnly (group = "net.citizensnpcs", name = "citizensapi", version = "2.0.20-SNAPSHOT")

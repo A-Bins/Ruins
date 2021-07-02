@@ -10,13 +10,13 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
+import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.classes.View
 import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.env.BOT_TOKEN
 import com.bins.ruins.structure.objects.utilities.Glows
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
-import com.bins.ruins.structure.objects.utilities.Receiver.targetedItemEntity
 import com.bins.ruins.structure.objects.utilities.ScoreBoards
 import com.bins.ruins.structure.objects.utilities.Util.load
 import com.bins.ruins.structure.objects.utilities.Util.save
@@ -25,33 +25,35 @@ import com.bins.ruins.structure.objects.vars.glowValue
 import com.bins.ruins.structure.objects.vars.reload
 import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
-import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
-import dev.kord.core.event.gateway.DisconnectEvent
-import dev.kord.core.event.gateway.ReadyEvent
-import dev.kord.core.on
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import org.bukkit.ChatColor
+import org.bukkit.Location
+import org.bukkit.NamespacedKey
+import org.bukkit.entity.Item
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
 
+//        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
 
 class Ruins : JavaPlugin() {
     override fun onDisable() {
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
-        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
-        logger.info(BOT_TOKEN)
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
+
+        players = server.onlinePlayers
+        hide = Hideout()
         instance = this
         scheduler = server.scheduler
-        /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
+
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
         dataFolder.mkdirs()
-
+        hide.enable()
         view()
         saveAndLoad()
         count()
@@ -60,6 +62,7 @@ class Ruins : JavaPlugin() {
 //        moisture()
         targetGlow()
     }
+    
     fun makeFile(f: File) {
         if (!f.exists() || !f.isFile)
             f.createNewFile()
@@ -108,7 +111,7 @@ class Ruins : JavaPlugin() {
     }
     private fun targetGlow() {
         server.scheduler.runTaskTimer(this, Runnable {
-            for(p in server.onlinePlayers){
+            server.onlinePlayers.forEach{ p ->
                 ScoreBoards.showScoreboard(p)
                 val e = p.targetedItemEntity
                 if(e != null){
@@ -151,6 +154,19 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
+        val Player.targetedItemEntity: Item?
+            get() {
+                (0..35).forEach { i ->
+                    val loc : Location = eyeLocation.add(location.direction.multiply(i.toDouble()/10))
+                    val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
+                    return list.first()
+                }
+                return null
+            }
+        lateinit var hide: Hideout
+            private set
+        lateinit var players: Collection<Player>
+            private set
         lateinit var cherryBlossom: Kord
         lateinit var scheduler: BukkitScheduler
             private set
