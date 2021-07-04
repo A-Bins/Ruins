@@ -47,8 +47,6 @@ class test : CommandExecutor{
         if(p is Player){
             val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
             toast.play(p)
-            toast.json.bb()
-            toast.JSON.bb()
 //            toast.chatComponents.write(0, WrappedChatComponent.fromText("real kk"))
 
 //            pm.sendServerPacket(p, toast)

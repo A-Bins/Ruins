@@ -18,23 +18,8 @@ class Toast(val key: NamespacedKey, val title: String, val description: String, 
     init {
         Bukkit.getUnsafe().loadAdvancement(key, json)
     }
-    val JSON: String
-        get() {
-            val icons = JSONObject().apply {
-                this["item"] = icon
-            }
-
-            val json = JSONObject().apply {
-                this["icon"] = icons
-            }
-            val sw = StringWriter();
-            json.writeJSONString(sw)
-            JSONpretty
-            return sw.toString()
-        }
     val json: String
         get() {
-            val json = JsonObject()
             val icons = JsonObject().apply {
                 addProperty("item", icon)
             }
@@ -56,10 +41,10 @@ class Toast(val key: NamespacedKey, val title: String, val description: String, 
 
                 add("impossible", trigger as JsonElement)
             }
-            json.add("criteria", criteria as JsonElement)
-            json.add("display", display as JsonElement);
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            return gson.toJson(json as JsonElement)
+            return GsonBuilder().setPrettyPrinting().create().toJson(JsonObject().apply {
+                add("criteria", criteria as JsonElement)
+                add("display", display as JsonElement);
+            } as JsonElement)
         }
 
 
@@ -76,6 +61,7 @@ class Toast(val key: NamespacedKey, val title: String, val description: String, 
                 unProgress.revokeCriteria(it)
             }
             Bukkit.getUnsafe().removeAdvancement(key);
+            Bukkit.reloadData()
         }, 20)
     }
 }
