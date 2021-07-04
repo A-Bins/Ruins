@@ -10,6 +10,7 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.resistance.Resistance
+import com.bins.ruins.structure.classes.Header
 import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.classes.View
 import com.bins.ruins.structure.enums.types.Receiver.*
@@ -113,6 +114,8 @@ class Ruins : JavaPlugin() {
     private fun targetGlow() {
         server.scheduler.runTaskTimer(this, Runnable {
             server.onlinePlayers.forEach{ p ->
+
+                p.playerListHeader = Header().header()
                 ScoreBoards.showScoreboard(p)
                 val e = p.targetedItemEntity
                 if(e != null){
@@ -160,7 +163,10 @@ class Ruins : JavaPlugin() {
                 (0..35).forEach { i ->
                     val loc : Location = eyeLocation.add(location.direction.multiply(i.toDouble()/10))
                     val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
-                    return list.firstOrNull()
+
+                    for (e in list) {
+                        return e
+                    }
                 }
                 return null
             }

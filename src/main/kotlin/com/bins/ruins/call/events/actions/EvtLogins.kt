@@ -4,6 +4,7 @@ import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
+import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import org.bukkit.attribute.Attribute
 import org.bukkit.event.EventHandler
@@ -27,10 +28,7 @@ class EvtLogins: Listener {
     }
     @EventHandler
     fun event1(e: PlayerQuitEvent) {
-        (Hideout.arHash[e.player.uniqueId] != null).bb()
-
         Hideout.arHash.remove(e.player.uniqueId)
-        (Hideout.arHash[e.player.uniqueId] != null).bb()
 
     }
 }

@@ -73,11 +73,18 @@ class EvtInteract : Listener{
                         p.sendMessage("§3§l  Ruins §8≫ §7가까이서 열어야 할 것 같다")
                         e.isCancelled = true
                     }
+                    p.inventory.itemInMainHand.type == Material.GRAY_CARPET -> {
+                        vars.fallingBlocks.add(p.world.spawnFallingBlock(b.location.toCenterLocation(), Bukkit.createBlockData(Material.GRAY_CARPET)).apply {
+                                dropItem = false
+                                this.ticksLived = 0
+                            })
+
+                    }
 
                 }
             }
         }
-        if(!p.isOp){
+        else if(!p.isOp){
             e.isCancelled = true
             return
         }

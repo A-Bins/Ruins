@@ -12,10 +12,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Glows {
+
+
     public static void setGlow(Player p, Entity e, boolean glow) {
         final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
         final WrappedDataWatcher watcher = new WrappedDataWatcher();

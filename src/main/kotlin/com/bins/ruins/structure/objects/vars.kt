@@ -2,9 +2,12 @@ package com.bins.ruins.structure.objects
 
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
+import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.Item
 import org.bukkit.inventory.ItemStack
 import java.util.*
+import java.util.stream.Collectors
 import kotlin.collections.HashMap
 
 object vars {
@@ -14,4 +17,6 @@ object vars {
     val container: HashMap<UUID, ItemStack> = HashMap()
     val isClick: HashMap<UUID, Boolean> = HashMap()
     val glowValue: HashMap<UUID, Item?> = HashMap()
+    val fallingBlocks: ArrayList<FallingBlock> = arrayListOf()
+
 }

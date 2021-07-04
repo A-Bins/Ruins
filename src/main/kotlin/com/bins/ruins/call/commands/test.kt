@@ -1,24 +1,19 @@
 package com.bins.ruins.call.commands
 
-import com.bins.ruins.CherryBlossom
 import com.bins.ruins.Ruins
-import com.bins.ruins.call.events.actions.EvtStoneFile
-import com.bins.ruins.resistance.structure.enums.Ammo
-import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.classes.Pages
+import com.bins.ruins.structure.classes.Toast
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import kotlinx.coroutines.DelicateCoroutinesApi
-import org.bukkit.Bukkit
-import org.bukkit.Color
-import org.bukkit.Material
-import org.bukkit.Particle
+import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
-import kotlin.math.cos
-import kotlin.math.sin
+import org.json.simple.JSONObject
+import java.util.*
 
 
 /*
@@ -50,6 +45,13 @@ class test : CommandExecutor{
     @DelicateCoroutinesApi
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
+            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
+            toast.play(p)
+            toast.json.bb()
+            toast.JSON.bb()
+//            toast.chatComponents.write(0, WrappedChatComponent.fromText("real kk"))
+
+//            pm.sendServerPacket(p, toast)
 
 //            for(t in -100..100){
 //                val l = p.eyeLocation.add(p.eyeLocation.direction.multiply(5)).apply {
