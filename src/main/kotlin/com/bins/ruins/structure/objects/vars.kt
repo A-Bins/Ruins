@@ -17,6 +17,4 @@ object vars {
     val container: HashMap<UUID, ItemStack> = HashMap()
     val isClick: HashMap<UUID, Boolean> = HashMap()
     val glowValue: HashMap<UUID, Item?> = HashMap()
-    val fallingBlocks: ArrayList<FallingBlock> = arrayListOf()
-
 }

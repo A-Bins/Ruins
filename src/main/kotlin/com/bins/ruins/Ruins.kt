@@ -4,6 +4,7 @@ import com.bins.ruins.call.commands.*
 import com.bins.ruins.call.commands.tab.LoreTab
 import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.events.actions.*
+import com.bins.ruins.call.events.farmings.EvtStoneFile
 import com.bins.ruins.call.events.inventories.EvtInvClick
 import com.bins.ruins.call.events.inventories.EvtInvClose
 import com.bins.ruins.call.events.inventories.EvtInvOpen
@@ -15,7 +16,6 @@ import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.classes.View
 import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
-import com.bins.ruins.structure.objects.env.BOT_TOKEN
 import com.bins.ruins.structure.objects.utilities.Glows
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.bins.ruins.structure.objects.utilities.ScoreBoards
@@ -28,10 +28,8 @@ import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.delay
 import org.bukkit.ChatColor
 import org.bukkit.Location
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -160,7 +158,7 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
-        fun Long.rt(delay: Long = 0, run: () -> Any): BukkitTask {
+        fun Long.rt(delay: Long = 1, run: () -> Any): BukkitTask {
             return scheduler.runTaskTimer(instance, Runnable {
                 run()
             }, delay, this)

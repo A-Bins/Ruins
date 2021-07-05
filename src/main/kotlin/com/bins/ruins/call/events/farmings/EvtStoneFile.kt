@@ -1,5 +1,6 @@
-package com.bins.ruins.call.events.actions
+package com.bins.ruins.call.events.farmings
 
+import com.bins.ruins.call.events.actions.EvtBlock
 import com.bins.ruins.call.events.custom.StoneFileBreakEvent
 import com.bins.ruins.structure.enums.defaults.Farming
 import org.bukkit.Material
