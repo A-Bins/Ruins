@@ -160,7 +160,7 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
-        fun Long.rt(delay: Long, run: () -> Any): BukkitTask {
+        fun Long.rt(delay: Long = 0, run: () -> Any): BukkitTask {
             return scheduler.runTaskTimer(instance, Runnable {
                 run()
             }, delay, this)
