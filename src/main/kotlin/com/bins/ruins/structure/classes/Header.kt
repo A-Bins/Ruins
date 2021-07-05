@@ -75,7 +75,8 @@ ${Header().player()}
 """.trimIndent()
     private var playerList = ""
     fun player(): String {
-        Ruins.players.map { it.name }.chunked(3).toMutableList().forEach { m ->
+        val list = Ruins.players.map { it.name }.chunked(3).toMutableList()
+        list.forEach { m ->
            run {
                var s = ""
                m.forEach a@{
@@ -90,7 +91,7 @@ ${Header().player()}
                        for (i in 1..25) {
                            s = " $s"
                        }
-                       playerList += "$s${if(m.indexOf(it) == 2) "\n" else ""}"
+                       playerList += "$s${if(m.indexOf(it) == 2 && list.size-1 > list.indexOf(m)) "\n" else ""}"
                        return@run
                    }
                    for(i in 1..(19-it.length)) {
