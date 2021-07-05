@@ -1,6 +1,8 @@
 package com.bins.ruins.call.commands
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.resistance.structure.enums.Ammo
+import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.Toast
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.google.gson.GsonBuilder
@@ -67,10 +69,10 @@ class test : CommandExecutor{
 //                else if(args[0] == "a") {
 //                    val a: ArrayList<Int> = arrayListOf(1,5,3,2,76,10).also { it.sorted().bb() }
 //                }
-//                Guns.WK416A5.give(p)
-//                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
-//                    amount = 64
-//                })
+                Guns.WK416A5.give(p)
+                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
+                    amount = 64
+                })
 //            }
 //            Guns.WK416A5.give(p)
         }

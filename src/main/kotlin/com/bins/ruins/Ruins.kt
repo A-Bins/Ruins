@@ -28,6 +28,7 @@ import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.delay
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -35,6 +36,7 @@ import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
+import org.bukkit.scheduler.BukkitTask
 import java.io.File
 
 //        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
@@ -158,6 +160,17 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
+        fun Long.rt(delay: Long, run: () -> Any): BukkitTask {
+            return scheduler.runTaskTimer(instance, Runnable {
+                run()
+            }, delay, this)
+        }
+        fun Long.rl(run: () -> Any): BukkitTask {
+            return scheduler.runTaskLater(instance, Runnable {
+                run()
+            }, this)
+        }
+
         val Player.targetedItemEntity: Item?
             get() {
                 (0..35).forEach { i ->
