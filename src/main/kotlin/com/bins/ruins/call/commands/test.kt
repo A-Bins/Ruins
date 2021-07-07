@@ -54,8 +54,9 @@ class test : CommandExecutor{
         if(p is Player){
             val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
             toast.play(p)
-            SessionMap.StreetOfAbin.first.on()
-            (SessionMap.StreetOfAbin.first.sessionKey as SessionKey.Exist).id.bb()
+            SessionMap.StreetOfAbin.first.on().also {
+                it.sessionKey.id.bb()
+            }
 
 
 

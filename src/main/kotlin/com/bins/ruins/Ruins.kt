@@ -183,7 +183,7 @@ class Ruins : JavaPlugin() {
             }
         lateinit var hide: Hideout
             private set
-        lateinit var players: Collection<Player>
+        lateinit var players: MutableCollection<out Player>
             private set
         lateinit var cherryBlossom: Kord
         lateinit var scheduler: BukkitScheduler
