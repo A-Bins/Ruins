@@ -39,9 +39,9 @@ repositories {
 dependencies {
 
     shadow ("org.jetbrains.kotlin:kotlin-stdlib")
-    shadow ("dev.kord:kord-core:0.7.1")
-    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
+//    shadow ("dev.kord:kord-core:0.7.1")
+//    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+//    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib")// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation ("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")

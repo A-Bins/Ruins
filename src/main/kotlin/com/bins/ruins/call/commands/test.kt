@@ -49,7 +49,6 @@ Strash(p.uniqueId, d)
 //}
 @Suppress("DEPRECATION")
 class test : CommandExecutor{
-    @DelicateCoroutinesApi
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
             val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
