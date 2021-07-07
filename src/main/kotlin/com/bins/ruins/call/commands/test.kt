@@ -4,11 +4,16 @@ import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.Toast
+import com.bins.ruins.structure.classes.sessions.Session
+import com.bins.ruins.structure.classes.sessions.SessionKey
+import com.bins.ruins.structure.classes.sessions.SessionMap
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kotlinx.coroutines.DelicateCoroutinesApi
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -49,6 +54,17 @@ class test : CommandExecutor{
         if(p is Player){
             val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
             toast.play(p)
+            SessionMap.StreetOfAbin.first.on()
+            (SessionMap.StreetOfAbin.first.sessionKey as SessionKey.Exist).id.bb()
+
+
+
+
+
+
+
+
+
 //            toast.chatComponents.write(0, WrappedChatComponent.fromText("real kk"))
 
 //            pm.sendServerPacket(p, toast)

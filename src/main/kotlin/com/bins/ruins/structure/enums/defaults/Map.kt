@@ -4,11 +4,11 @@ import com.bins.ruins.structure.interfaces.defaults.Mappable
 import com.bins.ruins.structure.enums.types.Risk
 
 enum class Map : Mappable {
-    TEST{
+    STREET_OF_ABIN{
         override val index : Int
-            get() = 1
+            get() = 0
         override val mapName : String
-            get() = "Test"
+            get() = "어빈가"
         override val risk: Risk
             get() = Risk.EASY
     }
