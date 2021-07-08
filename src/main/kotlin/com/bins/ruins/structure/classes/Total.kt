@@ -3,13 +3,15 @@ package com.bins.ruins.structure.classes
 import java.util.*
 import kotlin.math.round
 
-class Total private constructor(var k: Int, var d: Int){
+data class Total private constructor(var k: Int, var d: Int){
     companion object{
         fun create(k: Int, d: Int): Total = Total(k, d)
     }
     fun matchTotal(that: Total): Boolean{
         return ratio > that.ratio
     }
+
+    override fun toString() = "$k, $d"
 
     val ratio: Double
         get() = round(k.toDouble() / d.toDouble()*1000) /1000
@@ -22,12 +24,24 @@ class Total private constructor(var k: Int, var d: Int){
     val regular: String
         get() = "Kill: $k, Death: $d"
 
-    fun add(k: Int, d: Int){
-        this.k += k
-        this.d += d
+    operator fun plus(t: Total) = copy(k = k, d = d).apply {
+        k += t.k
+        d += t.d
+    }
+    operator fun plusAssign(t: Total)  {
+        k += t.k
+        d += t.d
+    }
+    operator fun minus(t: Total) = copy(k = k, d = d).apply {
+        k -= t.k
+        d -= t.d
+    }
+    operator fun minusAssign(t: Total)  {
+        k -= t.k
+        d -= t.d
     }
     fun clear(){
-        this.k = 0
-        this.d = 0
+        k = 0
+        d = 0
     }
 }

@@ -4,6 +4,7 @@ import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.Toast
+import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.classes.sessions.Session
 import com.bins.ruins.structure.classes.sessions.SessionKey
 import com.bins.ruins.structure.classes.sessions.SessionMap
@@ -52,15 +53,14 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            args.size.bb()
-            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
-            toast.play(p)
-            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {
-                it.sessionKey.id.bb()
-            }
-            SessionMap.StreetOfAbin.first.off().also {
-                it.sessionKey.wasId.bb()
-            }
+//            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
+//            toast.play(p)
+//            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {
+//                it.sessionKey.id.bb()
+//            }
+//            SessionMap.StreetOfAbin.first.off().also {
+//                it.sessionKey.wasId.bb()
+//            }
 
 
 

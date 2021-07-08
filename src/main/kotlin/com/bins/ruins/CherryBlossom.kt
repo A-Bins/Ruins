@@ -17,7 +17,7 @@ import kotlin.concurrent.thread
 //                content = "벚꽃봇 잔다.."
 //            }
 //        }
-object CherryBlossom {
+class CherryBlossom {
 
     /*
 
