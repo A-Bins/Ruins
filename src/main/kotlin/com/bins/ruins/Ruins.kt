@@ -35,6 +35,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import org.bukkit.scheduler.BukkitTask
+import org.bukkit.util.Consumer
 import java.io.File
 
 //        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
@@ -45,6 +46,7 @@ class Ruins : JavaPlugin() {
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
+        File(dataFolder.path+"/session").mkdirs()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
 
         players = server.onlinePlayers
@@ -69,16 +71,19 @@ class Ruins : JavaPlugin() {
         if (!f.exists() || !f.isFile)
             f.createNewFile()
     }
+    private fun seeToComponent(){
+
+    }
     private fun saveAndLoad() {
         load(this, reload, "reload", INT)
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
         load(this, stashes, "Stashes", STASH)
-        server.scheduler.runTaskTimerAsynchronously(this, Runnable {
+        (20*10).toLong().rtAsync(5) {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
-        }, 5, 20*10)
+        }
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
         save(this, reload, "reload", INT)
@@ -112,7 +117,7 @@ class Ruins : JavaPlugin() {
         }
     }
     private fun targetGlow() {
-        server.scheduler.runTaskTimer(this, Runnable {
+        1L.rt {
             server.onlinePlayers.forEach{ p ->
 
                 p.playerListHeader = Header().header()
@@ -130,13 +135,13 @@ class Ruins : JavaPlugin() {
                     glowValue[p.uniqueId] = null
                 }
             }
-        }, 1, 1)
+        }
     }
     private fun moisture() {
-        server.scheduler.runTaskTimer(this, Runnable {
+        (20*6).toLong().rt {
             for(p in server.onlinePlayers){
                 if(p.isOp)
-                    return@Runnable
+                    return@rt
                 if(Math.round((p.exp-0.01F)*100)/100.0 > 0.00)
                     p.exp -= 0.01F
                 else {
@@ -146,7 +151,7 @@ class Ruins : JavaPlugin() {
                 }
 
             }
-        }, 0, 20 * 6)
+        }
     }
     private fun view() {
         View.cancels.add("Barrel")
@@ -158,15 +163,14 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
-        fun Long.rt(delay: Long = 1, run: () -> Any): BukkitTask {
-            return scheduler.runTaskTimer(instance, Runnable {
-                run()
-            }, delay, this)
+        fun Long.rt(delay: Long = 1, run: Runnable): BukkitTask {
+            return scheduler.runTaskTimer(instance, run, delay, this)
         }
-        fun Long.rl(run: () -> Any): BukkitTask {
-            return scheduler.runTaskLater(instance, Runnable {
-                run()
-            }, this)
+        fun Long.rtAsync(delay: Long = 1, run: Runnable): BukkitTask {
+            return scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
+        }
+        fun Long.rl(run: Runnable): BukkitTask {
+            return scheduler.runTaskLater(instance, run, this)
         }
 
         val Player.targetedItemEntity: Item?
@@ -186,9 +190,9 @@ class Ruins : JavaPlugin() {
         lateinit var players: MutableCollection<out Player>
             private set
         lateinit var cherryBlossom: Kord
-        lateinit var scheduler: BukkitScheduler
-            private set
         lateinit var instance : Ruins
+            private set
+        lateinit var scheduler: BukkitScheduler
             private set
     }
 }

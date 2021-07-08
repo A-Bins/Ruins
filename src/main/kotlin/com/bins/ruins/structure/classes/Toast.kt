@@ -1,6 +1,7 @@
 package com.bins.ruins.structure.classes
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.rl
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -54,7 +55,7 @@ class Toast(val key: NamespacedKey, val title: String, val description: String, 
         progress.remainingCriteria.forEach {
             progress.awardCriteria(it)
         }
-        Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
+        20L.rl {
             val unAdvancement = Bukkit.getAdvancement(key)
             val unProgress: AdvancementProgress = p.getAdvancementProgress(unAdvancement!!)
             unProgress.awardedCriteria.forEach {
@@ -62,6 +63,6 @@ class Toast(val key: NamespacedKey, val title: String, val description: String, 
             }
             Bukkit.getUnsafe().removeAdvancement(key);
             Bukkit.reloadData()
-        }, 20)
+        }
     }
 }

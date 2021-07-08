@@ -1,6 +1,7 @@
 package com.bins.ruins.structure.classes
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.rtAsync
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldedit.math.BlockVector3
@@ -194,7 +195,7 @@ class Hideout {
             )
         )
     fun enable() {
-        Ruins.scheduler.runTaskTimerAsynchronously(Ruins.instance, Runnable {
+        20L.rtAsync{
             val container = WorldGuard.getInstance().platform.regionContainer
             Ruins.players.filter { p ->
                 val regionManager = container.get(BukkitAdapter.adapt(p.world))!!
@@ -243,7 +244,7 @@ class Hideout {
                 arHash[p.uniqueId] = arList
 
             }
-        }, 0,20)
+        }
     }
      fun disable() {
         arHash.forEach {

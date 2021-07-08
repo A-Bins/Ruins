@@ -11,6 +11,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
+import kotlin.collections.ArrayList
 
 sealed class Session(val type: SessionType) {
 
@@ -20,7 +21,7 @@ sealed class Session(val type: SessionType) {
     var sessionKey: SessionKey = SessionKey.Empty
         private set
 
-
+    var map = Map.EMPTY
     val players: ArrayList<Player> = arrayListOf()
 
 
@@ -50,35 +51,43 @@ sealed class Session(val type: SessionType) {
     }
     fun info() {
     }
-    fun on(): SessionInfo<SessionKey.Exist> {
+    fun on(map: Map): SessionInfo<SessionKey.Exist> {
+        this.map = map
         sessionKey = SessionKey.Exist()
         state = SessionState.PROGRESS
 
 
 
         return object: SessionInfo<SessionKey.Exist> {
-            override val state: SessionState
-                get() = this@Session.state
-            override val sessionKey: SessionKey.Exist
-                get() = this@Session.sessionKey as SessionKey.Exist
+            override val map = this@Session.map
+            override val state = this@Session.state
+            override val sessionKey = this@Session.sessionKey as SessionKey.Exist
+            override val broken = this@Session.broken
+            override val players = this@Session.players
         }
     }
     fun off(): SessionInfo<SessionKey.END> {
         if(state != SessionState.PROGRESS) throw IllegalStateException("this Session doesn't in progress")
         sessionKey = SessionKey.END((sessionKey as SessionKey.Exist).id)
         state = SessionState.READY
+
+        val description = object: SessionInfo<SessionKey.END> {
+            override val state = this@Session.state
+            override val sessionKey = this@Session.sessionKey as SessionKey.END
+            override val map = this@Session.map
+            override val broken = this@Session.broken
+            override val players = this@Session.players
+        }
+
+
+        map = Map.EMPTY
         rest()
         info()
 
 
 
 
-        return object: SessionInfo<SessionKey.END> {
-            override val state: SessionState
-                get() = this@Session.state
-            override val sessionKey: SessionKey.END
-                get() = this@Session.sessionKey as SessionKey.END
-        }
+        return description
     }
     class Session1st: Session(FIRST)
     class Session2nd: Session(SECOND)

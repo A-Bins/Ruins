@@ -1,10 +1,12 @@
 package com.bins.ruins.structure.enums.items.medicals
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.enums.types.SubTag
 import com.bins.ruins.structure.enums.types.Tag
 import com.bins.ruins.structure.interfaces.items.Medical
+import net.minecraft.server.v1_16_R3.Items.rl
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -37,23 +39,23 @@ enum class Syringe: Medical {
         override fun effect(p: Player) {
             used(time.toBigDecimal(), p) {
                 p.addPotionEffect(PotionEffect(PotionEffectType.SPEED,20*10, 0, false, false, false))
-                Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
+                (20*10L).rl {
                     p.addPotionEffect(PotionEffect(PotionEffectType.CONFUSION,20*10, 0, false, false, false))
-                }, 20*10)
+                }
             }
         }
 
     };
     protected fun used(wait: BigDecimal, p: Player, want: () -> Any){
         if(wait.toDouble() == 0.0) want().also {
-            Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
+            1L.rl {
                 p.sendActionBar("§7사용까지 §f0.00s")
-            }, 1)
+            }
         }
-        else Ruins.scheduler.runTaskLater(Ruins.instance, Runnable {
+        else 1L.rl {
             p.sendActionBar("§7사용까지 §f${wait}s")
             used("$wait".toBigDecimal() - 0.05.toBigDecimal(), p, want)
-        }, 1)
+        }
 
 
 
