@@ -56,6 +56,9 @@ class test : CommandExecutor{
             SessionMap.StreetOfAbin.first.on().also {
                 it.sessionKey.id.bb()
             }
+            SessionMap.StreetOfAbin.first.off().also {
+                it.sessionKey.wasId.bb()
+            }
 
 
 

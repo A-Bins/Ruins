@@ -7,7 +7,7 @@ sealed class SessionKey {
     class Exist(val id: UUID = UUID.randomUUID()): SessionKey() {
 
     }
-    class END(val wasId: UUID = UUID.randomUUID()): SessionKey() {
+    class END(val wasId: UUID): SessionKey() {
 
     }
 }
