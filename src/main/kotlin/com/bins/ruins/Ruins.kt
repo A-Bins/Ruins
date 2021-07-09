@@ -43,12 +43,12 @@ import java.io.File
 class Ruins : JavaPlugin() {
     @DelicateCoroutinesApi
     override fun onDisable() {
-//        val cherry = CherryBlossom.cherryBlossomLogoutAsync()
+        val cherry = CherryBlossom.cherryBlossomLogoutAsync()
         hide.disable()
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
-//        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
+        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
         File(dataFolder.path+"/session").mkdirs()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
 
@@ -82,7 +82,7 @@ class Ruins : JavaPlugin() {
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
         load(this, stashes, "Stashes", STASH)
-        (20*10).toLong().rtAsync(5) {
+        (20*10L).rtAsync(5) {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
@@ -141,7 +141,7 @@ class Ruins : JavaPlugin() {
         }
     }
     private fun moisture() {
-        (20*6).toLong().rt {
+        (20*6L).rt {
             for(p in server.onlinePlayers){
                 if(p.isOp)
                     return@rt
@@ -166,15 +166,10 @@ class Ruins : JavaPlugin() {
         })
     }
     companion object{
-        fun Long.rt(delay: Long = 1, run: Runnable): BukkitTask {
-            return scheduler.runTaskTimer(instance, run, delay, this)
-        }
-        fun Long.rtAsync(delay: Long = 1, run: Runnable): BukkitTask {
-            return scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
-        }
-        fun Long.rl(run: Runnable): BukkitTask {
-            return scheduler.runTaskLater(instance, run, this)
-        }
+        fun Long.rt(delay: Long = 1, run: Runnable) = scheduler.runTaskTimer(instance, run, delay, this)
+        fun Long.rtAsync(delay: Long = 1, run: Runnable) = scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
+        fun Long.rl(run: Runnable) = scheduler.runTaskLater(instance, run, this)
+
 
         val Player.targetedItemEntity: Item?
             get() {
