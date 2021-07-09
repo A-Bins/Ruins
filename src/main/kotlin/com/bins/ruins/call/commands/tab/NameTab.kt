@@ -19,7 +19,7 @@ class NameTab : TabCompleter {
             if (args.size == 1) {
                 val i = sender.inventory.itemInMainHand
                 if (i.itemMeta == null) return null
-                commands.add(i.itemMeta.displayName.replace("§", "&"))
+                commands.add(i.itemMeta!!.displayName.replace("§", "&"))
                 StringUtil.copyPartialMatches(args[0], commands, completions)
             }
             completions.sort()

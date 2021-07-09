@@ -66,13 +66,13 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
                     removes.toList().withIndex().toList().stream().filter { (index, _) -> index+1 > it.unlockState }.forEach { (k, v) ->
                             setItem(v, ItemStack(Material.ANVIL).apply {
                                 val meta = itemMeta
-                                meta.setDisplayName("§7${k+1}번 줄이 잠금되어 있어요!")
+                                meta!!.setDisplayName("§7${k+1}번 줄이 잠금되어 있어요!")
                                 itemMeta = meta
                             })
                             arrayOf(v-4, v-3, v-2, v-1, v+1, v+2, v+3, v+4).forEach { w ->
                                 setItem(w, ItemStack(Material.IRON_BARS).apply {
                                     val meta = itemMeta
-                                    meta.setDisplayName("§7§o이 줄은 잠금 되어 있습니다..")
+                                    meta!!.setDisplayName("§7§o이 줄은 잠금 되어 있습니다..")
                                     itemMeta = meta
                                 })
                             }
@@ -98,7 +98,7 @@ class Stash private constructor(val uuid: UUID, vararg val drawers: Drawer) {
                     env.STASH_VALUE.withIndex().forEach { (i, index) ->
                         setItem(index, ItemStack(if (i.hasDrawer()) Material.CHEST else Material.IRON_BARS).apply {
                             val meta = itemMeta
-                            meta.setDisplayName("${i+1}")
+                            meta!!.setDisplayName("${i+1}")
                             itemMeta = meta
                         })
                     }

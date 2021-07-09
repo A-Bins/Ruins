@@ -25,7 +25,7 @@ class View(private val p: Player){
     val asContainer = create(9, "컨테이너").also { Inv ->
         val ib = ItemStack(Material.IRON_BARS).apply {
             val meta = itemMeta
-            meta.setDisplayName("§f")
+            meta!!.setDisplayName("§f")
             itemMeta = meta
         }
         Inv.setItem(0, ib)

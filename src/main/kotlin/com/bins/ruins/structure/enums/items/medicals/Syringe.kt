@@ -6,7 +6,6 @@ import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.enums.types.SubTag
 import com.bins.ruins.structure.enums.types.Tag
 import com.bins.ruins.structure.interfaces.items.Medical
-import net.minecraft.server.v1_16_R3.Items.rl
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -29,7 +28,7 @@ enum class Syringe: Medical {
 
         override val item = ItemStack(Material.IRON_HORSE_ARMOR).apply {
             val meta = itemMeta
-            meta.setDisplayName(Dname)
+            meta!!.setDisplayName(Dname)
             meta.lore = description
             meta.addItemFlags(*ItemFlag.values())
             itemMeta = meta
@@ -49,11 +48,11 @@ enum class Syringe: Medical {
     protected fun used(wait: BigDecimal, p: Player, want: () -> Any){
         if(wait.toDouble() == 0.0) want().also {
             1L.rl {
-                p.sendActionBar("§7사용까지 §f0.00s")
+                p.sendRawMessage("§7사용까지 §f0.00s")
             }
         }
         else 1L.rl {
-            p.sendActionBar("§7사용까지 §f${wait}s")
+            p.sendRawMessage("§7사용까지 §f${wait}s")
             used("$wait".toBigDecimal() - 0.05.toBigDecimal(), p, want)
         }
 
@@ -69,7 +68,7 @@ enum class Syringe: Medical {
             }
         }
         val ItemStack.isSyringe: Boolean
-            get() = values().toList().stream().anyMatch { itemMeta?.displayName == it.item.itemMeta.displayName }
+            get() = values().toList().stream().anyMatch { itemMeta?.displayName == it.item.itemMeta!!.displayName }
     }
 
 }

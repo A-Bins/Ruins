@@ -31,7 +31,7 @@ object ScoreBoards {
         o.getScore(name).score = score
     }
     fun showScoreboard(p: Player) {
-        if (p.scoreboard == Ruins.instance.server.scoreboardManager.mainScoreboard) p.scoreboard = Ruins.instance.server.scoreboardManager.newScoreboard
+        if (p.scoreboard == Ruins.instance.server.scoreboardManager!!.mainScoreboard) p.scoreboard = Ruins.instance.server.scoreboardManager!!.newScoreboard
         /*val score = p.scoreboard
         val objective = if (score.getObjective(p.name) == null) score.registerNewObjective(p.name, "dummy") else score.getObjective(p.name)
         objective!!.displayName = "abcdefg"

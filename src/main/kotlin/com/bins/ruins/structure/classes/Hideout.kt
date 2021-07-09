@@ -6,12 +6,16 @@ import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldedit.math.BlockVector3
 import com.sk89q.worldguard.WorldGuard
-import net.minecraft.server.v1_16_R3.*
+import net.minecraft.network.chat.ChatComponentText
+import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy
+import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata
+import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving
+import net.minecraft.world.entity.decoration.EntityArmorStand
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 import kotlin.collections.ArrayList
@@ -223,8 +227,8 @@ class Hideout {
                         arList.forEach { ar ->
                             val packet = PacketPlayOutSpawnEntityLiving(ar)
                             val meta = PacketPlayOutEntityMetadata(ar.id, ar.dataWatcher, true)
-                            (p as CraftPlayer).handle.playerConnection.sendPacket(packet).also {
-                                p.handle.playerConnection.sendPacket(meta)
+                            (p as CraftPlayer).handle.b.sendPacket(packet).also {
+                                p.handle.b.sendPacket(meta)
                             }
 
                         }
@@ -232,7 +236,7 @@ class Hideout {
                     fun change() {
                         arHash[p.uniqueId]!!.forEach { ar ->
                             val meta = PacketPlayOutEntityMetadata(ar.id, ar.dataWatcher, true)
-                            (p as CraftPlayer).handle.playerConnection.sendPacket(meta)
+                            (p as CraftPlayer).handle.b.sendPacket(meta)
                         }
                     }
                     if(arHash[p.uniqueId] != null) {
@@ -250,7 +254,7 @@ class Hideout {
         arHash.forEach {
             it.value.forEach { v ->
                 val packet = PacketPlayOutEntityDestroy(v.id)
-                (Bukkit.getPlayer(it.key) as CraftPlayer).handle.playerConnection.sendPacket(packet)
+                (Bukkit.getPlayer(it.key) as CraftPlayer).handle.b.sendPacket(packet)
             }
         }
     }

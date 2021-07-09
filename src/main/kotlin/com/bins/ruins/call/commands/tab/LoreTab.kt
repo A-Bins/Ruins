@@ -22,10 +22,10 @@ class LoreTab : TabCompleter {
         try {
             if (args.size == 2) {
                 val i = sender.inventory.itemInMainHand
-                if (i.lore != null) {
-                    if (i.lore!!.size >= args[0].toInt()) {
+                if (i.itemMeta!!.lore != null) {
+                    if (i.itemMeta!!.lore!!.size >= args[0].toInt()) {
                         val lore = args[0].toInt()
-                        commands.add(i.lore!![lore - 1].replace("§", "&"))
+                        commands.add(i.itemMeta!!.lore!![lore - 1].replace("§", "&"))
                     }
                 }
                 StringUtil.copyPartialMatches(args[1], commands, completions)

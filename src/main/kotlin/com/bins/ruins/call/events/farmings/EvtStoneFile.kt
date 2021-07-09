@@ -32,9 +32,9 @@ class EvtStoneFile: Listener{
         for (x in b.location.blockX - radius..b.location.blockX + radius) {
             for (y in b.location.blockY - radius..b.location.blockY + radius) {
                 for (z in b.location.blockZ - radius..b.location.blockZ + radius) {
-                    if (b.location.world.getBlockAt(x, y, z) != b)
-                        if (!b.location.world.getBlockAt(x, y, z).isEmpty)
-                            blocks.add(b.location.world.getBlockAt(x, y, z))
+                    if (b.location.world!!.getBlockAt(x, y, z) != b)
+                        if (!b.location.world!!.getBlockAt(x, y, z).isEmpty)
+                            blocks.add(b.location.world!!.getBlockAt(x, y, z))
                 }
             }
         }

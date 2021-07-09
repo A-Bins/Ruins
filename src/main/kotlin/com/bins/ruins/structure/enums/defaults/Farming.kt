@@ -74,7 +74,7 @@ enum class Farming: Farmable {
         override val itemStack: ItemStack
             get() = ItemStack(Material.COBBLESTONE).apply {
                 val meta = itemMeta
-                meta.setDisplayName("§f돌")
+                meta!!.setDisplayName("§f돌")
                 meta.lore = listOf(
                     "§8§o흔히 볼 수 있는 돌이다.$label",
                     ""
@@ -100,7 +100,7 @@ enum class Farming: Farmable {
         override val itemStack: ItemStack
             get() = ItemStack(Material.OAK_PLANKS).apply {
                 val meta = itemMeta
-                meta.setDisplayName("§f목재")
+                meta!!.setDisplayName("§f목재")
                 meta.lore = listOf(
                     "§8§o나무를 가공해 만든 재료이다.$label",
                     ""

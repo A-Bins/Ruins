@@ -28,7 +28,7 @@ import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
-import org.bukkit.ChatColor
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
@@ -41,11 +41,14 @@ import java.io.File
 //        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
 
 class Ruins : JavaPlugin() {
+    @DelicateCoroutinesApi
     override fun onDisable() {
+//        val cherry = CherryBlossom.cherryBlossomLogoutAsync()
         hide.disable()
     }
     @DelicateCoroutinesApi
     override fun onEnable() {
+//        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
         File(dataFolder.path+"/session").mkdirs()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
 
@@ -177,10 +180,10 @@ class Ruins : JavaPlugin() {
             get() {
                 (0..35).forEach { i ->
                     val loc : Location = eyeLocation.add(location.direction.multiply(i.toDouble()/10))
-                    val list = loc.world.getNearbyEntitiesByType(Item::class.java, loc, 0.15, 0.15, 0.15)
+                    val list = loc.world!!.getNearbyEntities(loc, 0.15, 0.15, 0.15) { it is Item }
 
                     for (e in list) {
-                        return e
+                        return e as Item
                     }
                 }
                 return null

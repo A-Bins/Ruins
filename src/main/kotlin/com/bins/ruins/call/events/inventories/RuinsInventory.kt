@@ -6,7 +6,6 @@ import com.bins.ruins.structure.classes.Stash.Companion.inDrawers
 import com.bins.ruins.structure.classes.Stash.Companion.stash
 import com.bins.ruins.structure.classes.Stash.Companion.stashCondition
 import com.bins.ruins.structure.classes.View
-import com.sun.org.apache.xpath.internal.operations.Bool
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound

@@ -18,7 +18,7 @@ class Name : CommandExecutor {
                     val item = p.inventory.itemInMainHand
                     val str = java.lang.String.join(" ", *args.copyOfRange(0, args.size))
                     val meta = item.itemMeta
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', str))
+                    meta!!.setDisplayName(ChatColor.translateAlternateColorCodes('&', str))
                     item.itemMeta = meta
                 }
             }

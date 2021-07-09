@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 class EvtInvOpen: Listener {
     private val info = ItemStack(Material.GRAY_STAINED_GLASS_PANE).apply {
         val meta = itemMeta
-        meta.setDisplayName("§6재활용 기계 사용 방법")
+        meta!!.setDisplayName("§6재활용 기계 사용 방법")
         //&71. 분해 가능 물품을 넣는다" and "&72. 창을 닫는다" and "&73. 분해되는 걸 기다린다" and "&74. 끝! 가져가자"
         meta.lore = listOf(
             "",

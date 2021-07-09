@@ -1,6 +1,5 @@
 package com.bins.ruins.structure.objects.utilities
 
-import com.destroystokyo.paper.inventory.meta.ArmorStandMeta
 import org.bukkit.inventory.meta.*
 
 object MetaReceiver {
@@ -11,7 +10,6 @@ object MetaReceiver {
     fun ItemMeta.toFireworkMeta() = this as FireworkMeta
     fun ItemMeta.toFireworkEffectMeta() = this as FireworkEffectMeta
     fun ItemMeta.toEnchantmentStorageMeta() = this as EnchantmentStorageMeta
-    fun ItemMeta.toArmorStandMeta() = this as ArmorStandMeta
     fun ItemMeta.toBannerMeta() = this as BannerMeta
     fun ItemMeta.toBlockDataMeta() = this as BlockDataMeta
     fun ItemMeta.toBlockStateMeta() = this as BlockStateMeta

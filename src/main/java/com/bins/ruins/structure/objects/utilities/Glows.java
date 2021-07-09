@@ -1,6 +1,5 @@
 package com.bins.ruins.structure.objects.utilities;
 
-import com.bins.ruins.Ruins;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
