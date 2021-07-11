@@ -109,7 +109,7 @@ object Util {
             AUTH -> {
                 hash.tryCast<HashMap<*, UUID>> {
                     val obj = JSONObject()
-                    this.forEach { (key: Any, value: UUID) -> obj[key] = "${key}|${value}" }
+                    this.forEach { (key: Any, value: UUID) -> obj[key] = "$value" }
                     writeJson(ruins, name, obj.toJSONString())
                 }
             }

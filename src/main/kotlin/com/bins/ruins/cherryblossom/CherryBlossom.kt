@@ -1,6 +1,7 @@
 package com.bins.ruins.cherryblossom
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
@@ -13,13 +14,9 @@ import dev.kord.core.on
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 
-//        Ruins.cherryBlossom.on<DisconnectEvent.DiscordCloseEvent> {
-//            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
-//                content = "벚꽃봇 잔다.."
-//            }
-//        }
 class CherryBlossom {
     companion object {
         @DelicateCoroutinesApi
@@ -77,39 +74,10 @@ class CherryBlossom {
                         }
                     }
                 }
+                20L.rl { "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${vars.reload["server"]}".bb() }
                 playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
             }
 
         }.start()
     }
-
-    /*
-
-    관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝
-    관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝
-    관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝
-    관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝
-    관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝 관 짝
-    @DelicateCoroutinesApi
-    fun cherryBlossomInitializedAsync() = GlobalScope.async {
-        Ruins.cherryBlossom = Kord(env.BOT_TOKEN)
-        Ruins.cherryBlossom.login {
-            playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
-            Ruins.scheduler.runTaskTimerAsynchronously(Ruins.instance, Runnable {
-                GlobalScope.async {
-                    Ruins.cherryBlossom.editPresence {
-                        playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
-                    }
-                }.start()
-            }, 0, 1)
-        }
-
-        Ruins.cherryBlossom.on<ReadyEvent> {
-            kord.rest.channel.createMessage(Snowflake("835114682871578624")){
-                content = "벚꽃봇 일어나따!"
-            }
-        }
-    }.start()
-    */
-
 }
