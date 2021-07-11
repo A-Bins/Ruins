@@ -32,6 +32,7 @@ class CherryBlossom {
             Ruins.cherryBlossom.login {
                 Ruins.cherryBlossom.apply {
                     on<MessageCreateEvent> {
+                        if(message.channel.asChannel().data.topic.value?.contains("#Command") != true) return@on
                         when{
                             message.content == "벚꽃아 리로드" -> {
                                 message.reply { content = "두근 두근 리로드 횟수는! **${vars.reload["server"]}**" }
@@ -76,8 +77,6 @@ class CherryBlossom {
                         }
                     }
                 }
-
-
                 playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
             }
 

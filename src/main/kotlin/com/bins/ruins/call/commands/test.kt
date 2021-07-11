@@ -54,8 +54,6 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            Auth.requests.bb()
-            Auth.requesters.bb()
 //            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
 //            toast.play(p)
 //            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {

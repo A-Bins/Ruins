@@ -1,6 +1,7 @@
 package com.bins.ruins.structure.objects.utilities
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.enums.types.Receiver
@@ -105,6 +106,13 @@ object Util {
                     writeJson(ruins, name, obj.toJSONString())
                 }
             }
+            AUTH -> {
+                hash.tryCast<HashMap<*, UUID>> {
+                    val obj = JSONObject()
+                    this.forEach { (key: Any, value: UUID) -> obj[key] = "${key}|${value}" }
+                    writeJson(ruins, name, obj.toJSONString())
+                }
+            }
             else -> {
                 val data = JSONObject()
                 hash.forEach { (key: Any, value: Any) -> data[key] = "" + value }
@@ -190,6 +198,15 @@ object Util {
 
 
                         }
+                    }
+                }
+            }
+            AUTH -> {
+                if (FileReader(File(ruins.dataFolder, "$name.json")).ready()) {
+                    val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
+                    val jsonObject: JSONObject = obj as JSONObject
+                    jsonObject.forEach { key: Any, value: Any ->
+                        Auth.requesters["$key".toLong()] = UUID.fromString("$value")
                     }
                 }
             }

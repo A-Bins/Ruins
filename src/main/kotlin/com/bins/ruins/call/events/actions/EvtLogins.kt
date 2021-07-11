@@ -2,6 +2,8 @@ package com.bins.ruins.call.events.actions
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
+import com.bins.ruins.Ruins.Companion.rt
+import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
@@ -30,9 +32,24 @@ class EvtLogins: Listener {
             }
         }
     }
+    var task = -1
     @DelicateCoroutinesApi
     @EventHandler
     fun event(e: PlayerJoinEvent) {
+        if(!Auth.requesters.containsValue(e.player.uniqueId)){
+            task = (20L).rt {
+                e.player.sendTitle("§c디스코드로 인증을 해주세요!", "", 20, 20, 20)
+                if(Auth.requesters.containsValue(e.player.uniqueId)){
+                    Ruins.scheduler.cancelTask(task)
+                }
+            }.taskId
+            (20L*30).rl {
+                if(!Auth.requesters.containsValue(e.player.uniqueId)) {
+                    e.player.kickPlayer("§c디스코드로 인증을 해주세요!")
+                    Ruins.scheduler.cancelTask(task)
+                }
+            }
+        }
         reload()
         e.player.healthScale = 40.0
         e.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = 100.0

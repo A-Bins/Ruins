@@ -12,12 +12,14 @@ import kotlinx.coroutines.flow.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
+import org.bukkit.event.server.BroadcastMessageEvent
 
 class EvtChat: Listener {
+
     @InternalCoroutinesApi
     @DelicateCoroutinesApi
-    @EventHandler
-    fun event(e: AsyncPlayerChatEvent) {
+    private fun discordToMc(target: String) {
+
         val async = GlobalScope.async {
             flow {
 
@@ -30,11 +32,20 @@ class EvtChat: Listener {
                 }.collect {
                     if(it.asChannel().data.topic.value?.contains("#Minecraft") == true) {
                         Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
-                            this.content = "<${e.player.name}> ${e.message}"
+                            this.content = target
                         }
                     }
                 }
             }
         }
     }
+    @InternalCoroutinesApi
+    @DelicateCoroutinesApi
+    @EventHandler
+    fun event2(e: BroadcastMessageEvent) = discordToMc(e.message)
+    @InternalCoroutinesApi
+    @DelicateCoroutinesApi
+    @EventHandler
+    fun event(e: AsyncPlayerChatEvent) = discordToMc("<${e.player.name}> ${e.message}")
+
 }

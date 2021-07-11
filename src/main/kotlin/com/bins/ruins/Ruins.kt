@@ -11,6 +11,8 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.cherryblossom.CherryBlossom
+import com.bins.ruins.cherryblossom.classes.Auth
+import com.bins.ruins.cherryblossom.classes.Auth.Companion.requesters
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.Header
 import com.bins.ruins.structure.classes.Hideout
@@ -63,11 +65,11 @@ class Ruins : JavaPlugin(), CommandExecutor {
         hide.enable()
         view()
         saveAndLoad()
-        count()
         configCmd()
         configEvt()
 //        moisture()
         targetGlow()
+        count()
     }
     
     fun makeFile(f: File) {
@@ -82,10 +84,12 @@ class Ruins : JavaPlugin(), CommandExecutor {
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
         load(this, stashes, "Stashes", STASH)
+        load(this, requesters, "auths", AUTH)
         (20*10L).rtAsync(5) {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
+            save(this, requesters, "auths", AUTH)
         }
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
@@ -94,8 +98,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
     private fun configEvt() {
         server.pluginManager.apply{
             arrayOf(
-                *Resistance.configs(), EvtChat(),
-                EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
+                *Resistance.configs(), EvtMove(),EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
@@ -164,11 +167,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
         View.cancels.add("Barrel")
         View.views.add("물품 보관함")
     }
-    private fun count() {
-        server.scheduler.runTask(this, Runnable {
-            "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb()
-        })
-    }
+    private fun count() = 20L.rl { "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb() }
     companion object{
         fun Long.rt(delay: Long = 1, run: Runnable) = scheduler.runTaskTimer(instance, run, delay, this)
         fun Long.rtAsync(delay: Long = 1, run: Runnable) = scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
