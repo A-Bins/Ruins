@@ -10,6 +10,7 @@ import com.bins.ruins.call.events.inventories.EvtInvClose
 import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
+import com.bins.ruins.cherryblossom.CherryBlossom
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.Header
 import com.bins.ruins.structure.classes.Hideout
@@ -18,7 +19,7 @@ import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Glows
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
-import com.bins.ruins.structure.objects.utilities.ScoreBoards
+import com.bins.ruins.structure.objects.utilities.Sidebars
 import com.bins.ruins.structure.objects.utilities.Util.load
 import com.bins.ruins.structure.objects.utilities.Util.save
 import com.bins.ruins.structure.objects.vars.container
@@ -30,17 +31,16 @@ import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Location
+import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
-import org.bukkit.scheduler.BukkitTask
-import org.bukkit.util.Consumer
 import java.io.File
 
 //        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
 
-class Ruins : JavaPlugin() {
+class Ruins : JavaPlugin(), CommandExecutor {
     @DelicateCoroutinesApi
     override fun onDisable() {
         val cherry = CherryBlossom.cherryBlossomLogoutAsync()
@@ -94,13 +94,17 @@ class Ruins : JavaPlugin() {
     private fun configEvt() {
         server.pluginManager.apply{
             arrayOf(
-                *Resistance.configs(),
+                *Resistance.configs(), EvtChat(),
                 EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
     }
     private fun configCmd() {
+
+        getCommand("인증")?.apply{
+            setExecutor(AuthCommand())
+        }
         getCommand("t")?.apply{
             setExecutor(test())
         }
@@ -124,7 +128,7 @@ class Ruins : JavaPlugin() {
             server.onlinePlayers.forEach{ p ->
 
                 p.playerListHeader = Header().header()
-                ScoreBoards.showScoreboard(p)
+                Sidebars.showSidebar(p)
                 val e = p.targetedItemEntity
                 if(e != null){
                     if(glowValue[p.uniqueId] != null){

@@ -1,6 +1,7 @@
 package com.bins.ruins.call.commands
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.structure.classes.Toast
@@ -53,7 +54,8 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            "asdasdsa".bb()
+            Auth.requests.bb()
+            Auth.requesters.bb()
 //            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
 //            toast.play(p)
 //            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {

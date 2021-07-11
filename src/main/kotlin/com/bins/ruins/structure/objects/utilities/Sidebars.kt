@@ -6,7 +6,7 @@ import org.bukkit.scoreboard.Objective
 
 
 @Suppress("DEPRECATION")
-object ScoreBoards {
+object Sidebars {
     private fun getEntryFromScore(o: Objective?, score: Int): String? {
         if (o == null) return null
         if (!hasScoreTaken(o, score)) return null
@@ -30,7 +30,7 @@ object ScoreBoards {
         }
         o.getScore(name).score = score
     }
-    fun showScoreboard(p: Player) {
+    fun showSidebar(p: Player) {
         if (p.scoreboard == Ruins.instance.server.scoreboardManager!!.mainScoreboard) p.scoreboard = Ruins.instance.server.scoreboardManager!!.newScoreboard
         /*val score = p.scoreboard
         val objective = if (score.getObjective(p.name) == null) score.registerNewObjective(p.name, "dummy") else score.getObjective(p.name)

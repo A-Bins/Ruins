@@ -11,7 +11,7 @@ data class Total private constructor(var k: Int, var d: Int){
         return ratio > that.ratio
     }
 
-    override fun toString() = "$k, $d"
+    override fun toString() = "Kill : $k, Death : $d"
 
     val ratio: Double
         get() = round(k.toDouble() / d.toDouble()*1000) /1000
@@ -24,7 +24,7 @@ data class Total private constructor(var k: Int, var d: Int){
     val regular: String
         get() = "Kill: $k, Death: $d"
 
-    operator fun plus(t: Total) = copy(k = k, d = d).apply {
+    operator fun plus(t: Total) = create(k = k, d = d).apply {
         k += t.k
         d += t.d
     }
@@ -32,7 +32,7 @@ data class Total private constructor(var k: Int, var d: Int){
         k += t.k
         d += t.d
     }
-    operator fun minus(t: Total) = copy(k = k, d = d).apply {
+    operator fun minus(t: Total) = create(k = k, d = d).apply {
         k -= t.k
         d -= t.d
     }
