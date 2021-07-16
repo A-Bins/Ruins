@@ -206,7 +206,7 @@ object Util {
                     val obj: Any = parser.parse(FileReader(File(ruins.dataFolder, "$name.json")))
                     val jsonObject: JSONObject = obj as JSONObject
                     jsonObject.forEach { key: Any, value: Any ->
-                        Auth.requesters["$key".toLong()] = UUID.fromString("$value")
+                        Auth.completers["$key".toLong()] = UUID.fromString("$value")
                     }
                 }
             }

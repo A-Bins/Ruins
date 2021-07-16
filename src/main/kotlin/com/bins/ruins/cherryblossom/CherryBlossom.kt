@@ -1,6 +1,7 @@
 package com.bins.ruins.cherryblossom
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.cherryBlossom
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.objects.env
@@ -9,54 +10,67 @@ import com.bins.ruins.structure.objects.vars
 import dev.kord.common.Color
 import dev.kord.core.Kord
 import dev.kord.core.behavior.reply
+import dev.kord.core.entity.channel.GuildChannel
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 
 class CherryBlossom {
     companion object {
+        val minecrafts: ArrayList<GuildChannel> = arrayListOf()
         @DelicateCoroutinesApi
         fun cherryBlossomLogoutAsync() = GlobalScope.async {
-            Ruins.cherryBlossom.shutdown()
+            cherryBlossom.shutdown()
         }
         @DelicateCoroutinesApi
         fun cherryBlossomInitializedAsync() = GlobalScope.async {
-            Ruins.cherryBlossom = Kord(env.BOT_TOKEN)
-            Ruins.cherryBlossom.login {
-                Ruins.cherryBlossom.apply {
+            cherryBlossom = Kord(env.BOT_TOKEN)
+            cherryBlossom.login {
+                val minecrafts = GlobalScope.async {
+                    flow { Ruins.cherryBlossom.guilds.collect { emit(it) } }.collect {
+                        flow { it.channels.collect { emit(it) } }.collect {
+                            if (it.asChannel().data.topic.value?.contains("#Minecraft") == true)
+                                minecrafts.add(it)
+                        }
+                    }
+                }
+                cherryBlossom.apply {
                     on<MessageCreateEvent> {
+                        if(message.author?.id == cherryBlossom.selfId) return@on
+                        if(message.channel.asChannel().data.topic.value?.contains("#Minecraft") == true) {
+                            val m = message.getGuild().getMember(message.author!!.id)
+                            "<${if(m.nickname == null) "${m.displayName}#${m.data.discriminator}" else m.nickname}> ${message.content}".bb()
+                        }
                         if(message.channel.asChannel().data.topic.value?.contains("#Command") != true) return@on
                         when{
                             message.content == "벚꽃아 리로드" -> {
                                 message.reply { content = "두근 두근 리로드 횟수는! **${vars.reload["server"]}**" }
                             }
-                            message.content.contains("벚꽃아 전적 ") -> {
-                                val name = message.content.split("전적 ")[1]
-                                val p = Bukkit.getOfflinePlayers().find { it.name == name }
-                                if(p != null){
-                                    if(vars.totals[p.uniqueId] == null){
-                                        message.reply { content = "머야..이상해 이사람 전적이 업서!!" }
-                                        return@on
+                                message.content.length >= 7 -> {
+                                    if(message.content.substring(0, 7) == "벚꽃아 전적 ") {
+                                        val name = message.content.split("전적 ")[1]
+                                        val p = Bukkit.getOfflinePlayers().find { it.name == name }
+                                        if (p != null) {
+                                            if (vars.totals[p.uniqueId] == null) {
+                                                message.reply { content = "머야..이상해 이사람 전적이 업서!!" }
+                                                return@on
+                                            }
+                                            message.reply { content = "${vars.totals[p.uniqueId]!!}" }
+                                        } else message.reply { content = "그런 사람은 업서여!" }
                                     }
-                                    message.reply { content = "${vars.totals[p.uniqueId]!!}" }
-                                }else{
-                                    message.reply { content = "그런 사람은 업서여!"}
                                 }
-                            }
                             message.content == "벚꽃아 인증" -> {
                                 val auth = Auth.request(msg = message)
                                 if(auth != null) {
                                     message.reply { content = "DM을 확인해주세욘!" }
                                     val auths = auth.startAsync()
-                                }else {
-                                    message.reply {
-                                        content = "중복 인증은 몬해욘!! 멈처!"
-                                    }
-                                }
+                                }else message.reply { content = "중복 인증은 몬해욘!! 멈처!" }
                             }
                             message.content == "벚꽃아 인원" -> {
                                 message.reply {
@@ -74,7 +88,6 @@ class CherryBlossom {
                         }
                     }
                 }
-                20L.rl { "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${vars.reload["server"]}".bb() }
                 playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
             }
 

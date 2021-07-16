@@ -4,6 +4,8 @@ import com.bins.ruins.call.commands.*
 import com.bins.ruins.call.commands.tab.LoreTab
 import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.events.actions.*
+import com.bins.ruins.call.events.discord.EvtChat
+import com.bins.ruins.call.events.discord.EvtLogins
 import com.bins.ruins.call.events.farmings.EvtStoneFile
 import com.bins.ruins.call.events.inventories.EvtInvClick
 import com.bins.ruins.call.events.inventories.EvtInvClose
@@ -11,8 +13,7 @@ import com.bins.ruins.call.events.inventories.EvtInvOpen
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.cherryblossom.CherryBlossom
-import com.bins.ruins.cherryblossom.classes.Auth
-import com.bins.ruins.cherryblossom.classes.Auth.Companion.requesters
+import com.bins.ruins.cherryblossom.classes.Auth.Companion.completers
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.Header
 import com.bins.ruins.structure.classes.Hideout
@@ -61,7 +62,6 @@ class Ruins : JavaPlugin(), CommandExecutor {
 
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
-        dataFolder.mkdirs()
         hide.enable()
         view()
         saveAndLoad()
@@ -83,21 +83,23 @@ class Ruins : JavaPlugin(), CommandExecutor {
         load(this, container, "container", ITEMSTACK)
         load(this, totals, "Totals", TOTAL)
         load(this, stashes, "Stashes", STASH)
-        load(this, requesters, "auths", AUTH)
+        load(this, completers, "auths", AUTH)
         (20*10L).rtAsync(5) {
             save(this, container, "container", ITEMSTACK)
             save(this, totals, "Totals", TOTAL)
             save(this, stashes, "Stashes", STASH)
-            save(this, requesters, "auths", AUTH)
+            save(this, completers, "auths", AUTH)
         }
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
         save(this, reload, "reload", INT)
+        20L.rl { "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb() }
     }
     private fun configEvt() {
         server.pluginManager.apply{
             arrayOf(
-                *Resistance.configs(), EvtMove(),EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
+                *Resistance.configs(), EvtMove(),
+                EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
                 EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
             ).forEach { registerEvents(it, this@Ruins) }
         }
