@@ -1,9 +1,12 @@
 package com.bins.ruins.call.commands
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
+import com.bins.ruins.scavengers.Scavenger
+import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.classes.Toast
 import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.classes.sessions.Session
@@ -54,6 +57,10 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
+            val scav = Scavenger(p.location)
+            (20*5L).rl {
+                scav.nearbyHear(HearSound.RUNNING, p.location)
+            }
 //            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
 //            toast.play(p)
 //            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {
