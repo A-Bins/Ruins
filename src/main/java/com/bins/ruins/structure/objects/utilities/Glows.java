@@ -17,7 +17,39 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Glows {
+    public static void main() {
+        Human DDang_ = new Human("DDang_", 20);
+        DDang_.getAge(); // 20
+        DDang_.getName(); // DDang_
+        DDang_.setAge(4);
+        DDang_.setName("A_bins");
+        Human A_bins = new Human("A_bins", 4);
+        A_bins.getAge(); // 4
+        A_bins.getName(); // A_bins
+        A_bins.setAge(20);
+        A_bins.setName("DDang_");
+    }
 
+    public static class Human {
+        private String name;
+        private Integer age;
+        public void setAge(Integer age) {
+            this.age = age;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public Integer getAge() {
+            return age;
+        }
+        public String getName() {
+            return name;
+        }
+        public Human(String name, Integer age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
 
     public static void setGlow(Player p, Entity e, boolean glow) {
         final ProtocolManager pm = ProtocolLibrary.getProtocolManager();

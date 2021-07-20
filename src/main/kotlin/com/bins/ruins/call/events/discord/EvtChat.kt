@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 
+@Suppress("DEPRECATION")
 class EvtChat: Listener {
 
     @InternalCoroutinesApi
@@ -20,7 +21,7 @@ class EvtChat: Listener {
     private fun discord(p: Player, msg: String) {
 
         val async = GlobalScope.async {
-            CherryBlossom.minecrafts.forEach {
+            CherryBlossom.minecrafts().forEach {
                 Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
                     embed {
                         color = Color(47, 49, 54)

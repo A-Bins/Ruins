@@ -20,7 +20,7 @@ class AuthCommand: CommandExecutor {
             if(p is Player){
                 if(Auth.post(p, args[0])) {
                     val async = GlobalScope.async {
-                        CherryBlossom.minecrafts.forEach {
+                        CherryBlossom.minecrafts().forEach {
                             Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
                                 embed {
                                     color = Color(50, 50, 50)

@@ -10,7 +10,6 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent
 class EvtSpawn: Listener {
     @EventHandler
     fun event(e: PlayerRespawnEvent){
-
-        e.player.setMetadata("die", FixedMetadataValue(Ruins.instance, false))
+//        e.player.setMetadata("die", FixedMetadataValue(Ruins.instance, false))
     }
 }

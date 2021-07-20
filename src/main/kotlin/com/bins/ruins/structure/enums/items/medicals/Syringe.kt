@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.math.BigDecimal
 
+@Suppress("DEPRECATION")
 enum class Syringe: Medical {
 
     LEMON {
@@ -45,7 +46,7 @@ enum class Syringe: Medical {
         }
 
     };
-    protected fun used(wait: BigDecimal, p: Player, want: () -> Any){
+    protected fun used(wait: BigDecimal, p: Player, want: () -> Unit){
         if(wait.toDouble() == 0.0) want().also {
             1L.rl {
                 p.sendRawMessage("§7사용까지 §f0.00s")

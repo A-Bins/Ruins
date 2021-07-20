@@ -30,9 +30,12 @@ import com.bins.ruins.structure.objects.vars.glowValue
 import com.bins.ruins.structure.objects.vars.reload
 import com.bins.ruins.structure.objects.vars.stashes
 import com.bins.ruins.structure.objects.vars.totals
+import dev.kord.common.Color
 import dev.kord.core.Kord
+import dev.kord.rest.builder.message.EmbedBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi
-import net.md_5.bungee.api.ChatColor
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.bukkit.Location
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Item
@@ -40,9 +43,11 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
+import kotlin.math.round
 
 //        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
 
+@Suppress("DEPRECATION")
 class Ruins : JavaPlugin(), CommandExecutor {
     @DelicateCoroutinesApi
     override fun onDisable() {
@@ -54,7 +59,6 @@ class Ruins : JavaPlugin(), CommandExecutor {
         val cherry = CherryBlossom.cherryBlossomInitializedAsync()
         File(dataFolder.path+"/session").mkdirs()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
-
         players = server.onlinePlayers
         instance = this
         scheduler = server.scheduler
@@ -93,7 +97,18 @@ class Ruins : JavaPlugin(), CommandExecutor {
         reload.putIfAbsent("server", 1)
         reload["server"] = reload["server"]!!+1
         save(this, reload, "reload", INT)
-        20L.rl { "${ChatColor.BOLD}두근 두근 리로드 횟수는! ${reload["server"]}".bb() }
+        1L.rl {
+            "리로드 횟수는! ${reload["server"]} 이빈다!!".bb()
+            "컴파일 (*빌드*) 하는데에만 ${reload["server"]!! * 5}초가 걸려쓰빈다!".bb()
+            "또 리로드하는데에만 ${reload["server"]!! * 4}초가 걸려쓰빈다!".bb()
+            val total = (reload["server"]!! * 5) + (reload["server"]!! * 4)
+
+            "그래서 총 ${total.toDouble()} 초, ${
+                round((total / 60.0) * 100) / 100.0
+            } 분, ${
+                round((total / 60.0 / 60.0) * 100) / 100.0
+            } 시간을 썻스빈다!!".bb()
+        }
     }
     private fun configEvt() {
         server.pluginManager.apply{

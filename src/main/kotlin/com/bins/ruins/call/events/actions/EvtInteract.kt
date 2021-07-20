@@ -64,7 +64,7 @@ class EvtInteract : Listener{
             }
             else if (e.hasItem()) {
                 if (e.item!!.isSyringe) {
-
+                    e.item!!.clone()
                 }
             }
             else if (b != null) {

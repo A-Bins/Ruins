@@ -14,6 +14,10 @@ import com.bins.ruins.structure.classes.sessions.SessionKey
 import com.bins.ruins.structure.classes.sessions.SessionMap
 import com.bins.ruins.structure.enums.defaults.Map
 import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.packet
+import com.bins.ruins.structure.objects.utilities.Receiver.player
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.events.PacketContainer
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -24,7 +28,10 @@ import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.json.simple.JSONObject
 import java.util.*
 
@@ -50,17 +57,23 @@ Strash(p.uniqueId, d)
 //}
 //)
 //packet.integers.write(0, p.entityId)
-//Ruins.instance.server.onlinePlayers.forEach {
-//    pm.sendServerPacket(it, packet);
-//}
+//packet.everyone()
 @Suppress("DEPRECATION")
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            val scav = Scavenger(p.location)
-            (20*5L).rl {
-                scav.nearbyHear(HearSound.RUNNING, p.location)
+            label.bb()
+            if(args.isNotEmpty()){
+                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
+                args[0].player?.apply {
+                    packet.integers.write(0, entityId)
+                }
+                p.packet(packet)
             }
+//            val scav = Scavenger(p.location)
+//            (20*5L).rl {
+//                scav.nearbyHear(HearSound.RUNNING, p.location)
+//            }
 //            val toast = Toast(NamespacedKey(Ruins.instance, "test"), "Bins", "DDang", "challenge", "apple")
 //            toast.play(p)
 //            SessionMap.StreetOfAbin.first.on(Map.STREET_OF_ABIN).also {

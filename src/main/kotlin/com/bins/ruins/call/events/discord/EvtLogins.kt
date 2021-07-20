@@ -24,13 +24,13 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.persistence.PersistentDataType
 
+@Suppress("DEPRECATION")
 class EvtLogins: Listener {
-    @InternalCoroutinesApi
     @DelicateCoroutinesApi
     private fun discord(p: Player, isJoin: Boolean) {
 
         val async = GlobalScope.async {
-            CherryBlossom.minecrafts.forEach {
+            CherryBlossom.minecrafts().forEach {
                 Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
                     embed {
                         color = Color(47, 49, 54)
@@ -43,6 +43,7 @@ class EvtLogins: Listener {
             }
         }
     }
+    @InternalCoroutinesApi
     @DelicateCoroutinesApi
     fun reload() {
         1L.rl {

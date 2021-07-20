@@ -8,6 +8,8 @@ plugins {
 group = "com.bins"
 repositories {
     mavenCentral()
+    mavenLocal()
+
     maven {
         url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
@@ -32,6 +34,7 @@ repositories {
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
     }
+    maven { url = uri("https://jitpack.io") }
 
 }
 
@@ -43,8 +46,10 @@ dependencies {
     implementation ("org.jetbrains.kotlin:kotlin-stdlib")// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
 //    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
-    compileOnly ("org.spigotmc:spigot:1.17-R0.1-SNAPSHOT")
-//    compileOnly("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
+    compileOnly ("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.17-R0.1-SNAPSHOT") {
+        exclude("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
+    }
     compileOnly ("dev.kord:kord-core:0.7.1")
     compileOnly (group = "com.comphenix.protocol", name = "ProtocolLib", version = "4.7.0-SNAPSHOT")
     compileOnly (group = "com.sk89q.worldguard", name = "worldguard-bukkit", version = "7.0.6-SNAPSHOT")

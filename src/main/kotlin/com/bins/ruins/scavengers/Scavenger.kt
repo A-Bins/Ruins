@@ -6,6 +6,7 @@ import net.citizensnpcs.api.npc.NPC
 import net.minecraft.world.entity.EntityInsentient
 import net.minecraft.world.entity.EntityLiving
 import net.minecraft.world.entity.ai.goal.PathfinderGoal
+import net.minecraft.world.entity.player.EntityHuman
 import net.minecraft.world.level.pathfinder.Pathfinder
 import net.minecraft.world.level.pathfinder.PathfinderAbstract
 import org.bukkit.Location

@@ -4,6 +4,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import java.security.SecureRandom
 import java.util.*
 
+@Suppress("DEPRECATION")
 class Flea(page: Int): Pages(page,44) {
     companion object{
         fun InventoryClickEvent.fleaCondition() = view.title.contains("암시장")
