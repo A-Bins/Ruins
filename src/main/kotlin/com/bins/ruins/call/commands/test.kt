@@ -6,6 +6,10 @@ import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.scavengers.Scavenger
+import com.bins.ruins.scavengers.Scavenger.Companion.back
+import com.bins.ruins.scavengers.Scavenger.Companion.front
+import com.bins.ruins.scavengers.Scavenger.Companion.left
+import com.bins.ruins.scavengers.Scavenger.Companion.right
 import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.classes.Toast
 import com.bins.ruins.structure.classes.Total
@@ -24,6 +28,7 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -62,8 +67,12 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
-            scav.guard(Location(p.world, -73.5, 19.0, -167.5))
+            p.eyeLocation.add(p.eyeLocation.right()).block.type = Material.STONE
+            p.eyeLocation.add(p.eyeLocation.front()).block.type = Material.STONE
+            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
+            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
+//            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
+//            scav.guard(Location(p.world, -73.5, 19.0, -167.5))
 //            if(args.isNotEmpty()){
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
 //                args[0].player?.apply {
