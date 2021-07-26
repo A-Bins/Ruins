@@ -1,4 +1,4 @@
-package com.bins.ruins.call.events.discord
+package com.bins.ruins.call.events.actions.discord
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.cherryblossom.CherryBlossom

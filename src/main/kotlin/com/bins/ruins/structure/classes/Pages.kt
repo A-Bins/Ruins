@@ -1,13 +1,10 @@
 package com.bins.ruins.structure.classes
 
-open class Pages(pages: Int, maxSlot: Int) {
-    val back =
-        if (pages == 1)
-            null
-        else ((pages-2)*maxSlot..(pages-1)*maxSlot).toList()
-    val current = ((pages-1)*maxSlot+1..pages*maxSlot+1).toList()
-    val next = (pages*maxSlot+2..(pages+1)*maxSlot+2).toList()
-    fun get(): Triple<List<Int>?, List<Int>, List<Int>> {
-        return Triple(back, current, next)
-    }
+open class Pages(val pages: Int,val maxSlot: Int) {
+    val back = if(pages == 1) null else ((pages-2)*44)+(pages-2)..((pages-1)*44)+(pages-2)
+    val current = ((pages-1)*44)+(pages-1)..(pages*44)+(pages-1)
+    val next = (pages*44)+(pages)..((pages+1)*44)+(pages)
+
+    fun get(current: Int) = next.toList().indexOf(current)
+    fun getB(current: Int) = back!!.toList().indexOf(current)
 }

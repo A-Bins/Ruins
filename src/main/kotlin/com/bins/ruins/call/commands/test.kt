@@ -62,14 +62,15 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            label.bb()
-            if(args.isNotEmpty()){
-                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
-                args[0].player?.apply {
-                    packet.integers.write(0, entityId)
-                }
-                p.packet(packet)
-            }
+            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
+            scav.guard(Location(p.world, -73.5, 19.0, -167.5))
+//            if(args.isNotEmpty()){
+//                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
+//                args[0].player?.apply {
+//                    packet.integers.write(0, entityId)
+//                }
+//                p.packet(packet)
+//            }
 //            val scav = Scavenger(p.location)
 //            (20*5L).rl {
 //                scav.nearbyHear(HearSound.RUNNING, p.location)

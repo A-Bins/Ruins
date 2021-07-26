@@ -1,4 +1,4 @@
-package com.bins.ruins.call.events.discord
+package com.bins.ruins.call.events.actions.discord
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
@@ -9,6 +9,7 @@ import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
+import com.bins.ruins.structure.objects.utilities.Receiver.bb
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -54,33 +55,38 @@ class EvtLogins: Listener {
             }
         }
     }
-    var task = -1
+    private fun PlayerJoinEvent.check() {
+
+        if(player.clientBrandName == null) {
+            1L.rl { check() }
+            return
+        }
+        Ruins.instance.server.operators.filter { it.isOnline }.forEach {
+            it.player?.apply { sendMessage("§f${this@check.player.name}§7은 §8${this@check.player.clientBrandName} §7클라이언트를 쓴다구욘?") }
+        }
+    }
+    private fun PlayerJoinEvent.auth(backCount: Int) {
+        if (backCount == 30) player.kickPlayer("§c디스코드로 인증을 해주세요!")
+        else if(!Auth.completers.containsValue(player.uniqueId)) {
+            20L.rl {
+                player.sendTitle("§c디스코드로 인증을 해주세요!", "", 5, 5, 5)
+                auth(backCount+1)
+            }
+        }
+    }
     @InternalCoroutinesApi
     @DelicateCoroutinesApi
     @EventHandler
     fun event(e: PlayerJoinEvent) {
-        if(!Auth.completers.containsValue(e.player.uniqueId)){
-            task = (1L).rt {
-                e.player.sendTitle("§c디스코드로 인증을 해주세요!", "", 5, 5, 5)
-                if(Auth.completers.containsValue(e.player.uniqueId))
-                    Ruins.scheduler.cancelTask(task)
-            }.taskId
-            (20L*30).rl {
-                if(!Auth.completers.containsValue(e.player.uniqueId)) {
-                    e.player.kickPlayer("§c디스코드로 인증을 해주세요!")
-                    Ruins.scheduler.cancelTask(task)
-                }
-            }
-        }
+        e.auth(0)
+        e.check()
         reload()
         discord(e.player, true)
         e.player.healthScale = 40.0
         e.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = 100.0
         Stash.default(e.player.uniqueId)
         Hideout.unlockList.forEach {
-            if(!e.player.persistentDataContainer.has(it, PersistentDataType.STRING)) {
-                e.player.persistentDataContainer[it, PersistentDataType.STRING] = "false"
-            }
+            if(!e.player.persistentDataContainer.has(it, PersistentDataType.STRING)) e.player.persistentDataContainer[it, PersistentDataType.STRING] = "false"
         }
         vars.totals.putIfAbsent(e.player.uniqueId, Total.create(0, 0))
     }

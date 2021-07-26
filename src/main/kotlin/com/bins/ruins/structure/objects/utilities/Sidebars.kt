@@ -2,7 +2,9 @@ package com.bins.ruins.structure.objects.utilities
 
 import com.bins.ruins.Ruins
 import org.bukkit.entity.Player
+import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
+import java.time.LocalDateTime
 
 
 @Suppress("DEPRECATION")
@@ -32,11 +34,13 @@ object Sidebars {
     }
     fun showSidebar(p: Player) {
         if (p.scoreboard == Ruins.instance.server.scoreboardManager.mainScoreboard) p.scoreboard = Ruins.instance.server.scoreboardManager.newScoreboard
-        /*val score = p.scoreboard
+        val score = p.scoreboard
         val objective = if (score.getObjective(p.name) == null) score.registerNewObjective(p.name, "dummy") else score.getObjective(p.name)
         objective!!.displayName = "abcdefg"
-        replaceScore(objective, 8, "${LocalDateTime.now().second}")
+        repeat(7) {
+            replaceScore(objective, it, "$it ${LocalDateTime.now().second}              ")
+        }
         if (objective.displaySlot != DisplaySlot.SIDEBAR) objective.displaySlot = DisplaySlot.SIDEBAR
-        p.scoreboard = score*/
+        p.scoreboard = score
     }
 }

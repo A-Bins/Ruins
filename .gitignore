@@ -6,6 +6,7 @@
 *.iws
 
 src/main/kotlin/com/bins/ruins/resistance/
+src/main/kotlin/com/bins/ruins/scavengers/
 # IntelliJ
 out/
 # mpeltonen/sbt-idea plugin

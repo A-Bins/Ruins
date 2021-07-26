@@ -8,6 +8,7 @@ import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -20,6 +21,9 @@ import kotlin.reflect.KProperty
 
 @Suppress("DEPRECATION")
 object Receiver {
+    val Player.asCraft: CraftPlayer
+        get() = this as CraftPlayer
+
     fun Player.packet(packet: PacketContainer) = ProtocolLibrary.getProtocolManager().sendServerPacket(this, packet)
     fun PacketContainer.everyone() = Ruins.players.forEach { ProtocolLibrary.getProtocolManager().sendServerPacket(it, this) }
     val String.player: Player?

@@ -1,14 +1,19 @@
 package com.bins.ruins.structure.objects.utilities;
 
+import com.bins.ruins.Ruins;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -17,7 +22,10 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Glows {
+
+
     public static void main() {
+        FileConfiguration playerdata = Ruins.Companion.getInstance().getConfig();
         Human DDang_ = new Human("DDang_", 20);
         DDang_.getAge(); // 20
         DDang_.getName(); // DDang_

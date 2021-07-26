@@ -1,5 +1,5 @@
 name: Ruins
-version: underfined
+version: ${project_version}
 main: com.bins.ruins.Ruins
 api-version: 1.16
 depend: [ Kotlin, ProtocolLib, Citizens, WorldGuard ]
