@@ -9,6 +9,7 @@ import com.bins.ruins.scavengers.Scavenger
 import com.bins.ruins.scavengers.Scavenger.Companion.back
 import com.bins.ruins.scavengers.Scavenger.Companion.front
 import com.bins.ruins.scavengers.Scavenger.Companion.left
+import com.bins.ruins.scavengers.Scavenger.Companion.neighbors
 import com.bins.ruins.scavengers.Scavenger.Companion.right
 import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.classes.Toast
@@ -34,7 +35,9 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.json.simple.JSONObject
@@ -67,12 +70,15 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(p is Player){
-            p.eyeLocation.add(p.eyeLocation.right()).block.type = Material.STONE
-            p.eyeLocation.add(p.eyeLocation.front()).block.type = Material.STONE
-            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
-            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
-//            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
-//            scav.guard(Location(p.world, -73.5, 19.0, -167.5))
+//            p.eyeLocation.neighbors(listOf( p.eyeLocation.add(p.eyeLocation.front()))).forEach {
+//                it.block.type = Material.STONE
+//            }
+//            p.eyeLocation.add(p.eyeLocation.right()).block.type = Material.STONE
+//            p.eyeLocation.add(p.eyeLocation.front()).block.type = Material.STONE
+//            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
+//            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
+            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
+            scav.nearbyHear(HearSound.SHOT, Location(p.world, -73.5, 19.0, -167.5))
 //            if(args.isNotEmpty()){
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
 //                args[0].player?.apply {
@@ -121,10 +127,10 @@ class test : CommandExecutor{
 //                else if(args[0] == "a") {
 //                    val a: ArrayList<Int> = arrayListOf(1,5,3,2,76,10).also { it.sorted().bb() }
 //                }
-                Guns.WK416A5.give(p)
-                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
-                    amount = 64
-                })
+//                Guns.WK416A5.give(p)
+//                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
+//                    amount = 64
+//                })
 //            }
 //            Guns.WK416A5.give(p)
         }
