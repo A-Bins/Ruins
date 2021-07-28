@@ -51,59 +51,39 @@ class Scavenger(val spawn: Location) {
             val direction = direction.normalize()
             return Vector(-direction.x, 0.0, -direction.z).normalize()
         }
-
         fun Location.left(): Vector {
             val direction = direction.normalize()
             return Vector(direction.z, 0.0, -direction.x).normalize()
         }
-        fun Location.neighbors(): ArrayList<Location> {
-            val neighbors = arrayListOf<Location>()
-            arrayOf(front(), left(), back(), right()).forEach {
-                neighbors.add(clone().add(it).toCenterLocation())
-            }
-            return neighbors
-        }
     }
 
-
-    fun h(node: Location, goal: Location): Double {
-        val x = node.x - goal.x
-        val z = node.z - goal.z
-        return x * x + z * z
+    fun faceDirection(want: Location, target: Location): Location {
+        val dir = target.clone().subtract(want).toVector()
+        return want.clone().setDirection(dir)
     }
 
-    val Vector.yaw: Float
-    get() {
-        val dx = x
-        val dz = z
-        var yaw = 0.0
-        // Set yaw
-        if (dx != 0.0) {
-            // Set yaw start value based on dx
-            yaw = if (dx < 0) {
-                1.5 * Math.PI
-            } else {
-                0.5 * Math.PI
-            }
-            yaw -= Math.atan(dz / dx)
-        } else if (dz < 0) {
-            yaw = Math.PI
-        }
-        return (-yaw * 180 / Math.PI - 90).toFloat()
-    }
 
     fun guard(end: Location, list: MutableList<Location>? = null) {
         val mayList: MutableList<Location> = if(list == null) {
 
-            val path = Path(scav.entity.location, end).goalToWay()
-            if(path.isNotEmpty())
-                return
-            val result = path.map { it!! } .toMutableList()
-            result.removeAt(0)
-            result
+            val path = Path(scav.entity.location.toCenterLocation(), end).goalToWay()
+            if(path.isEmpty()) return
+            path.map { it!! }.toMutableList()
         }else list
 
-        val go
+        if(mayList.isEmpty()) return
+
+        val go = mayList.first()
+//        (go.distance(scav.entity.location.toCenterLocation())).bb()
+        if(go.distance(scav.entity.location.toCenterLocation()) == 0.0) {
+            mayList.remove(go)
+            if(mayList.isEmpty()) return
+            /* fake가 다음 목적지인데 go의 방향을 fake를 보게끔해서 그쪽방향으로 올려줘야함 ㅇㅇ */
+            val fake = faceDirection(go, mayList.first()).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction)
+            scav.navigator.setTarget(arrayListOf(fake.toVector()))
+
+
+        }
 
         1L.rl {
             guard(end, mayList)

@@ -1,49 +1,14 @@
 package com.bins.ruins.call.commands
 
-import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
-import com.bins.ruins.cherryblossom.classes.Auth
-import com.bins.ruins.resistance.structure.enums.Ammo
-import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.scavengers.Scavenger
-import com.bins.ruins.scavengers.Scavenger.Companion.back
-import com.bins.ruins.scavengers.Scavenger.Companion.front
-import com.bins.ruins.scavengers.Scavenger.Companion.left
-import com.bins.ruins.scavengers.Scavenger.Companion.neighbors
-import com.bins.ruins.scavengers.Scavenger.Companion.right
 import com.bins.ruins.scavengers.structure.enums.HearSound
-import com.bins.ruins.structure.classes.Toast
-import com.bins.ruins.structure.classes.Total
-import com.bins.ruins.structure.classes.sessions.Session
-import com.bins.ruins.structure.classes.sessions.SessionKey
-import com.bins.ruins.structure.classes.sessions.SessionMap
-import com.bins.ruins.structure.enums.defaults.Map
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.packet
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.player
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.events.PacketContainer
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import kotlinx.coroutines.DelicateCoroutinesApi
 import net.citizensnpcs.nms.v1_17_R1.entity.EntityHumanNPC
-import net.minecraft.world.entity.EntityInsentient
-import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
-import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
-import org.bukkit.event.player.PlayerTeleportEvent
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
-import org.json.simple.JSONObject
-import java.util.*
 
 
 /*
@@ -80,12 +45,7 @@ class test : CommandExecutor{
 //            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
 //            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
         val scav = Scavenger(Location(p.world, 7.5, 49.0, 23.5))
-        40L.rl {
-            val e = scav.scav.entity
-            if(e is EntityHumanNPC.PlayerNPC){
-            }
-        }
-//        scav.nearbyHear(HearSound.SHOT, Location(p.world, 8.5, 49.0, 7.5))
+        scav.nearbyHear(HearSound.SHOT, Location(p.world, 8.5, 49.0, 7.5))
 //            if(args.isNotEmpty()){
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
 //                args[0].player?.apply {
