@@ -2,7 +2,7 @@ package com.bins.ruins.resistance.structure.interfaces
 
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Mode
-import com.bins.ruins.resistance.structure.enums.Recoil
+import com.bins.ruins.resistance.structure.enums.RecoilPattern
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -13,7 +13,7 @@ interface Gunable {
     val displayName: String
     val description: Array<String>
     val ammo: Ammo
-    val recoilPattern: Recoil
+    val recoilPattern: RecoilPattern
     val hipAccuracy: Double
     val pointAccuracy: Double
     val sound: HashMap<Sound, HashMap<Float, Long>>

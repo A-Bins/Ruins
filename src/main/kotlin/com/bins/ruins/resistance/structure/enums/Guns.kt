@@ -3,7 +3,6 @@ package com.bins.ruins.resistance.structure.enums
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.structure.classes.Bullet
 import com.bins.ruins.resistance.structure.interfaces.Gunable
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material
@@ -27,7 +26,7 @@ enum class Guns: Gunable {
         }
 
         override val damage = 0.5
-        override val recoilPattern = Recoil.S
+        override val recoilPattern = RecoilPattern.S
         override val hipAccuracy = 80.0
         override val pointAccuracy = 97.0
         override val shootSpeed = 5 /* Meter/Ticks */
@@ -80,5 +79,5 @@ enum class Guns: Gunable {
             }
         })
     }
-    fun shoot(p: Player, current: ItemStack) = Bullet(p, this, p.eyeLocation, recoilVertical, recoilHorizontal, current).shoot()
+    fun shoot(p: Player, current: ItemStack) = Bullet(p, this, p.eyeLocation, currentMagazine = current).shoot()
 }

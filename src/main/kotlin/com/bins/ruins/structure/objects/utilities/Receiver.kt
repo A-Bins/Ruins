@@ -6,6 +6,7 @@ import com.bins.ruins.structure.objects.utilities.Receiver.Companion.packet
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.player
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
+import net.minecraft.network.protocol.Packet
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
@@ -26,6 +27,7 @@ class Receiver {
             get() = this as CraftPlayer
 
         fun Player.packet(packet: PacketContainer) = ProtocolLibrary.getProtocolManager().sendServerPacket(this, packet)
+        fun Player.packet(packet: Packet<*>) = asCraft.handle.b.sendPacket(packet)
         fun PacketContainer.everyone() =
             Ruins.players.forEach { ProtocolLibrary.getProtocolManager().sendServerPacket(it, this) }
 

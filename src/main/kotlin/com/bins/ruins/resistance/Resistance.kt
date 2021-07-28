@@ -23,14 +23,23 @@ import java.util.*
 
 @Suppress("DEPRECATION")
 class Resistance(p: Player) {
+
+    /**
+     * 연사 시스템을 담당 해주는 객체 친구들
+     **/
     init {
         resistances[p.uniqueId] = this
     }
-    private var time = 0L
+    private var time = 0L /* 처음 init 되면 0L로 설정되는 친구임 */
+
+    // 만약 처음에 초기화된 time 변수를 현재 currentTimeMillis에 감소 시켜주면 190~210에 존재하는가
     fun isAuto(): Boolean = (System.currentTimeMillis()-time in 190L..210L).also {
-        time = System.currentTimeMillis()
+        time = System.currentTimeMillis() /* 여부와 관계 없이 호출시 time을 현재 currentTimeMillis로 대입. */
     }
 
+    /**
+     * 별 볼일 없는 친구들임.
+     **/
     companion object {
 
         val ItemStack.isGun: Boolean
@@ -79,7 +88,6 @@ class Resistance(p: Player) {
                     }
                 }
             }
-
         fun configs(): Array<Listener> {
             return arrayOf(EvtShoot(), EvtReload(), EvtCheck())
         }
