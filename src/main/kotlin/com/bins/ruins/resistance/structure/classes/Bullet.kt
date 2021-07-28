@@ -1,19 +1,13 @@
 package com.bins.ruins.resistance.structure.classes
 
-import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.resistance.structure.enums.RecoilPattern
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.asCraft
-import com.bins.ruins.structure.objects.utilities.Receiver.Companion.packet
-import net.minecraft.network.protocol.game.PacketPlayOutPosition
 import org.bukkit.*
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 import kotlin.math.*
 
@@ -42,15 +36,19 @@ class Bullet(
     private fun bullet(
         // 총알의 슾이드
         speed: Int,
+        // 딱봐도 플레이어 에임이죠?
         locs: Location,
-        counted: Int = gun.maxRange / speed,
-        targeted: Location = locs.clone().add(locs.direction.multiply(0.2)),
-        hited: ArrayList<Player> = arrayListOf(),
+        // 연산을 몇번 했나, 총알이 최대 연산 속도인 1틱으로 한번에 갈 수 있는 거리를 몇번 해야하냐를 구한것
+        counted: Int = gun.maxRange / speed, /* ( 값이 안들어오면 기본값 사용 ) */
+        // 총알 위치
+        targeted: Location = locs.clone().add(locs.direction.multiply(0.2)), /* ( 값이 안들어오면 기본값 사용 ) */
+        // 총알을 누가 맞았나
+        hited: ArrayList<Player> = arrayListOf(), /* ( 값이 안들어오면 기본값 사용 ) */
+        // 파티클 본문
         bullet: (Location) -> Unit) {
 
         var count = counted
         var target = targeted
-        val hits = hited
 
         /***
          *  이 친구는 이제 레이 트레이스와 파티클의 본문.
@@ -65,10 +63,11 @@ class Bullet(
 
             if(ray != null) {
                 if ((ray.hitBlock != null) or (ray.hitEntity != null)) {
-                    if (ray.hitEntity != null && (ray.hitEntity as Player).gameMode != GameMode.CREATIVE && !hits.contains(ray.hitEntity)) {
+                    if (ray.hitEntity != null && (ray.hitEntity as Player).gameMode != GameMode.CREATIVE && !hited.contains(
+                            ray.hitEntity)) {
 
                         val hit = ray.hitEntity as Player
-                        hits.add(hit)
+                        hited.add(hit)
                         hit.noDamageTicks = 0
                         hit.maximumNoDamageTicks = 0
                         hit.damage(gun.damage)
@@ -93,7 +92,7 @@ class Bullet(
 
         /* 재귀함수랄까? */
         1L.rl {
-            bullet(speed, locs, count, target, hits, bullet)
+            bullet(speed, locs, count, target, hited, bullet)
         }
     }
 
