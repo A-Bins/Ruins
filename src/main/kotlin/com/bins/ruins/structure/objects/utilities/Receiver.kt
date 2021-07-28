@@ -2,8 +2,8 @@ package com.bins.ruins.structure.objects.utilities
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.objects.utilities.Receiver.packet
-import com.bins.ruins.structure.objects.utilities.Receiver.player
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.packet
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.player
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
 import org.bukkit.Bukkit
@@ -20,34 +20,43 @@ import java.io.ByteArrayOutputStream
 import kotlin.reflect.KProperty
 
 @Suppress("DEPRECATION")
-object Receiver {
-    val Player.asCraft: CraftPlayer
-        get() = this as CraftPlayer
+class Receiver {
+    companion object {
+        val Player.asCraft: CraftPlayer
+            get() = this as CraftPlayer
 
-    fun Player.packet(packet: PacketContainer) = ProtocolLibrary.getProtocolManager().sendServerPacket(this, packet)
-    fun PacketContainer.everyone() = Ruins.players.forEach { ProtocolLibrary.getProtocolManager().sendServerPacket(it, this) }
-    val String.player: Player?
-        get() = Bukkit.getPlayer(this)
-    fun Any.bb(){
-        Bukkit.broadcastMessage("$this")
-    }
-    fun String.deserializeItemStack(): ItemStack {
+        fun Player.packet(packet: PacketContainer) = ProtocolLibrary.getProtocolManager().sendServerPacket(this, packet)
+        fun PacketContainer.everyone() =
+            Ruins.players.forEach { ProtocolLibrary.getProtocolManager().sendServerPacket(it, this) }
 
-        val inputStream = ByteArrayInputStream(Base64Coder.decodeLines(this))
-        return BukkitObjectInputStream(inputStream).apply { close() }.readObject() as ItemStack
-    }
-    fun ItemStack.serializeItemStack(): String {
-        val outputStream = ByteArrayOutputStream()
-        BukkitObjectOutputStream(outputStream).also {
-            it.writeObject(this)
-            it.close()
+        val String.player: Player?
+            get() = Bukkit.getPlayer(this)
+
+        fun Any.bb() {
+            Bukkit.broadcastMessage("$this")
         }
-        return Base64Coder.encodeLines(outputStream.toByteArray())
-    }
-    inline fun <reified T> Any.tryCast(block: T.() -> Unit) {
-        if (this is T) {
-            block()
+
+        fun String.deserializeItemStack(): ItemStack {
+
+            val inputStream = ByteArrayInputStream(Base64Coder.decodeLines(this))
+            return BukkitObjectInputStream(inputStream).apply { close() }.readObject() as ItemStack
         }
+
+        fun ItemStack.serializeItemStack(): String {
+            val outputStream = ByteArrayOutputStream()
+            BukkitObjectOutputStream(outputStream).also {
+                it.writeObject(this)
+                it.close()
+            }
+            return Base64Coder.encodeLines(outputStream.toByteArray())
+        }
+
+        inline fun <reified T> Any.tryCast(block: T.() -> Unit) {
+            if (this is T) {
+                block()
+            }
+        }
+
+        inline fun <reified T> Any.typeCheck(): Boolean = this is T
     }
-    inline fun <reified T> Any.typeCheck() : Boolean = this is T
 }

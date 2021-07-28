@@ -18,15 +18,17 @@ import com.bins.ruins.structure.classes.sessions.Session
 import com.bins.ruins.structure.classes.sessions.SessionKey
 import com.bins.ruins.structure.classes.sessions.SessionMap
 import com.bins.ruins.structure.enums.defaults.Map
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
-import com.bins.ruins.structure.objects.utilities.Receiver.packet
-import com.bins.ruins.structure.objects.utilities.Receiver.player
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.packet
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.player
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kotlinx.coroutines.DelicateCoroutinesApi
+import net.citizensnpcs.nms.v1_17_R1.entity.EntityHumanNPC
+import net.minecraft.world.entity.EntityInsentient
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -68,8 +70,8 @@ Strash(p.uniqueId, d)
 //packet.everyone()
 @Suppress("DEPRECATION")
 class test : CommandExecutor{
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if(p is Player){
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
 //            p.eyeLocation.neighbors(listOf( p.eyeLocation.add(p.eyeLocation.front()))).forEach {
 //                it.block.type = Material.STONE
 //            }
@@ -77,8 +79,13 @@ class test : CommandExecutor{
 //            p.eyeLocation.add(p.eyeLocation.front()).block.type = Material.STONE
 //            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
 //            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
-            val scav = Scavenger(Location(p.world, -74.5, 19.0,-150.5))
-            scav.nearbyHear(HearSound.SHOT, Location(p.world, -73.5, 19.0, -167.5))
+        val scav = Scavenger(Location(p.world, 7.5, 49.0, 23.5))
+        40L.rl {
+            val e = scav.scav.entity
+            if(e is EntityHumanNPC.PlayerNPC){
+            }
+        }
+//        scav.nearbyHear(HearSound.SHOT, Location(p.world, 8.5, 49.0, 7.5))
 //            if(args.isNotEmpty()){
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA)
 //                args[0].player?.apply {
@@ -133,7 +140,7 @@ class test : CommandExecutor{
 //                })
 //            }
 //            Guns.WK416A5.give(p)
-        }
+
         return false
     }
 }

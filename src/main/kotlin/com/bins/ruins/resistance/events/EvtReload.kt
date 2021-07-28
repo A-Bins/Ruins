@@ -5,7 +5,7 @@ import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.Resistance.Companion.isGun
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey

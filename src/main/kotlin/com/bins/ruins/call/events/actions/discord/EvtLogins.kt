@@ -9,7 +9,7 @@ import com.bins.ruins.structure.classes.Hideout
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash
 import com.bins.ruins.structure.classes.Total
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi

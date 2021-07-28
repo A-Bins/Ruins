@@ -3,7 +3,7 @@ package com.bins.ruins.resistance.structure.enums
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.structure.classes.Bullet
 import com.bins.ruins.resistance.structure.interfaces.Gunable
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material

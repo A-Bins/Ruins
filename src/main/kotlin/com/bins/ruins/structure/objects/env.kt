@@ -5,9 +5,11 @@ import com.bins.ruins.structure.classes.Header
 import org.bukkit.entity.Player
 import java.util.stream.Collectors
 
-object env {
-    val STASH_VALUE: Array<Int> = arrayOf(10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25)
-    const val ENABLE_INFO: String = """
+class env {
+    companion object {
+        val STASH_VALUE: Array<Int> = arrayOf(10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25)
+
+        const val ENABLE_INFO: String = """
             루인스 플러그인 활성화!
             
             
@@ -29,5 +31,6 @@ object env {
       
         """
 
-    const val BOT_TOKEN = "ODM1MTA1MjM2MTcwODMzOTMw.YIKmWw.jIAUK09pe89TxtJyCAr2-BTrxHs"
+        const val BOT_TOKEN = "ODM1MTA1MjM2MTcwODMzOTMw.YIKmWw.jIAUK09pe89TxtJyCAr2-BTrxHs"
+    }
 }

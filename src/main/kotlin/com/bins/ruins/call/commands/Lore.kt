@@ -12,31 +12,32 @@ import java.util.ArrayList
 
 class Lore : CommandExecutor {
     @Suppress("DEPRECATION")
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
         try {
             if (args.size > 1) {
-                if (p is Player) {
-                    if (!p.isOp) return false
-                    if (p.inventory.itemInMainHand.type != Material.AIR) {
-                        if (p.inventory.itemInMainHand.itemMeta != null) {
-                            val item = p.inventory.itemInMainHand
-                            val str = java.lang.String.join(" ", *args.copyOfRange(1, args.size))
-                            val i = args[0].toInt()
-                            if (item.itemMeta == null) {
-                                val meta = item.itemMeta!!
-                                meta.lore = ArrayList(listOf(""))
-                                item.itemMeta = meta
-                            }
-                            val li: ArrayList<String> = ArrayList(item.itemMeta!!.lore!!)
-                            for (a in 0 until i) {
-                                if (item.itemMeta!!.lore!!.size - 1 < i - 1) {
-                                    li.add("")
-                                    item.itemMeta!!.lore = li
-                                }
-                            }
-                            li[i - 1] = ChatColor.translateAlternateColorCodes('&', str)
-                            item.itemMeta!!.lore = li
+                if (!p.isOp) return false
+                if (p.inventory.itemInMainHand.type != Material.AIR) {
+                    if (p.inventory.itemInMainHand.itemMeta != null) {
+                        val item = p.inventory.itemInMainHand
+                        val str = java.lang.String.join(" ", *args.copyOfRange(1, args.size))
+                        val i = args[0].toInt()
+                        if (item.itemMeta == null) {
+                            val meta = item.itemMeta!!
+                            meta.lore = ArrayList(listOf(""))
+                            item.itemMeta = meta
                         }
+                        val li: ArrayList<String> = ArrayList(item.itemMeta!!.lore!!)
+                        for (a in 0 until i) {
+                            if (item.itemMeta!!.lore!!.size - 1 < i - 1) {
+                                li.add("")
+                                item.itemMeta!!.lore = li
+                            }
+                        }
+                        li[i - 1] = ChatColor.translateAlternateColorCodes('&', str)
+                        item.itemMeta!!.lore = li
+
                     }
                 }
             }

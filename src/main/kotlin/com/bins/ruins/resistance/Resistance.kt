@@ -6,8 +6,8 @@ import com.bins.ruins.resistance.events.EvtCheck
 import com.bins.ruins.resistance.events.EvtReload
 import com.bins.ruins.resistance.events.EvtShoot
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.objects.utilities.MetaReceiver.toCrossBowMeta
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.MetaReceiver.Companion.toCrossBowMeta
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer

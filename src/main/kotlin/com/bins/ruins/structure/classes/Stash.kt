@@ -1,7 +1,7 @@
 package com.bins.ruins.structure.classes
 
 import com.bins.ruins.structure.objects.env
-import com.bins.ruins.structure.objects.vars.stashes
+import com.bins.ruins.structure.objects.vars.Companion.stashes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player

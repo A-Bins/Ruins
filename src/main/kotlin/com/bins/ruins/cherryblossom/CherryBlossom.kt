@@ -5,7 +5,7 @@ import com.bins.ruins.Ruins.Companion.cherryBlossom
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.objects.env
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.bins.ruins.structure.objects.vars
 import dev.kord.common.Color
 import dev.kord.core.Kord

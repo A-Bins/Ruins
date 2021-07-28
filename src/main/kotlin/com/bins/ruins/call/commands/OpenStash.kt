@@ -9,10 +9,9 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class OpenStash : CommandExecutor {
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if(p is Player){
-            p.inStash()
-        }
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
+        p.inStash()
         return false
     }
 }

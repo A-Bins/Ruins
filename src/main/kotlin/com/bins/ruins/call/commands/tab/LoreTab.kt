@@ -15,25 +15,22 @@ class LoreTab : TabCompleter {
         label: String,
         args: Array<String>
     ): List<String>? {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return null }
         val completions: MutableList<String> = ArrayList()
         val commands: MutableList<String> = ArrayList()
-        if (sender !is Player) return null
-        if (!sender.isOp()) return null
-        try {
+        if (!p.isOp) return null
+
             if (args.size == 2) {
-                val i = sender.inventory.itemInMainHand
-                if (i.itemMeta!!.lore != null) {
-                    if (i.itemMeta!!.lore!!.size >= args[0].toInt()) {
+                val i = p.inventory.itemInMainHand
+                i.itemMeta?.lore?.let {
+                    if (it.size >= args[0].toInt()) {
                         val lore = args[0].toInt()
-                        commands.add(i.itemMeta!!.lore!![lore - 1].replace("§", "&"))
+                        commands.add(it[lore - 1].replace("§", "&"))
                     }
                 }
                 StringUtil.copyPartialMatches(args[1], commands, completions)
             }
             completions.sort()
-        } catch (ex: Exception) {
-            return null
-        }
         return completions
     }
 }

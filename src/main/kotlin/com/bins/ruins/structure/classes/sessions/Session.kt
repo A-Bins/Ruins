@@ -4,7 +4,7 @@ import com.bins.ruins.Ruins
 import com.bins.ruins.structure.classes.sessions.SessionType.*
 import com.bins.ruins.structure.enums.defaults.Map
 import com.bins.ruins.structure.interfaces.session.SessionInfo
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.block.Block

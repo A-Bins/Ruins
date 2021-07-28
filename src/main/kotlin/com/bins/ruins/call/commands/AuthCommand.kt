@@ -15,25 +15,25 @@ import org.bukkit.entity.Player
 
 class AuthCommand: CommandExecutor {
     @DelicateCoroutinesApi
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
         if(args.isNotEmpty()) {
-            if(p is Player){
-                if(Auth.post(p, args[0])) {
-                    val async = GlobalScope.async {
-                        CherryBlossom.minecrafts().forEach {
-                            Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
-                                embed {
-                                    color = Color(50, 50, 50)
-                                    author = EmbedBuilder.Author().apply {
-                                        icon = "https://crafatar.com/avatars/${p.uniqueId}?size=50"
-                                        name = "${p.name}님이 인증을 완료 하셨습니다!"
-                                    }
+            if (Auth.post(p, args[0])) {
+                val async = GlobalScope.async {
+                    CherryBlossom.minecrafts().forEach {
+                        Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
+                            embed {
+                                color = Color(50, 50, 50)
+                                author = EmbedBuilder.Author().apply {
+                                    icon = "https://crafatar.com/avatars/${p.uniqueId}?size=50"
+                                    name = "${p.name}님이 인증을 완료 하셨습니다!"
                                 }
                             }
                         }
                     }
                 }
             }
+
         }
         return false
     }

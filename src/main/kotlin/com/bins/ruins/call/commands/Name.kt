@@ -10,17 +10,17 @@ import org.bukkit.entity.Player
 
 class Name : CommandExecutor {
     @Suppress("DEPRECATION")
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
         if (args.isNotEmpty()) {
-            if (p is Player) {
-                if (!p.isOp) return false
-                if (p.inventory.itemInMainHand.type != Material.AIR) {
-                    val item = p.inventory.itemInMainHand
-                    val str = java.lang.String.join(" ", *args.copyOfRange(0, args.size))
-                    val meta = item.itemMeta
-                    meta!!.setDisplayName(ChatColor.translateAlternateColorCodes('&', str))
-                    item.itemMeta = meta
-                }
+            if (!p.isOp) return false
+            if (p.inventory.itemInMainHand.type != Material.AIR) {
+                val item = p.inventory.itemInMainHand
+                val str = java.lang.String.join(" ", *args.copyOfRange(0, args.size))
+                val meta = item.itemMeta
+                meta!!.setDisplayName(ChatColor.translateAlternateColorCodes('&', str))
+                item.itemMeta = meta
             }
         }
         return false

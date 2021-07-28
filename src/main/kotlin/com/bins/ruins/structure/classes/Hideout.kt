@@ -2,7 +2,7 @@ package com.bins.ruins.structure.classes
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rtAsync
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldedit.math.BlockVector3
 import com.sk89q.worldguard.WorldGuard

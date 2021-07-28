@@ -21,15 +21,15 @@ import com.bins.ruins.structure.classes.View
 import com.bins.ruins.structure.enums.types.Receiver.*
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Glows
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.bins.ruins.structure.objects.utilities.Sidebars
-import com.bins.ruins.structure.objects.utilities.Util.load
-import com.bins.ruins.structure.objects.utilities.Util.save
-import com.bins.ruins.structure.objects.vars.container
-import com.bins.ruins.structure.objects.vars.glowValue
-import com.bins.ruins.structure.objects.vars.reload
-import com.bins.ruins.structure.objects.vars.stashes
-import com.bins.ruins.structure.objects.vars.totals
+import com.bins.ruins.structure.objects.utilities.Util.Companion.load
+import com.bins.ruins.structure.objects.utilities.Util.Companion.save
+import com.bins.ruins.structure.objects.vars.Companion.container
+import com.bins.ruins.structure.objects.vars.Companion.glowValue
+import com.bins.ruins.structure.objects.vars.Companion.reload
+import com.bins.ruins.structure.objects.vars.Companion.stashes
+import com.bins.ruins.structure.objects.vars.Companion.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.bukkit.Location
@@ -49,6 +49,10 @@ class Ruins : JavaPlugin(), CommandExecutor {
         val cherry = CherryBlossom.cherryBlossomLogoutAsync()
         hide.disable()
     }
+
+
+
+
     @DelicateCoroutinesApi
     override fun onEnable() {
         val cherry = CherryBlossom.cherryBlossomInitializedAsync()
@@ -68,12 +72,16 @@ class Ruins : JavaPlugin(), CommandExecutor {
 //        moisture()
         targetGlow()
     }
-    
+
+
+
+
+
     fun makeFile(f: File) {
         if (!f.exists() || !f.isFile)
             f.createNewFile()
     }
-    private fun seeToComponent(){
+    private fun seeToComponent() {
 
     }
     private fun saveAndLoad() {
@@ -177,7 +185,15 @@ class Ruins : JavaPlugin(), CommandExecutor {
         View.cancels.add("Barrel")
         View.views.add("물품 보관함")
     }
-    companion object{
+
+
+
+
+
+
+
+
+    companion object {
         fun Long.rt(delay: Long = 1, run: Runnable) = scheduler.runTaskTimer(instance, run, delay, this)
         fun Long.rtAsync(delay: Long = 1, run: Runnable) = scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
         fun Long.rl(run: Runnable) = scheduler.runTaskLater(instance, run, this)

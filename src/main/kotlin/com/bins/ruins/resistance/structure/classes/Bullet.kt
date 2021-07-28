@@ -4,8 +4,8 @@ import com.bins.ruins.Ruins
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.resistance.structure.enums.Recoil
-import com.bins.ruins.structure.objects.utilities.Receiver.asCraft
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.asCraft
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.minecraft.network.protocol.game.PacketPlayOutPosition
 import org.bukkit.*
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer

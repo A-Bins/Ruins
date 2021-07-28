@@ -3,7 +3,7 @@ package com.bins.ruins.resistance.events
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.resistance.Resistance.Companion.isGun
 import com.bins.ruins.resistance.structure.enums.Guns
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerSwapHandItemsEvent

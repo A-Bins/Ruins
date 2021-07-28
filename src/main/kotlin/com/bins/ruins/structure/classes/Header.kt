@@ -1,7 +1,7 @@
 package com.bins.ruins.structure.classes
 
 import com.bins.ruins.Ruins
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.minecraft.server.MinecraftServer
 import java.util.stream.Collectors
 

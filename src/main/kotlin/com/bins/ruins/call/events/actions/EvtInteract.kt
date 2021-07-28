@@ -3,8 +3,8 @@ package com.bins.ruins.call.events.actions
 import com.bins.ruins.Ruins
 import com.bins.ruins.structure.enums.items.medicals.Syringe.Companion.isSyringe
 import com.bins.ruins.structure.objects.vars
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
-import com.bins.ruins.structure.objects.utilities.Util.isGiven
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
+import com.bins.ruins.structure.objects.utilities.Util.Companion.isGiven
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound

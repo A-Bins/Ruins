@@ -8,39 +8,45 @@ import java.time.LocalDateTime
 
 
 @Suppress("DEPRECATION")
-object Sidebars {
-    private fun getEntryFromScore(o: Objective?, score: Int): String? {
-        if (o == null) return null
-        if (!hasScoreTaken(o, score)) return null
-        for (s in o.scoreboard!!.entries) {
-            if (o.getScore(s!!).score == score) return o.getScore(s).entry
+class Sidebars {
+    companion object {
+        private fun getEntryFromScore(o: Objective?, score: Int): String? {
+            if (o == null) return null
+            if (!hasScoreTaken(o, score)) return null
+            for (s in o.scoreboard!!.entries) {
+                if (o.getScore(s!!).score == score) return o.getScore(s).entry
+            }
+            return null
         }
-        return null
-    }
 
-    private fun hasScoreTaken(o: Objective, score: Int): Boolean {
-        for (s in o.scoreboard!!.entries) {
-            if (o.getScore(s!!).score == score) return true
+        private fun hasScoreTaken(o: Objective, score: Int): Boolean {
+            for (s in o.scoreboard!!.entries) {
+                if (o.getScore(s!!).score == score) return true
+            }
+            return false
         }
-        return false
-    }
 
-    private fun replaceScore(o: Objective, score: Int, name: String) {
-        if (hasScoreTaken(o, score)) {
-            if (getEntryFromScore(o, score).equals(name, ignoreCase = true)) return
-            if (!getEntryFromScore(o, score).equals(name, ignoreCase = true)) o.scoreboard!!.resetScores(getEntryFromScore(o, score)!!)
+        private fun replaceScore(o: Objective, score: Int, name: String) {
+            if (hasScoreTaken(o, score)) {
+                if (getEntryFromScore(o, score).equals(name, ignoreCase = true)) return
+                if (!getEntryFromScore(o, score).equals(name, ignoreCase = true)) o.scoreboard!!.resetScores(
+                    getEntryFromScore(o, score)!!)
+            }
+            o.getScore(name).score = score
         }
-        o.getScore(name).score = score
-    }
-    fun showSidebar(p: Player) {
-        if (p.scoreboard == Ruins.instance.server.scoreboardManager.mainScoreboard) p.scoreboard = Ruins.instance.server.scoreboardManager.newScoreboard
-        val score = p.scoreboard
-        val objective = if (score.getObjective(p.name) == null) score.registerNewObjective(p.name, "dummy") else score.getObjective(p.name)
-        objective!!.displayName = "abcdefg"
-        repeat(7) {
-            replaceScore(objective, it, "$it ${LocalDateTime.now().second}              ")
+
+        fun showSidebar(p: Player) {
+            if (p.scoreboard == Ruins.instance.server.scoreboardManager.mainScoreboard) p.scoreboard =
+                Ruins.instance.server.scoreboardManager.newScoreboard
+            val score = p.scoreboard
+            val objective = if (score.getObjective(p.name) == null) score.registerNewObjective(p.name,
+                "dummy") else score.getObjective(p.name)
+            objective!!.displayName = "abcdefg"
+            repeat(7) {
+                replaceScore(objective, it, "$it ${LocalDateTime.now().second}              ")
+            }
+            if (objective.displaySlot != DisplaySlot.SIDEBAR) objective.displaySlot = DisplaySlot.SIDEBAR
+            p.scoreboard = score
         }
-        if (objective.displaySlot != DisplaySlot.SIDEBAR) objective.displaySlot = DisplaySlot.SIDEBAR
-        p.scoreboard = score
     }
 }

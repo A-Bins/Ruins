@@ -9,8 +9,9 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class Spawn: CommandExecutor {
-    override fun onCommand(p: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        (p as Player).teleport(Location(Bukkit.getWorld("world"), 5.5, 20.0, 4.5))
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
+        p.teleport(Location(Bukkit.getWorld("world"), 5.5, 20.0, 4.5))
         return false
     }
 }

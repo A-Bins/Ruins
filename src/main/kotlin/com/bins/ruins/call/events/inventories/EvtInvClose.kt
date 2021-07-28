@@ -2,7 +2,7 @@ package com.bins.ruins.call.events.inventories
 
 import com.bins.ruins.structure.objects.vars
 import com.bins.ruins.structure.classes.Stash.Companion.drawerSave
-import com.bins.ruins.structure.objects.utilities.Receiver.bb
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player

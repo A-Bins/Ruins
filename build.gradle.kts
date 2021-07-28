@@ -42,10 +42,8 @@ dependencies {
 
     shadow ("dev.kord:kord-core:0.7.1")
     shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-//    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
-    implementation ("org.jetbrains.kotlin:kotlin-stdlib")// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-//    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0")
     compileOnly ("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT") {
         exclude("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
@@ -54,6 +52,7 @@ dependencies {
     compileOnly (group = "com.comphenix.protocol", name = "ProtocolLib", version = "4.7.0-SNAPSHOT")
     compileOnly (group = "com.sk89q.worldguard", name = "worldguard-bukkit", version = "7.0.6-SNAPSHOT")
     compileOnly (group = "net.citizensnpcs", name = "citizens-main", version = "2.0.28-SNAPSHOT")
+    compileOnly (group = "net.citizensnpcs", name = "citizens-v1_17_R1", version = "2.0.28-SNAPSHOT")
 }
 
 fun TaskContainer.createJar(name: String, configuration: ShadowJar.() -> Unit) {
@@ -79,7 +78,19 @@ tasks {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "16"
     }
-    createJar("outJar") {
+    createJar("outJar") { // A_bins
+        var dest = File("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.17 Project RUINS 2/plugins")
+        val pluginName = archiveFileName.get()
+        val pluginFile = File(dest, pluginName)
+        if (pluginFile.exists()) dest = File(dest, "update")
+        doLast {
+            copy {
+                from(archiveFile)
+                into(dest)
+            }
+        }
+    }
+    createJar("outJarChild") { // DDang you know? 경로 바꿔서 사용 ㄱㄱ
         var dest = File("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.17 Project RUINS 2/plugins")
         val pluginName = archiveFileName.get()
         val pluginFile = File(dest, pluginName)

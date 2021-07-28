@@ -11,21 +11,19 @@ import java.util.ArrayList
 @Suppress("DEPRECATION")
 class NameTab : TabCompleter {
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): List<String>? {
+        val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return null }
         val completions: MutableList<String> = ArrayList()
         val commands: MutableList<String> = ArrayList()
-        if (sender !is Player) return null
-        if (!sender.isOp()) return null
-        try {
-            if (args.size == 1) {
-                val i = sender.inventory.itemInMainHand
-                if (i.itemMeta == null) return null
-                commands.add(i.itemMeta!!.displayName.replace("§", "&"))
+        if (!p.isOp) return null
+
+        if (args.size == 1) {
+            val i = p.inventory.itemInMainHand
+            i.itemMeta?.let {
+                commands.add(it.displayName.replace("§", "&"))
                 StringUtil.copyPartialMatches(args[0], commands, completions)
             }
-            completions.sort()
-        } catch (ex: Exception) {
-            return null
         }
+        completions.sort()
         return completions
     }
 }
