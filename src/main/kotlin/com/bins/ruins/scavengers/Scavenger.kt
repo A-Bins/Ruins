@@ -64,26 +64,31 @@ class Scavenger(val spawn: Location) {
 
 
     fun guard(end: Location, list: MutableList<Location>? = null) {
+        if(scav.entity.location.distance(end) <= 1) {
+            scav.navigator.cancelNavigation()
+            return
+        }
+
+
         val mayList: MutableList<Location> = if(list == null) {
 
             val path = Path(scav.entity.location.toCenterLocation(), end).goalToWay()
             if(path.isEmpty()) return
-            path.forEach { it!!.world.spawn(it, ArmorStand::class.java) }
+            path.forEach { it!!.world.spawn(it, ArmorStand::class.java) {
+                it.setGravity(false)
+            } }
             path.map { it!! }.toMutableList()
         }else list
 
-        if(mayList.isEmpty()) return
 
         val go = mayList.first()
-        (go.distance(scav.entity.location.toCenterLocation())).bb()
         if(go.distance(scav.entity.location.toCenterLocation()) == 0.0) {
             mayList.remove(go)
             if(mayList.isEmpty()) return
             /* fake가 다음 목적지인데 go의 방향을 fake를 보게끔해서 그쪽방향으로 올려줘야함 ㅇㅇ */
-            val fake = faceDirection(go, mayList.first()).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction)
+            val fake = faceDirection(go, mayList.first()).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction)
+            fake.pitch = 0F
             scav.navigator.setTarget(arrayListOf(fake.toVector()))
-
-
         }
 
         1L.rl {
