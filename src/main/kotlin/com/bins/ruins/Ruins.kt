@@ -32,8 +32,11 @@ import com.bins.ruins.structure.objects.vars.Companion.stashes
 import com.bins.ruins.structure.objects.vars.Companion.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
+import net.minecraft.world.entity.ai.sensing.EntitySenses
+import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.command.CommandExecutor
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -201,17 +204,8 @@ class Ruins : JavaPlugin(), CommandExecutor {
 
 
         val Player.targetedItemEntity: Item?
-            get() {
-                (0..35).forEach { i ->
-                    val loc : Location = eyeLocation.add(location.direction.multiply(i.toDouble()/10))
-                    val list = loc.world!!.getNearbyEntities(loc, 0.15, 0.15, 0.15) { it is Item }
+            get() = world.rayTrace(eyeLocation, eyeLocation.direction, 3.0, FluidCollisionMode.NEVER, false, 0.25) { it is Item }?.hitEntity as? Item
 
-                    for (e in list) {
-                        return e as Item
-                    }
-                }
-                return null
-            }
         lateinit var hide: Hideout
             private set
         lateinit var players: MutableCollection<out Player>

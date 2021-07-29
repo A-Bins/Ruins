@@ -68,13 +68,14 @@ class Scavenger(val spawn: Location) {
 
             val path = Path(scav.entity.location.toCenterLocation(), end).goalToWay()
             if(path.isEmpty()) return
+            path.forEach { it!!.world.spawn(it, ArmorStand::class.java) }
             path.map { it!! }.toMutableList()
         }else list
 
         if(mayList.isEmpty()) return
 
         val go = mayList.first()
-//        (go.distance(scav.entity.location.toCenterLocation())).bb()
+        (go.distance(scav.entity.location.toCenterLocation())).bb()
         if(go.distance(scav.entity.location.toCenterLocation()) == 0.0) {
             mayList.remove(go)
             if(mayList.isEmpty()) return

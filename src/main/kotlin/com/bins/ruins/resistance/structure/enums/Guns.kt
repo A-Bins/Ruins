@@ -21,12 +21,12 @@ enum class Guns: Gunable {
         override val ammo = Ammo.ABIN_5_56
         override val displayName = "§fWK416A5"
         override val rpm = 700.0
-        override val sound: HashMap<Sound, HashMap<Float, Long>> = HashMap<Sound, java.util.HashMap<Float, Long>>().apply {
+        override val sound: HashMap<Sound, Pair<Float, Long>> = HashMap<Sound, Pair<Float, Long>>().apply {
 
         }
 
-        override val damage = 0.5
-        override val recoilPattern = RecoilPattern.S
+        override val damage = 8.0
+        override val recoilPattern = RecoilPattern.DEFAULT
         override val hipAccuracy = 80.0
         override val pointAccuracy = 97.0
         override val shootSpeed = 5 /* Meter/Ticks */

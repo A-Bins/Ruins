@@ -16,7 +16,7 @@ interface Gunable {
     val recoilPattern: RecoilPattern
     val hipAccuracy: Double
     val pointAccuracy: Double
-    val sound: HashMap<Sound, HashMap<Float, Long>>
+    val sound: HashMap<Sound, Pair<Float, Long>>
     val rpm: Double
     val damage: Double
     val shootSpeed: Int

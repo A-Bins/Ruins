@@ -1,12 +1,8 @@
 package com.bins.ruins.scavengers.structure.classes
 
-import com.bins.ruins.call.commands.test
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.EntityType
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -37,19 +33,18 @@ class Path(val start: Location, val goal: Location) {
     var endNode = Node(goal,0.0)
     val open: ArrayList<Node> = arrayListOf()
     val close: ArrayList<Node> = arrayListOf()
-    var testCount = 1000
+    var testCount = 10000
     private var pathFound = false
     fun goalToWay(): Array<Location?> {
         // check if player could stand at start and endpoint, if not return empty path
-        if(!(start.canStandAt) && goal.canStandAt) return emptyArray()
+        if(!(start.canStandAt) && goal.canStandAt) return emptyArray<Location?>().also { "don't can stand at here".bb() }
 
         open.add(startNode);
 
-        // cycle through untested nodes until a exit condition is fulfilled
+        // cycle through untested nodes until an exit condition is fulfilled
         while(close.size < testCount && !pathFound && open.size > 0){
             var n = open[0]
             for (nt in open) if (nt.estimatedFinalValue() < n.estimatedFinalValue()) n = nt
-
             if (n.estimatedExpenseLeft < 1) {
                 pathFound = true
                 endNode = n
@@ -63,7 +58,7 @@ class Path(val start: Location, val goal: Location) {
         // returning if no path has been found
 
         // returning if no path has been found
-        if (!pathFound) return emptyArray()
+        if (!pathFound) return emptyArray<Location?>().also { "not path found".bb() }
 
 
         // get length of path to create array, 1 because of start
@@ -107,7 +102,8 @@ class Path(val start: Location, val goal: Location) {
 
         fun estimatedFinalValue(): Double {
             if (estimatedExpenseLeft == -1.0) estimatedExpenseLeft = loc.distanceTo(goal)
-            return value + 1.5 * estimatedExpenseLeft
+
+            return value + 2 * estimatedExpenseLeft
         }
 
         // ---
@@ -123,26 +119,32 @@ class Path(val start: Location, val goal: Location) {
                 val loc = Location(Bukkit.getWorlds()[0], loc.x + x.toDouble(), loc.y, loc.z + z.toDouble())
 
 
-                // usual unchanged y
-                if (loc.canStandAt) reachNode(loc,value + 1)
+                if (loc.canStandAt) reachNode(loc, value + 1)
 
                 // one block up
-                if (!loc.clone().add(-x.toDouble(), 2.0, -z.toDouble()).isObstructed) {
-                    // block above current tile, thats why subtracting x and z
+
+                // one block up
+                if (!loc.clone()
+                        .add((-x).toDouble(), 2.0, (-z).toDouble()).isObstructed
+                ) // block above current tile, thats why subtracting x and z
+                {
                     val nLoc = loc.clone().add(0.0, 1.0, 0.0)
                     if (nLoc.canStandAt) reachNode(nLoc, value + 1.4142)
                 }
 
                 // one block down or falling multiple blocks down
-                if (!loc.clone().add(0.0, 1.0, 0.0).isObstructed) {
-                    // block above possible new tile
+
+                // one block down or falling multiple blocks down
+                if (!loc.clone().add(0.0, 1.0, 0.0).isObstructed) // block above possible new tile
+                {
                     val nLoc = loc.clone().add(0.0, -1.0, 0.0)
                     if (nLoc.canStandAt) // one block down
-                        reachNode(nLoc, value + 1.4142)
-                    else if (!nLoc.isObstructed && !nLoc.clone().add(0.0, 1.0, 0.0).isObstructed) {
-                        // fall
+                        reachNode(nLoc, value + 1.4142) else if (!nLoc.isObstructed && !nLoc.clone()
+                            .add(0.0, 1.0, 0.0).isObstructed)
+                     // fall
+                    {
                         var drop = 1
-                        while (drop <= 1 && !loc.clone().add(0.0, -drop.toDouble(), 0.0).isObstructed) {
+                        while (drop <= 2 && !loc.clone().add(0.0, -drop.toDouble(), 0.0).isObstructed) {
                             val locF = loc.clone().add(0.0, -drop.toDouble(), 0.0)
                             if (locF.canStandAt) {
                                 val fallNode = addFallNode(loc, value + 1)
