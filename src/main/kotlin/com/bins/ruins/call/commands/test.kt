@@ -51,8 +51,8 @@ class test : CommandExecutor{
                 p.flySpeed = args[0].toFloat()
             }else{
                 "응애".bb()
-                val scav = Scavenger(Location(p.world, -110.5, 20.0, -143.5))
-                scav.nearbyHear(HearSound.SHOT, Location(p.world, -113.5, 20.0, -125.5))
+                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
+                scav.nearbyHear(HearSound.SHOT, Location(p.world, -110.5, 20.0, -133.5))
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA
             }
 //                args[0].player?.apply {
@@ -101,10 +101,10 @@ class test : CommandExecutor{
 //                else if(args[0] == "a") {
 //                    val a: ArrayList<Int> = arrayListOf(1,5,3,2,76,10).also { it.sorted().bb() }
 //                }
-//                Guns.WK416A5.give(p)
-//                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
-//                    amount = 64
-//                })
+                Guns.WK416A5.give(p)
+                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
+                    amount = 64
+                })
 //            }
 //            Guns.WK416A5.give(p)
 

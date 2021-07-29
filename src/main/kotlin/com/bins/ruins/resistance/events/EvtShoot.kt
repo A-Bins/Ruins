@@ -8,6 +8,8 @@ import com.bins.ruins.resistance.Resistance.Companion.isGun
 import com.bins.ruins.resistance.Resistance.Companion.resistance
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.resistance.structure.enums.Mode
+import com.bins.ruins.scavengers.Scavenger
+import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -24,6 +26,7 @@ class EvtShoot : Listener {
         if(e.item?.isGun == true) {
             val gun = Guns.values().toList().stream().filter { e.item?.itemMeta?.displayName == it.displayName }.collect(Collectors.toList())[0]
             gun.shoot(e.player, e.item!!)
+            Scavenger.scavengers.forEach { it.nearbyHear(HearSound.SHOT,e.player.location) }
             if(e.player.resistance.isAuto() && (gun.mode == Mode.SEMI_AUTO || gun.mode == Mode.AUTO)){
                 val i = (20 /(gun.rpm / 60)).toLong().rt {
                     gun.shoot(e.player, e.item!!)

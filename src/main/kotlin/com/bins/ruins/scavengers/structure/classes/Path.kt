@@ -3,6 +3,7 @@ package com.bins.ruins.scavengers.structure.classes
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.entity.ArmorStand
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -103,7 +104,7 @@ class Path(val start: Location, val goal: Location) {
         fun estimatedFinalValue(): Double {
             if (estimatedExpenseLeft == -1.0) estimatedExpenseLeft = loc.distanceTo(goal)
 
-            return value + 2 * estimatedExpenseLeft
+            return value + 3 * estimatedExpenseLeft
         }
 
         // ---
@@ -120,8 +121,6 @@ class Path(val start: Location, val goal: Location) {
 
 
                 if (loc.canStandAt) reachNode(loc, value + 1)
-
-                // one block up
 
                 // one block up
                 if (!loc.clone()
@@ -159,7 +158,7 @@ class Path(val start: Location, val goal: Location) {
         }
 
         fun reachNode(locThere: Location, valueThere: Double) {
-            val nt: Node = locThere.node()
+            val nt = locThere.node()
             if (nt.origin == null && nt !== startNode) // new node
             {
                 nt.value = valueThere

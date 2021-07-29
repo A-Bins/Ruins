@@ -132,6 +132,9 @@ class Ruins : JavaPlugin(), CommandExecutor {
         getCommand("t")?.apply{
             setExecutor(test())
         }
+        getCommand("gun")?.apply{
+            setExecutor(GiveGun())
+        }
         getCommand("stash")?.apply{
             setExecutor(OpenStash())
         }
