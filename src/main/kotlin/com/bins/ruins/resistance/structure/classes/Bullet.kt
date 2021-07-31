@@ -69,9 +69,8 @@ class Bullet(
                         val hit = ray.hitEntity as Player
                         hited.add(hit)
                         hit.noDamageTicks = 0
-                        hit.maximumNoDamageTicks = 0
                         hit.damage(gun.damage)
-                        hit.maximumNoDamageTicks = 20
+                        hit.noDamageTicks = 20
                     }
                     if (ray.hitBlock != null) {
                         for (i in 1..10) {
@@ -115,7 +114,7 @@ class Bullet(
 
         // 이 친구가 파티클 & 레이트레이스
         bullet(gun.shootSpeed, locs) {
-            it.world!!.spawnParticle(Particle.REDSTONE, it, 1, Particle.DustOptions(gun.color, 1F))
+            it.world!!.spawnParticle(Particle.REDSTONE, it, 1, Particle.DustOptions(gun.color, 0.25F))
         }
     }
 

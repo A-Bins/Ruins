@@ -202,6 +202,8 @@ class Ruins : JavaPlugin(), CommandExecutor {
     companion object {
         fun Long.rt(delay: Long = 1, run: Runnable) = scheduler.runTaskTimer(instance, run, delay, this)
         fun Long.rtAsync(delay: Long = 1, run: Runnable) = scheduler.runTaskTimerAsynchronously(instance, run, delay, this)
+        fun rAsync(run: Runnable) = scheduler.runTaskAsynchronously(instance, run)
+        fun r(run: Runnable) = scheduler.runTask(instance, run)
         fun Long.rl(run: Runnable) = scheduler.runTaskLater(instance, run, this)
         fun Long.rlAsync(run: Runnable) = scheduler.runTaskLaterAsynchronously(instance, run, this)
 

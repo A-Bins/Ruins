@@ -1,5 +1,6 @@
 package com.bins.ruins.call.commands
 
+import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
@@ -7,7 +8,9 @@ import com.bins.ruins.scavengers.Scavenger
 import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.citizensnpcs.nms.v1_17_R1.entity.EntityHumanNPC
+import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -40,6 +43,7 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
+        if(!p.isOp) return false
 //            p.eyeLocation.neighbors(listOf( p.eyeLocation.add(p.eyeLocation.front()))).forEach {
 //                it.block.type = Material.STONE
 //            }
@@ -47,12 +51,12 @@ class test : CommandExecutor{
 //            p.eyeLocation.add(p.eyeLocation.front()).block.type = Material.STONE
 //            p.eyeLocation.add(p.eyeLocation.left()).block.type = Material.STONE
 //            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
+
+
             if(args.isNotEmpty()){
                 p.flySpeed = args[0].toFloat()
             }else{
-                "응애".bb()
                 val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
-                scav.nearbyHear(HearSound.SHOT, Location(p.world, -110.5, 20.0, -133.5))
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA
             }
 //                args[0].player?.apply {

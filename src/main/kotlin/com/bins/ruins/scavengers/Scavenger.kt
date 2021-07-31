@@ -1,35 +1,32 @@
 package com.bins.ruins.scavengers
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.r
+import com.bins.ruins.Ruins.Companion.rAsync
 import com.bins.ruins.Ruins.Companion.rl
+import com.bins.ruins.Ruins.Companion.rt
 import com.bins.ruins.scavengers.structure.classes.Path
+import com.bins.ruins.scavengers.structure.classes.Path.Companion.canStandAt
 import com.bins.ruins.scavengers.structure.enums.HearSound
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import net.citizensnpcs.api.CitizensAPI
 import net.citizensnpcs.api.npc.NPC
 import net.citizensnpcs.trait.SkinTrait
 import net.minecraft.world.entity.player.EntityHuman
+import org.bukkit.HeightMap
 import org.bukkit.Location
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.util.Vector
 import java.util.*
 
 class Scavenger(val spawn: Location) {
-    companion object {
-        fun faceDirection(want: Location, target: Location): Location {
-        val dir = target.clone().subtract(want).toVector()
-        return want.clone().setDirection(dir)
-    }
-        val scavengers: ArrayList<Scavenger> = arrayListOf()
-    }
     val scav = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "스캐브")
-
     init {
-        scavengers.add(this)
         scav.spawn(spawn)
-        (scav.entity as Player).maxHealth = 100.0
-        scav.isProtected = false
+        scavengers.add(this)
+        scav.config()
         scav.data()[NPC.NAMEPLATE_VISIBLE_METADATA] = false
         val trait = scav.getOrAddTrait(SkinTrait::class.java) as SkinTrait
         trait.setSkinPersistent("scav",
@@ -37,38 +34,83 @@ class Scavenger(val spawn: Location) {
             "ewogICJ0aW1lc3RhbXAiIDogMTYyNzEyNTM4NzU2NCwKICAicHJvZmlsZUlkIiA6ICI0ZjU2ZTg2ODk2OGU0ZWEwYmNjM2M2NzRlNzQ3ODdjOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJDVUNGTDE1IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2I2M2Y0ZmI2M2UzOWViNGUzNDVlYjE3NTUzMTllN2VjYWI1MzVjZDcxNTUwNjg1ZWIyMTQzYmQ5NWI4OTRmZTQiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
         )
     }
+    companion object {
+        fun faceDirection(want: Location, target: Location): Location {
+            val dir = target.clone().subtract(want).toVector()
+            return want.clone().setDirection(dir)
+        }
+        val scavengers: ArrayList<Scavenger> = arrayListOf()
+        val Location.lowest: Location? get() {
+            repeat(35) {
+                if(clone().subtract(0.0, it.toDouble(), 0.0).canStandAt)
+                    return clone().subtract(0.0, it.toDouble(), 0.0).toCenterLocation()
+            }
+            return null
+        }
+    }
 
 
+    private fun NPC.config() {
+        if(scav.isSpawned) {
+            scav.isProtected = false
+            1L.rl {
+                (scav.entity as Player).getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = 100.0
+                (scav.entity as Player).health = 100.0
+            }
+        }
+        else 1L.rl { config() }
+    }
     private var cancel = false
+    private var run = false
     private val entity = scav.entity as Player
     fun nearbyHear(sound: HearSound, hear: Location) {
         if(sound.distance <= entity.location.distance(hear)) return
+        val goal = hear.lowest ?: return
         if(scav.isSpawned) {
-            guard(hear.toCenterLocation())
+            readyToGuard(goal.toCenterLocation())
             return
         }
         1L.rl{
-            nearbyHear(sound, hear)
+            nearbyHear(sound, goal)
         }
 
     }
-    private fun guard(end: Location, list: MutableList<Location>? = null, run: Boolean = false) {
-        if(run && cancel) return
+    private fun readyToGuard(end: Location, ready: Boolean = false) {
+        if(run){
+            if(!ready) cancel = true
+        }else {
+            guard(end)
+            return
+        }
+        1L.rl {
+            if(!cancel) guard(end)
+            else readyToGuard(end, true)
+        }
+    }
+    private fun guard(end: Location, list: MutableList<Location>? = null) {
+        if(!scav.isSpawned) return
+        if(cancel) {
+            cancel = false
+            run = false
+            scav.navigator.cancelNavigation()
+            return
+        }
         if(scav.entity.location.distance(end) <= 1) {
+            run = false
             scav.navigator.cancelNavigation()
             return
         }
 
         val mayList: MutableList<Location> = if(list == null) {
             scav.navigator.cancelNavigation()
-            cancel = true
-
-
-            val path = Path(scav.entity.location.toCenterLocation(), end).goalToWay()
-            if(path.isEmpty()) return
-
-            20L.rl {
-                guard(end, path.map { it!! }.toMutableList(), true)
+            run = true
+            rAsync {
+                val path = Path(scav.entity.location.toHighestLocation().apply { y += 1 }.toCenterLocation(), end).goalToWay()
+                if (path.isEmpty()) {
+                    run = false
+                    return@rAsync
+                }
+                r { guard(end, path.map { it!! }.toMutableList()) }
             }
             return
         }else list
@@ -81,6 +123,10 @@ class Scavenger(val spawn: Location) {
             /* fake가 다음 목적지인데 go의 방향을 fake를 보게끔해서 그쪽방향으로 올려줘야함 ㅇㅇ */
             val fake = faceDirection(go, mayList.first()).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction).add(faceDirection(go, mayList.first()).direction)
             fake.pitch = 0F
+            fake.world.spawn(fake, ArmorStand::class.java) {
+                it.isSmall = true
+                it.setGravity(false)
+            }
             scav.navigator.setTarget(arrayListOf(fake.toVector()))
         }
 

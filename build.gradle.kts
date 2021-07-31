@@ -3,6 +3,7 @@ plugins {
     id("idea")
     kotlin("jvm") version "1.5.20"
     id("com.github.johnrengelman.shadow") version "7.0.0"
+    `maven-publish`
 }
 
 group = "com.bins"
@@ -103,7 +104,22 @@ tasks {
         }
     }
 
+    create<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+    }
 
+}
+
+
+
+publishing {
+    publications {
+        create<MavenPublication>(rootProject.name) {
+            artifact(tasks["sourcesJar"])
+            from(components["java"])
+        }
+    }
 }
 /*processResources {
     from(sourceSets.main.resources.srcDirs) {

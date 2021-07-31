@@ -1,8 +1,10 @@
 package com.bins.ruins.scavengers.structure.classes
 
+import com.bins.ruins.Ruins.Companion.r
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
 import java.util.*
 import kotlin.math.abs
@@ -38,7 +40,7 @@ class Path(val start: Location, val goal: Location) {
     private var pathFound = false
     fun goalToWay(): Array<Location?> {
         // check if player could stand at start and endpoint, if not return empty path
-        if(!(start.canStandAt) && goal.canStandAt) return emptyArray<Location?>().also { "don't can stand at here".bb() }
+        if(!start.canStandAt || !goal.canStandAt) return emptyArray<Location?>().also { "can't stand at here".bb() }
 
         open.add(startNode);
 
@@ -103,6 +105,15 @@ class Path(val start: Location, val goal: Location) {
 
         fun estimatedFinalValue(): Double {
             if (estimatedExpenseLeft == -1.0) estimatedExpenseLeft = loc.distanceTo(goal)
+//                .also {
+//                r {
+//                    if (loc.getNearbyEntitiesByType(ArmorStand::class.java, 0.5, 0.5, 0.5).isEmpty())
+//                        loc.world.spawn(loc, ArmorStand::class.java) {
+//                            it.setGravity(false)
+//                            it.isSmall = true
+//                        }
+//                }
+//            }
 
             return value + 3 * estimatedExpenseLeft
         }
@@ -114,10 +125,11 @@ class Path(val start: Location, val goal: Location) {
         // ---
         // PATHFINDING
         // ---
+        private val w = Bukkit.getWorld("world")!!
         fun reachableLocations() {
             //trying to get all possibly walkable blocks
             for (x in -1..1) for (z in -1..1) if (!(x == 0 && z == 0) && x * z == 0) {
-                val loc = Location(Bukkit.getWorlds()[0], loc.x + x.toDouble(), loc.y, loc.z + z.toDouble())
+                val loc = Location(w, loc.x + x.toDouble(), loc.y, loc.z + z.toDouble())
 
 
                 if (loc.canStandAt) reachNode(loc, value + 1)
@@ -134,8 +146,7 @@ class Path(val start: Location, val goal: Location) {
                 // one block down or falling multiple blocks down
 
                 // one block down or falling multiple blocks down
-                if (!loc.clone().add(0.0, 1.0, 0.0).isObstructed) // block above possible new tile
-                {
+                if (!loc.clone().add(0.0, 1.0, 0.0).isObstructed) {
                     val nLoc = loc.clone().add(0.0, -1.0, 0.0)
                     if (nLoc.canStandAt) // one block down
                         reachNode(nLoc, value + 1.4142) else if (!nLoc.isObstructed && !nLoc.clone()
