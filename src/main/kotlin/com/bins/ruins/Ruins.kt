@@ -33,8 +33,10 @@ import com.bins.ruins.structure.objects.vars.Companion.totals
 import dev.kord.core.Kord
 import kotlinx.coroutines.DelicateCoroutinesApi
 import net.minecraft.world.entity.ai.sensing.EntitySenses
+import org.bukkit.Color
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
+import org.bukkit.Particle
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
@@ -44,7 +46,6 @@ import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
 import kotlin.math.round
 
-
 @Suppress("DEPRECATION")
 class Ruins : JavaPlugin(), CommandExecutor {
     @DelicateCoroutinesApi
@@ -52,7 +53,6 @@ class Ruins : JavaPlugin(), CommandExecutor {
         val cherry = CherryBlossom.cherryBlossomLogoutAsync()
         hide.disable()
     }
-
 
 
 
@@ -67,7 +67,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
         hide = Hideout()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         logger.warning(env.ENABLE_INFO.trimIndent())
-        hide.enable()
+//        hide.enable()
         view()
         saveAndLoad()
         configCmd()
@@ -103,16 +103,16 @@ class Ruins : JavaPlugin(), CommandExecutor {
         reload["server"] = reload["server"]!!+1
         save(this, reload, "reload", INT)
         1L.rl {
-            "리로드 횟수는! ${reload["server"]} 이빈다!!".bb()
-            "컴파일 (*빌드*) 하는데에만 ${reload["server"]!! * 5}초가 걸려쓰빈다!".bb()
-            "또 리로드하는데에만 ${reload["server"]!! * 4}초가 걸려쓰빈다!".bb()
+            "아이고 저런.. ${reload["server"]}번 을 굴렀네요".bb()
+            println("컴파일 (*빌드*) 하는데에만 ${reload["server"]!! * 5}초가 걸려쓰빈다!")
+                    println("또 리로드하는데에만 ${reload["server"]!! * 4}초가 걸려쓰빈다!")
             val total = (reload["server"]!! * 5) + (reload["server"]!! * 4)
 
-            "그래서 총 ${total.toDouble()} 초, ${
+            println("그래서 총 ${total.toDouble()} 초, ${
                 round((total / 60.0) * 100) / 100.0
             } 분, ${
                 round((total / 60.0 / 60.0) * 100) / 100.0
-            } 시간을 썻스빈다!!".bb()
+            } 시간을 썻스빈다!!")
         }
     }
     private fun configEvt() {

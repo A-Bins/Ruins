@@ -54,31 +54,24 @@ class Bullet(
          *  이 친구는 이제 레이 트레이스와 파티클의 본문.
          */
         run {
-
-
             if(count == 0) return
             val ray = target.world!!.rayTrace(target, target.direction, speed.toDouble(), FluidCollisionMode.NEVER, false, 0.1) {
                 it.type == EntityType.PLAYER && it.name != p.name
             }
-
-            if(ray != null) {
-                if ((ray.hitBlock != null) or (ray.hitEntity != null)) {
-                    if (ray.hitEntity != null && (ray.hitEntity as Player).gameMode != GameMode.CREATIVE && !hited.contains(
-                            ray.hitEntity)) {
-
-                        val hit = ray.hitEntity as Player
-                        hited.add(hit)
-                        hit.noDamageTicks = 0
-                        hit.damage(gun.damage)
-                        hit.noDamageTicks = 20
+            if(ray != null) if ( (ray.hitBlock != null) or (ray.hitEntity != null) ) {
+                if (ray.hitEntity != null && (ray.hitEntity as Player).gameMode != GameMode.CREATIVE && !hited.contains(ray.hitEntity)) {
+                    val hit = ray.hitEntity as Player
+                    hited.add(hit)
+                    hit.noDamageTicks = 0
+                    hit.damage(gun.damage)
+                    hit.noDamageTicks = 20
+                }
+                if (ray.hitBlock != null) {
+                    for (i in 1..10) {
+                        target = target.add(target.direction.multiply(ray.hitBlock!!.location.distance(target) / 10))
+                        bullet(target)
                     }
-                    if (ray.hitBlock != null) {
-                        for (i in 1..10) {
-                            target = target.add(target.direction.multiply(ray.hitBlock!!.location.distance(target) / 10))
-                            bullet(target)
-                        }
-                        return
-                    }
+                    return
                 }
             }
             for(i in 1..10){
@@ -118,10 +111,10 @@ class Bullet(
         }
     }
 
-    fun shoot() : Boolean {
+    fun shoot(succeed: () -> Unit, failed: () -> Unit) : Boolean {
         // 총알 감소
         decrease().also {
-            if (!it) return false
+            if (!it) return false.also { failed() }
         }
 
         // 반동
@@ -129,6 +122,8 @@ class Bullet(
 
         // 총알 발사
         goBullet()
+
+        succeed()
 
         return true
     }

@@ -13,6 +13,7 @@ import dev.kord.core.behavior.reply
 import dev.kord.core.entity.channel.GuildChannel
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
+import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -22,8 +23,8 @@ import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import kotlin.math.round
 
-@DelicateCoroutinesApi
 class CherryBlossom {
+    @DelicateCoroutinesApi
     companion object {
         suspend fun minecrafts(): ArrayList<GuildChannel> = arrayListOf<GuildChannel>().apply {
             flow { cherryBlossom.guilds.collect { emit(it) } }.collect {
@@ -43,6 +44,7 @@ class CherryBlossom {
             cherryBlossom = Kord(env.BOT_TOKEN)
             cherryBlossom.login {
                 cherryBlossom.apply {
+                    editPresence { playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이") }
                     on<MessageCreateEvent> {
                         if (message.author?.id == cherryBlossom.selfId) return@on
                         if (message.channel.asChannel().data.topic.value?.contains("#Minecraft") == true) {
@@ -104,7 +106,7 @@ class CherryBlossom {
                         }
                     }
                 }
-                playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이")
+
             }
 
         }.start()

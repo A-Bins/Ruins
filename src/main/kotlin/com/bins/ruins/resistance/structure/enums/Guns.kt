@@ -25,7 +25,7 @@ enum class Guns: Gunable {
 
         }
 
-        override val damage = 8.0
+        override val damage = 2.0
         override val recoilPattern = RecoilPattern.DEFAULT
         override val hipAccuracy = 80.0
         override val pointAccuracy = 97.0
@@ -79,5 +79,6 @@ enum class Guns: Gunable {
             }
         })
     }
-    fun shoot(p: Player, current: ItemStack) = Bullet(p, this, p.eyeLocation, currentMagazine = current).shoot()
+    fun shoot(p: Player, current: ItemStack, succeed: () -> Unit = {}, failed: () -> Unit = {})
+        = Bullet(p, this, p.eyeLocation, currentMagazine = current).shoot(succeed, failed)
 }

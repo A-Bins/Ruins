@@ -7,5 +7,6 @@ import org.bukkit.event.entity.PlayerDeathEvent
 class EvtDeath :Listener{
     @EventHandler
     fun event(e: PlayerDeathEvent){
+//        e.entity.health = 100.0
     }
 }

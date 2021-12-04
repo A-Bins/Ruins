@@ -1,6 +1,7 @@
 package com.bins.ruins.call.events.actions.discord
 
 import com.bins.ruins.Ruins
+import com.bins.ruins.Ruins.Companion.r
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.Ruins.Companion.rt
 import com.bins.ruins.cherryblossom.CherryBlossom
@@ -12,6 +13,7 @@ import com.bins.ruins.structure.classes.Total
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -48,11 +50,9 @@ class EvtLogins: Listener {
     @InternalCoroutinesApi
     @DelicateCoroutinesApi
     fun reload() {
-        1L.rl {
+        r {
             val field = GlobalScope.async {
-                Ruins.cherryBlossom.editPresence {
-                    playing("${Bukkit.getOnlinePlayers().size}명이 Ruins를 플레이")
-                }
+                Ruins.cherryBlossom.editPresence { playing("${Bukkit.getOnlinePlayers().size}명이 Ruins를 플레이") }
             }
         }
     }
@@ -79,7 +79,7 @@ class EvtLogins: Listener {
     @DelicateCoroutinesApi
     @EventHandler
     fun event(e: PlayerJoinEvent) {
-        e.auth(0)
+//        e.auth(0)
         e.check()
         reload()
         discord(e.player, true)

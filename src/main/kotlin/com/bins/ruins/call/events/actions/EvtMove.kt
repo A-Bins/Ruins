@@ -9,6 +9,6 @@ import org.bukkit.event.player.PlayerMoveEvent
 class EvtMove: Listener {
     @EventHandler
     fun event(e: PlayerMoveEvent){
-        if(!Auth.completers.containsValue(e.player.uniqueId)) e.isCancelled = true
+//        if(!Auth.completers.containsValue(e.player.uniqueId)) e.isCancelled = true
     }
 }

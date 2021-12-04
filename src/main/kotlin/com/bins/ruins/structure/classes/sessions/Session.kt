@@ -72,9 +72,9 @@ sealed class Session(val type: SessionType) {
         state = SessionState.READY
 
         val description = object: SessionInfo<SessionKey.END> {
+            override val map = this@Session.map
             override val state = this@Session.state
             override val sessionKey = this@Session.sessionKey as SessionKey.END
-            override val map = this@Session.map
             override val broken = this@Session.broken
             override val players = this@Session.players
         }

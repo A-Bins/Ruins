@@ -5,6 +5,7 @@ import com.bins.ruins.cherryblossom.CherryBlossom
 import com.bins.ruins.cherryblossom.classes.Auth
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
