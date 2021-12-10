@@ -91,18 +91,18 @@ tasks {
             }
         }
     }
-    createJar("outJarChild") { // DDang you know? 경로 바꿔서 사용 ㄱㄱ
-        var dest = File("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.17 Project RUINS 2/plugins")
-        val pluginName = archiveFileName.get()
-        val pluginFile = File(dest, pluginName)
-        if (pluginFile.exists()) dest = File(dest, "update")
-        doLast {
-            copy {
-                from(archiveFile)
-                into(dest)
-            }
-        }
-    }
+//    createJar("outJarChild") { // DDang you know? 경로 바꿔서 사용 ㄱㄱ
+//        var dest = File("C:/Users/a0103/바탕 화면/모음지이이입/버킷 모음지이입/1.17 Project RUINS 2/plugins")
+//        val pluginName = archiveFileName.get()
+//        val pluginFile = File(dest, pluginName)
+//        if (pluginFile.exists()) dest = File(dest, "update")
+//        doLast {
+//            copy {
+//                from(archiveFile)
+//                into(dest)
+//            }
+//        }
+//    }
 
 }
 

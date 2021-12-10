@@ -14,10 +14,7 @@ import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.embed
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -32,8 +29,7 @@ import org.bukkit.persistence.PersistentDataType
 class EvtLogins: Listener {
     @DelicateCoroutinesApi
     private fun discord(p: Player, isJoin: Boolean) {
-
-        val async = GlobalScope.async {
+        CoroutineScope(Dispatchers.Default).launch {
             CherryBlossom.minecrafts().forEach {
                 Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
                     embed {
@@ -51,7 +47,7 @@ class EvtLogins: Listener {
     @DelicateCoroutinesApi
     fun reload() {
         r {
-            val field = GlobalScope.async {
+            CoroutineScope(Dispatchers.Default).launch {
                 Ruins.cherryBlossom.editPresence { playing("${Bukkit.getOnlinePlayers().size}명이 Ruins를 플레이") }
             }
         }

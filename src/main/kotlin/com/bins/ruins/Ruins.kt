@@ -4,6 +4,7 @@ import com.bins.ruins.call.commands.*
 import com.bins.ruins.call.commands.tab.LoreTab
 import com.bins.ruins.call.commands.tab.NameTab
 import com.bins.ruins.call.events.actions.*
+import com.bins.ruins.call.events.actions.discord.EvtBroad
 import com.bins.ruins.call.events.actions.discord.EvtChat
 import com.bins.ruins.call.events.actions.discord.EvtLogins
 import com.bins.ruins.call.events.farmings.EvtStoneFile
@@ -31,34 +32,35 @@ import com.bins.ruins.structure.objects.vars.Companion.reload
 import com.bins.ruins.structure.objects.vars.Companion.stashes
 import com.bins.ruins.structure.objects.vars.Companion.totals
 import dev.kord.core.Kord
-import kotlinx.coroutines.DelicateCoroutinesApi
-import net.minecraft.world.entity.ai.sensing.EntitySenses
-import org.bukkit.Color
+import kotlinx.coroutines.*
 import org.bukkit.FluidCollisionMode
-import org.bukkit.Location
-import org.bukkit.Particle
 import org.bukkit.command.CommandExecutor
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
 import java.io.File
+import java.lang.Runnable
+import java.security.Security
 import kotlin.math.round
 
 @Suppress("DEPRECATION")
-class Ruins : JavaPlugin(), CommandExecutor {
-    @DelicateCoroutinesApi
+ class Ruins : JavaPlugin(), CommandExecutor {
+
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onDisable() {
-        val cherry = CherryBlossom.cherryBlossomLogoutAsync()
         hide.disable()
+//        CoroutineScope(Dispatchers.Default).launch {
+//            CherryBlossom.cherryBlossomLogout()
+//        }
     }
 
 
-
-    @DelicateCoroutinesApi
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onEnable() {
-        val cherry = CherryBlossom.cherryBlossomInitializedAsync()
+
+        System.setProperty("io.ktor.random.secure.random.provider", "DRBG")
+        Security.setProperty("securerandom.drbg.config", "HMAC_DRBG,SHA-512,256,pr_and_reseed")
         File(dataFolder.path+"/session").mkdirs()
 /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
         players = server.onlinePlayers
@@ -74,6 +76,9 @@ class Ruins : JavaPlugin(), CommandExecutor {
         configEvt()
 //        moisture()
         targetGlow()
+        CoroutineScope(Dispatchers.Default).launch {
+            CherryBlossom.cherryBlossomInit()
+        }
     }
 
 
@@ -120,7 +125,7 @@ class Ruins : JavaPlugin(), CommandExecutor {
             arrayOf(
                 *Resistance.configs(), EvtMove(),
                 EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
-                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage()
+                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage(), EvtBroad()
             ).forEach { registerEvents(it, this@Ruins) }
         }
     }

@@ -2,7 +2,7 @@ name: Ruins
 version: ${project_version}
 main: com.bins.ruins.Ruins
 api-version: 1.16
-depend: [ Kotlin, ProtocolLib, Citizens, WorldGuard ]
+depend: [ Kotlin, ProtocolLib, Citizens, WorldGuard, AutoUpdate ]
 authors: [ A_bins, DDang_ ]
 commands:
   인증:

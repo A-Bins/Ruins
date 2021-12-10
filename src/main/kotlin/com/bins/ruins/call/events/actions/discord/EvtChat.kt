@@ -2,13 +2,11 @@ package com.bins.ruins.call.events.actions.discord
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.cherryblossom.CherryBlossom
+import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import dev.kord.common.Color
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.embed
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -20,8 +18,7 @@ class EvtChat: Listener {
     @InternalCoroutinesApi
     @DelicateCoroutinesApi
     private fun discord(p: Player, msg: String) {
-
-        val async = GlobalScope.async {
+        CoroutineScope(Dispatchers.Default).launch {
             CherryBlossom.minecrafts().forEach {
                 Ruins.cherryBlossom.rest.channel.createMessage(it.id) {
                     embed {

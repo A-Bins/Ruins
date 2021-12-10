@@ -74,7 +74,7 @@ class Resistance(p: Player) {
         fun scheduler(){
             1L.rt {
                Ruins.players.filter { it.inventory.itemInMainHand.isGun }.forEach first@{ p ->
-                        Ruins.instance.server.onlinePlayers.forEach { target ->
+                        Ruins.players.forEach { target ->
                             if(target.name == p.name) return@forEach
                             ProtocolLibrary.getProtocolManager().sendServerPacket(
                                 target, entityEquipment(p.entityId,

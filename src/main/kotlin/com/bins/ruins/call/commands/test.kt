@@ -99,7 +99,7 @@ class test : CommandExecutor{
 //            }
 //            if(args.isNotEmpty())
 //                if(args[0] == "close") {
-//                    val logout = CherryBlossom.cherryBlossomLogoutAsync()
+//                    val logout = CherryBlossom.cherryBlossomLogout()
 //                    logout.key.bb()
 //                }
 //                else if(args[0] == "a") {
