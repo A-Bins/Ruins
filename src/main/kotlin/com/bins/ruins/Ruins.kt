@@ -11,6 +11,7 @@ import com.bins.ruins.call.events.farmings.EvtStoneFile
 import com.bins.ruins.call.events.inventories.EvtInvClick
 import com.bins.ruins.call.events.inventories.EvtInvClose
 import com.bins.ruins.call.events.inventories.EvtInvOpen
+import com.bins.ruins.call.events.others.EvtCmd
 import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.cherryblossom.CherryBlossom
@@ -125,7 +126,7 @@ import kotlin.math.round
             arrayOf(
                 *Resistance.configs(), EvtMove(),
                 EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
-                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage(), EvtBroad()
+                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage(), EvtBroad(), EvtCmd()
             ).forEach { registerEvents(it, this@Ruins) }
         }
     }

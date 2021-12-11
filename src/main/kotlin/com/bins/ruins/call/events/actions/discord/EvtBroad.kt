@@ -18,7 +18,6 @@ class EvtBroad: Listener {
     @EventHandler
     fun event(e: BroadcastMessageEvent) {
         if((e.message().children().firstOrNull() as? TextComponent)?.content()?.contains("Found update file for plugin") == true) { // Found update file for plugin
-            println("진짜루?")
             CoroutineScope(Dispatchers.Default).launch {
                 CherryBlossom.cherryBlossomLogout()
             }

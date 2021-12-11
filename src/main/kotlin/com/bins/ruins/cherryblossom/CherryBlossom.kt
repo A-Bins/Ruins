@@ -11,6 +11,7 @@ import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.bins.ruins.structure.objects.vars
 import dev.kord.common.Color
 import dev.kord.core.Kord
+import dev.kord.core.behavior.edit
 import dev.kord.core.behavior.reply
 import dev.kord.core.entity.channel.GuildChannel
 import dev.kord.core.event.message.MessageCreateEvent
@@ -36,7 +37,6 @@ class CherryBlossom {
 
         @OptIn(DelicateCoroutinesApi::class)
         suspend fun cherryBlossomLogout() {
-            println("가낟라마바사아자차팤타ㅠㅏ")
             cherryBlossom.shutdown()
         }
 
@@ -44,9 +44,7 @@ class CherryBlossom {
         suspend fun cherryBlossomInit() {
             cherryBlossom = Kord(env.BOT_TOKEN)
             cherryBlossom.login {
-                r {
-                    players.filter { it.isOp }.forEach { it.sendMessage("${ChatColor.of("#f2687f")}벚꽃봇 §r동작") }
-                }
+                r { players.filter { it.isOp } .forEach { it.sendMessage("${ChatColor.of("#f2687f")}벚꽃봇 §r동작") } }
                 presence { playing("${Ruins.instance.server.onlinePlayers.size}명이 Ruins를 플레이") }
                 cherryBlossom.on<MessageCreateEvent> {
                     if (message.author?.id == cherryBlossom.selfId) return@on
@@ -72,18 +70,16 @@ class CherryBlossom {
                                 }
                             }
                         }
-                        message.content.length >= 7 -> {
-                            if (message.content.substring(0, 7) == "벚꽃아 전적 ") {
-                                val name = message.content.split("전적 ")[1]
-                                val p = Bukkit.getOfflinePlayers().find { it.name == name }
-                                if (p != null) {
-                                    if (vars.totals[p.uniqueId] == null) {
-                                        message.reply { content = "머야..이상해 이사람 전적이 업서!!" }
-                                        return@on
-                                    }
-                                    message.reply { content = "${vars.totals[p.uniqueId]!!}" }
-                                } else message.reply { content = "그런 사람은 업서여!" }
-                            }
+                        message.content.length >= 7 && message.content.substring(0, 7) == "벚꽃아 전적 " -> {
+                            val name = message.content.split("전적 ")[1]
+                            val p = Bukkit.getOfflinePlayers().find { it.name == name }
+                            if (p != null) {
+                                if (vars.totals[p.uniqueId] == null) {
+                                    message.reply { content = "머야..이상해 이사람 전적이 업서!!" }
+                                    return@on
+                                }
+                                message.reply { content = "${vars.totals[p.uniqueId]!!}" }
+                            } else message.reply { content = "그런 사람은 업서여!" }
                         }
                         message.content == "벚꽃아 인증" -> {
                             val auth = Auth.request(msg = message)
@@ -103,6 +99,13 @@ class CherryBlossom {
                                                 "- #" + it.name + "\n"
                                             }
                                         }```"
+                                }
+                            }
+                        }
+                        else -> {
+                            if(message.content.contains("벚꽃아")) {
+                                message.reply {
+                                    content = "으악 괴한이 절 괴롭혀욘"
                                 }
                             }
                         }

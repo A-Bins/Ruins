@@ -2,6 +2,8 @@ package com.bins.ruins.call.commands
 
 import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
+import com.bins.ruins.foundation.Foundation
+import com.bins.ruins.foundation.structure.enums.Architecture
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
 import com.bins.ruins.scavengers.Scavenger
@@ -56,7 +58,12 @@ class test : CommandExecutor{
             if(args.isNotEmpty()){
                 p.flySpeed = args[0].toFloat()
             }else{
-                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
+                Foundation.holo(Architecture.WOOD_WALL, p)
+                (20*30L).rl {
+                    Foundation.holoStop()
+                }
+
+//                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA
             }
 //                args[0].player?.apply {
@@ -105,10 +112,10 @@ class test : CommandExecutor{
 //                else if(args[0] == "a") {
 //                    val a: ArrayList<Int> = arrayListOf(1,5,3,2,76,10).also { it.sorted().bb() }
 //                }
-                Guns.WK416A5.give(p)
-                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
-                    amount = 64
-                })
+//                Guns.WK416A5.give(p)
+//                p.inventory.addItem(Ammo.ABIN_5_56.ammo().apply {
+//                    amount = 64
+//                })
 //            }
 //            Guns.WK416A5.give(p)
 

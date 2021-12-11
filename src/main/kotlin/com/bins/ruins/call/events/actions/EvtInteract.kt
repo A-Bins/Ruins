@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.metadata.FixedMetadataValue
 
 class EvtInteract : Listener{
@@ -19,12 +20,7 @@ class EvtInteract : Listener{
     fun event(e: PlayerInteractEvent){
         val b = e.clickedBlock
         val p = e.player
-        if(vars.isClick[p.uniqueId] == true)
-            return
-        vars.isClick[p.uniqueId] = true
-        Ruins.instance.server.scheduler.runTaskLater(Ruins.instance, Runnable{
-            vars.isClick[p.uniqueId] = false
-        }, 2)
+        if(e.hand != EquipmentSlot.HAND) return
 
         if((e.action == Action.RIGHT_CLICK_AIR) or (e.action == Action.RIGHT_CLICK_BLOCK)) {
             if (vars.glowValue[p.uniqueId] != null) {
