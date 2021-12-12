@@ -16,6 +16,7 @@ import com.bins.ruins.call.events.others.EvtServerListPing
 import com.bins.ruins.call.events.others.EvtTab
 import com.bins.ruins.cherryblossom.CherryBlossom
 import com.bins.ruins.cherryblossom.classes.Auth.Companion.completers
+import com.bins.ruins.foundation.events.EvtInteraction
 import com.bins.ruins.resistance.Resistance
 import com.bins.ruins.structure.classes.Header
 import com.bins.ruins.structure.classes.Hideout
@@ -126,7 +127,7 @@ import kotlin.math.round
             arrayOf(
                 *Resistance.configs(), EvtMove(),
                 EvtChat(), EvtInvClick(), EvtNpcRightClick(), EvtBlock(), EvtStoneFile(), EvtInvClose(), EvtInteract(),
-                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage(), EvtBroad(), EvtCmd()
+                EvtInvOpen(), EvtPickUp(), EvtLogins(), EvtServerListPing(), EvtDeath(), EvtTab(), EvtDamage(), EvtBroad(), EvtCmd(), EvtInteraction()
             ).forEach { registerEvents(it, this@Ruins) }
         }
     }

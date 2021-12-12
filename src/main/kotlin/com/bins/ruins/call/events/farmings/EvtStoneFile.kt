@@ -12,16 +12,11 @@ class EvtStoneFile: Listener{
     @EventHandler
     fun event(e : StoneFileBreakEvent){
         val b = e.block
-        var use = false
         when(b.type == Material.MOSSY_COBBLESTONE) {
             true -> {
-                for (block in nearByBlocks(b, 3)) {
-                    if(use)
-                        continue
-                    if ((block.type == Material.COBBLESTONE) and (EvtBlock.isDetectAir(b))) {
-                        block.type = Material.MOSSY_COBBLESTONE
-                        use = true
-                    }
+                val random = nearByBlocks(b, 5).random()
+                if (random.type == Material.COBBLESTONE && EvtBlock.isDetectAir(b)) {
+                    random.type = Material.MOSSY_COBBLESTONE
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.bins.ruins.call.commands
 import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.foundation.Foundation
+import com.bins.ruins.foundation.Foundation.Companion.foundation
 import com.bins.ruins.foundation.structure.enums.Architecture
 import com.bins.ruins.resistance.structure.enums.Ammo
 import com.bins.ruins.resistance.structure.enums.Guns
@@ -45,7 +46,7 @@ Strash(p.uniqueId, d)
 class test : CommandExecutor{
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val p = sender as? Player ?: run { sender.sendMessage("아잇 머해!"); return false }
-        if(!p.isOp) return false
+//        if(!p.isOp) return false
 //            p.eyeLocation.neighbors(listOf( p.eyeLocation.add(p.eyeLocation.front()))).forEach {
 //                it.block.type = Material.STONE
 //            }
@@ -58,9 +59,9 @@ class test : CommandExecutor{
             if(args.isNotEmpty()){
                 p.flySpeed = args[0].toFloat()
             }else{
-                Foundation.holo(Architecture.WOOD_WALL, p)
+                p.foundation.holo(Architecture.WOOD_WALL, p)
                 (20*30L).rl {
-                    Foundation.holoStop()
+                    p.foundation.holoStop()
                 }
 
 //                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
