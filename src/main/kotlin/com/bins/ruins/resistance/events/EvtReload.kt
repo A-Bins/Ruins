@@ -59,7 +59,7 @@ class EvtReload: Listener {
                     item.amount = 0
                 }
                 e.itemDrop.itemStack.itemMeta = meta
-            }else "장전 실패".bb()
+            }
             e.isCancelled = true
         }
     }

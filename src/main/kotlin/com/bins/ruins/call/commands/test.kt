@@ -17,6 +17,8 @@ import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
 
@@ -56,17 +58,18 @@ class test : CommandExecutor{
 //            p.eyeLocation.add(p.eyeLocation.back()).block.type = Material.STONE
 
 
-            if(args.isNotEmpty()){
-                p.flySpeed = args[0].toFloat()
-            }else{
-                p.foundation.holo(Architecture.WOOD_WALL, p)
-                (20*30L).rl {
-                    p.foundation.holoStop()
-                }
+        if (args.isNotEmpty()) {
+            p.flySpeed = args[0].toFloat()
+        } else {
+            p.foundation.holoStop()
+            p.foundation.holo(Architecture.WOOD_WALL, p)
+            (20 * 30L).rl {
+                p.foundation.holoStop()
+            }
 
 //                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA
-            }
+        }
 //                args[0].player?.apply {
 //                    packet.integers.write(0, entityId)
 //                }
@@ -84,13 +87,6 @@ class test : CommandExecutor{
 //            SessionMap.StreetOfAbin.first.off().also {
 //                it.sessionKey.wasId.bb()
 //            }
-
-
-
-
-
-
-
 
 
 //            toast.chatComponents.write(0, WrappedChatComponent.fromText("real kk"))
