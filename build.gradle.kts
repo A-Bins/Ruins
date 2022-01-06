@@ -45,10 +45,8 @@ repositories {
 
 dependencies {
     shadow ("dev.kord:kord-core:0.8.0-M8")
-
-    shadow ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-RC")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-RC3")
     compileOnly ("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT") {
         exclude("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")

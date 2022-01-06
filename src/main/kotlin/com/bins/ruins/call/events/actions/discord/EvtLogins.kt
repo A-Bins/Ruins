@@ -63,10 +63,10 @@ class EvtLogins: Listener {
         }
     }
     private fun PlayerJoinEvent.auth(backCount: Int) {
-        if (backCount == 30) player.kickPlayer("§c디스코드로 인증을 해주세요!")
+        if (backCount == 60) player.kickPlayer("§c디스코드로 인증을 해주세요!")
         else if (!Auth.completers.containsValue(player.uniqueId)) {
             20L.rl {
-                player.sendTitle("§c디스코드로 인증을 해주세요!", "", 5, 5, 5)
+                player.sendTitle("인증", "§c디스코드로 인증을 해주세요!", 0, 10, 5)
                 auth(backCount + 1)
             }
         }
@@ -76,6 +76,7 @@ class EvtLogins: Listener {
     @EventHandler
     fun event(e: PlayerJoinEvent) {
 //        e.auth(0)
+        Auth.completers.containsValue(e.player.uniqueId).bb()
         e.check()
         reload()
         discord(e.player, true)

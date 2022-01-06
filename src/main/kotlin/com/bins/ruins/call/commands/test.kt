@@ -61,11 +61,13 @@ class test : CommandExecutor{
         if (args.isNotEmpty()) {
             p.flySpeed = args[0].toFloat()
         } else {
-            p.foundation.holoStop()
-            p.foundation.holo(Architecture.WOOD_WALL, p)
-            (20 * 30L).rl {
-                p.foundation.holoStop()
-            }
+            p.openInventory(Bukkit.createInventory(null, 0, "asdf"))
+
+//            p.foundation.holoStop()
+//            p.foundation.holo(Architecture.WOOD_WALL, p)
+//            (20 * 30L).rl {
+//                p.foundation.holoStop()
+//            }
 
 //                val scav = Scavenger(Location(p.world, -116.5, 20.0, -143.5))
 //                val packet = PacketContainer(PacketType.Play.Server.CAMERA

@@ -4,14 +4,12 @@ import com.bins.ruins.Ruins
 import com.bins.ruins.Ruins.Companion.cherryBlossom
 import com.bins.ruins.Ruins.Companion.players
 import com.bins.ruins.Ruins.Companion.r
-import com.bins.ruins.Ruins.Companion.rl
 import com.bins.ruins.cherryblossom.classes.Auth
 import com.bins.ruins.structure.objects.env
 import com.bins.ruins.structure.objects.utilities.Receiver.Companion.bb
 import com.bins.ruins.structure.objects.vars
 import dev.kord.common.Color
 import dev.kord.core.Kord
-import dev.kord.core.behavior.edit
 import dev.kord.core.behavior.reply
 import dev.kord.core.entity.channel.GuildChannel
 import dev.kord.core.event.message.MessageCreateEvent
@@ -85,7 +83,7 @@ class CherryBlossom {
                             val auth = Auth.request(msg = message)
                             if (auth != null) {
                                 message.reply { content = "DM을 확인해주세욘!" }
-                                val auths = auth.startAsync()
+                                auth.start()
                             } else message.reply { content = "엄..못하세욘.." }
                         }
                         message.content == "벚꽃아 인원" -> {
